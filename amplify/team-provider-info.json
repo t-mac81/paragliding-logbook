@@ -1,0 +1,28 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-logbook-dev-141346-authRole",
+      "UnauthRoleArn": "arn:aws:iam::300020240867:role/amplify-logbook-dev-141346-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::300020240867:role/amplify-logbook-dev-141346-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-logbook-dev-141346-deployment",
+      "UnauthRoleName": "amplify-logbook-dev-141346-unauthRole",
+      "StackName": "amplify-logbook-dev-141346",
+      "StackId": "arn:aws:cloudformation:us-west-2:300020240867:stack/amplify-logbook-dev-141346/1bad36f0-5874-11ec-bb7f-06b7270bc73d",
+      "AmplifyAppId": "d2i3xj8g0lm6am",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-logbook-dev-141346-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "logbook5deebefd": {}
+      },
+      "function": {
+        "logbook5deebefdPostConfirmation": {
+          "GROUP": "students",
+          "deploymentBucketName": "amplify-logbook-dev-141346-deployment",
+          "s3Key": "amplify-builds/logbook5deebefdPostConfirmation-2b6a6773547876695655-build.zip"
+        }
+      }
+    }
+  }
+}
