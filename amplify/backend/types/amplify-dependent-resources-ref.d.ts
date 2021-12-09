@@ -1,29 +1,20 @@
 export type AmplifyDependentResourcesAttributes = {
-    "function": {
-        "logbook5deebefdPostConfirmation": {
-            "Name": "string",
-            "Arn": "string",
-            "LambdaExecutionRole": "string",
-            "Region": "string"
+    "api": {
+        "logbook": {
+            "GraphQLAPIKeyOutput": "string",
+            "GraphQLAPIIdOutput": "string",
+            "GraphQLAPIEndpointOutput": "string"
         }
     },
     "auth": {
-        "logbook5deebefd": {
+        "logbookd7346641": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "UserPoolId": "string",
             "UserPoolArn": "string",
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
-            "AppClientID": "string",
-            "CreatedSNSRole": "string"
-        }
-    },
-    "api": {
-        "logbook": {
-            "GraphQLAPIKeyOutput": "string",
-            "GraphQLAPIIdOutput": "string",
-            "GraphQLAPIEndpointOutput": "string"
+            "AppClientID": "string"
         }
     }
 }

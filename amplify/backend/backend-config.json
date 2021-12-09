@@ -1,26 +1,33 @@
 {
-  "function": {
-    "logbook5deebefdPostConfirmation": {
-      "build": true,
+  "api": {
+    "logbook": {
+      "service": "AppSync",
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            }
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
+    }
+  },
+  "hosting": {
+    "amplifyhosting": {
+      "service": "amplifyhosting",
+      "providerPlugin": "awscloudformation",
+      "type": "manual"
     }
   },
   "auth": {
-    "logbook5deebefd": {
+    "logbookd7346641": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "logbook5deebefdPostConfirmation",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
-        }
-      ],
+      "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [],
@@ -28,9 +35,7 @@
           "EMAIL"
         ],
         "signupAttributes": [
-          "EMAIL",
-          "NAME",
-          "PHONE_NUMBER"
+          "EMAIL"
         ],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 8,
@@ -43,32 +48,6 @@
         "verificationMechanisms": [
           "EMAIL"
         ]
-      }
-    }
-  },
-  "api": {
-    "logbook": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authlogbook5deebefd"
-            }
-          },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "API_KEY",
-              "apiKeyConfig": {
-                "apiKeyExpirationDays": 7,
-                "apiKeyExpirationDate": "2021-12-15T22:29:37.457Z",
-                "description": "logbook api key"
-              }
-            }
-          ]
-        }
       }
     }
   }

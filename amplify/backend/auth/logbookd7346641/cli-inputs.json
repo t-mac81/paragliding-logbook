@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "logbook5deebefd_identitypool_5deebefd",
+    "identityPoolName": "logbookd7346641_identitypool_d7346641",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "logboo5deebefd",
-    "userPoolName": "logbook5deebefd_userpool_5deebefd",
+    "resourceNameTruncated": "logbood7346641",
+    "userPoolName": "logbookd7346641_userpool_d7346641",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -20,9 +20,7 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email",
-      "name",
-      "phone_number"
+      "email"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
@@ -33,20 +31,16 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "logboo5deebefd_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "logbood7346641_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "5deebefd",
-    "resourceName": "logbook5deebefd",
+    "sharedId": "d7346641",
+    "resourceName": "logbookd7346641",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "usernameAttributes": [
       "email"
     ],
-    "triggers": {
-      "PostConfirmation": [
-        "add-to-group"
-      ]
-    },
+    "triggers": {},
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,

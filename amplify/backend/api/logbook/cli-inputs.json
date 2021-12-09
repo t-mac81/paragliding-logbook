@@ -3,23 +3,15 @@
   "serviceConfiguration": {
     "apiName": "logbook",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "C:\\users\\macmu\\logbook\\amplify\\backend\\api\\logbook\\schema.graphql",
+    "gqlSchemaPath": "C:\\Users\\macmu\\logbook\\amplify\\backend\\api\\logbook\\schema.graphql",
     "defaultAuthType": {
-      "mode": "AMAZON_COGNITO_USER_POOLS",
-      "cognitoUserPoolId": "authlogbook5deebefd"
+      "mode": "API_KEY",
+      "expirationTime": 7
     },
     "conflictResolution": {
       "defaultResolutionStrategy": {
         "type": "AUTOMERGE"
       }
-    },
-    "additionalAuthTypes": [
-      {
-        "mode": "API_KEY",
-        "expirationTime": 7,
-        "apiKeyExpirationDate": "2021-12-15T22:29:37.457Z",
-        "keyDescription": "logbook api key"
-      }
-    ]
+    }
   }
 }
