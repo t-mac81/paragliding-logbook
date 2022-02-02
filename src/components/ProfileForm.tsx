@@ -1,19 +1,77 @@
-import { IonItem, IonInput, IonLabel, IonTextarea, } from "@ionic/react";
-import { text } from "ionicons/icons";
+import { IonItem, IonInput, IonLabel, IonTextarea, IonLoading, } from "@ionic/react";
+import { API, Auth, graphqlOperation } from "aws-amplify";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import React, { useState } from 'react';
+import { GetUserProfileQuery, UserProfile } from "../API";
+import { getUserProfile } from "../graphql/queries";
+
+interface CognitoData {
+  sub: String
+  email: String
+}
 
 export const ProfileForm: React.FC = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [isNew, setIsNew] = useState<Boolean>(false);
+    const [cognitoData, setCognitoData] = useState<CognitoData | null>(null);
+    const [profile, setProfile] = useState<UserProfile | null>(null);
+    const { register, handleSubmit, watch, formState: { errors } } = useForm({
+      defaultValues: {
+        name: ''
+      }
+    });
         const onSubmit = (data: any) => {
         console.log('test: ', data);
+    }
+
+    useEffect(() => {
+      if (!cognitoData) return;
+      getProfile();
+    },[cognitoData])
+
+    useEffect(() => {
+      getCognitoData()
+    }, [])
+
+    const getCognitoData = async () => {
+      const awsAuth = await Auth.currentSession();
+      const { email, sub } = awsAuth.getIdToken().payload;
+      console.log('Email: ', email)
+      console.log('Sub: ', sub)
+      setCognitoData({
+        email,
+        sub
+      });
+    }
+
+    const getProfile = async () => {
+      const profileData = (await API.graphql({
+        query: getUserProfile,
+        variables: {id: cognitoData?.sub},
+        authMode: 'AMAZON_COGNITO_USER_POOLS'}) as {data: GetUserProfileQuery});
+      if (!profileData?.data?.getUserProfile) {
+        setIsNew(true)
+      }
+    }
+
+    const createProfile = async () => {
+      
+    }
+
+    const updateProfile =async () => {
+      
+    }
+
+    if (!profile && !isNew) {
+      return (
+        <IonLoading isOpen={true}></IonLoading>
+      )
     }
     return (
         /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <form onSubmit={handleSubmit(onSubmit)}>
         <IonItem>
           <IonLabel position="stacked">Name:</IonLabel>
-          <IonInput placeholder="First Last" autocomplete="name" required={true}></IonInput>
+          <IonInput {...register('name')} />
         </IonItem>
         <IonItem>
           <IonLabel position="stacked">Address:</IonLabel>

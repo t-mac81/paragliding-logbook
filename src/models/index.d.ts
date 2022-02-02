@@ -4,47 +4,24 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
-type BlogMetaData = {
+type UserProfileMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type PostMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-type CommentMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-export declare class Blog {
+export declare class UserProfile {
   readonly id: string;
   readonly name: string;
-  readonly posts?: (Post | null)[];
+  readonly email: string;
+  readonly addressLine1: string;
+  readonly addressLine2: string;
+  readonly city: string;
+  readonly state: string;
+  readonly zipCode: string;
+  readonly phoneNumber: string;
+  readonly bio: string;
+  readonly trackingUrl?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<Blog, BlogMetaData>);
-  static copyOf(source: Blog, mutator: (draft: MutableModel<Blog, BlogMetaData>) => MutableModel<Blog, BlogMetaData> | void): Blog;
-}
-
-export declare class Post {
-  readonly id: string;
-  readonly title: string;
-  readonly blog?: Blog;
-  readonly comments?: (Comment | null)[];
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  readonly blogPostsId?: string;
-  constructor(init: ModelInit<Post, PostMetaData>);
-  static copyOf(source: Post, mutator: (draft: MutableModel<Post, PostMetaData>) => MutableModel<Post, PostMetaData> | void): Post;
-}
-
-export declare class Comment {
-  readonly id: string;
-  readonly post?: Post;
-  readonly content: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  readonly postCommentsId?: string;
-  constructor(init: ModelInit<Comment, CommentMetaData>);
-  static copyOf(source: Comment, mutator: (draft: MutableModel<Comment, CommentMetaData>) => MutableModel<Comment, CommentMetaData> | void): Comment;
+  constructor(init: ModelInit<UserProfile, UserProfileMetaData>);
+  static copyOf(source: UserProfile, mutator: (draft: MutableModel<UserProfile, UserProfileMetaData>) => MutableModel<UserProfile, UserProfileMetaData> | void): UserProfile;
 }
