@@ -2,9 +2,10 @@ import { IonItem, IonInput, IonLabel, IonTextarea, IonLoading, IonCard, IonButto
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { CreateUserProfileMutation, GetUserProfileQuery, UserProfile } from "../API";
-import { createUserProfile } from "../graphql/mutations";
+import { CreateUserProfileInput, CreateUserProfileMutation, GetUserProfileQuery, UpdateUserProfileInput, UserProfile } from "../API";
+import { createUserProfile, updateUserProfile } from "../graphql/mutations";
 import { getUserProfile } from "../graphql/queries";
+import { scrubData } from "../utils/ModelUtil";
 
 interface CognitoData {
   sub: String
@@ -18,7 +19,10 @@ export const ProfileForm: React.FC = () => {
     const { register, getValues, reset, formState: { errors } } = useForm();
     
     const onSubmit = () => {
+      console.log('Test: ', getValues());
       const data = getValues() as UserProfile;
+      console.log('test: ', data);
+      
       if (isNew) {
         return createProfile(data);
       }
@@ -75,8 +79,19 @@ export const ProfileForm: React.FC = () => {
     }
 
     const updateProfile = async (data: UserProfile) => {
-      console.log('Put your updateUserProfile mutation here. It probably looks nearly identical to the create...')
+      const profileData = await API.graphql({
+        query: updateUserProfile,
+        variables: {
+          input: {
+            ...scrubData(data),
+          } 
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS'
+      });
+
+      console.log('Updated profile data: ', profileData);
     }
+
 
     if (!profile && !isNew) {
       return (
