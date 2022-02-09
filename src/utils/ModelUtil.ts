@@ -8,7 +8,6 @@ export const scrubData = (dataObject: any) => {
     __typename,
     createdAt,
     updatedAt,
-    _version,
     _deleted,
     _lastChangedAt,
     owner,

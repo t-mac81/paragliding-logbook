@@ -1,11 +1,15 @@
-import { IonItem, IonInput, IonLabel, IonTextarea, IonLoading, IonCard, IonButton, IonRow, IonCol, IonGrid, } from "@ionic/react";
-import { API, Auth, graphqlOperation } from "aws-amplify";
+import { IonItem, IonInput, IonLabel, IonTextarea, IonLoading, IonCard, IonButton } from "@ionic/react";
+import { API, Auth } from "aws-amplify";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { CreateUserProfileInput, CreateUserProfileMutation, GetUserProfileQuery, UpdateUserProfileInput, UserProfile } from "../API";
+import { useController, UseControllerProps, useForm } from "react-hook-form";
+import { CreateUserProfileMutation, GetUserProfileQuery, UserProfile } from "../API";
 import { createUserProfile, updateUserProfile } from "../graphql/mutations";
 import { getUserProfile } from "../graphql/queries";
 import { scrubData } from "../utils/ModelUtil";
+
+type FormValues = {
+  name: string;
+};
 
 interface CognitoData {
   sub: String
@@ -13,15 +17,25 @@ interface CognitoData {
 }
 
 export const ProfileForm: React.FC = () => {
+    const [loading, setLoading] = useState<Boolean>(false);
     const [isNew, setIsNew] = useState<Boolean>(false);
     const [cognitoData, setCognitoData] = useState<CognitoData | null>(null);
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const { register, getValues, reset, formState: { errors } } = useForm();
+    const { handleSubmit, control } = useForm<FormValues>({
+      defaultValues: {
+        name: ""
+      },
+      mode: "onChange"
+    });
     
+    
+        
     const onSubmit = () => {
       console.log('Test: ', getValues());
       const data = getValues() as UserProfile;
       console.log('test: ', data);
+      
       
       if (isNew) {
         return createProfile(data);
@@ -93,10 +107,23 @@ export const ProfileForm: React.FC = () => {
     }
 
 
-    if (!profile && !isNew) {
+    if ((!profile && !isNew) || loading) {
       return (
         <IonLoading isOpen={true}></IonLoading>
       )
+    }
+    
+    function Input(props: UseControllerProps<FormValues>) {
+      const { field, fieldState } = useController(props);
+    
+      return (
+        <div>
+          <input {...field} placeholder={props.name} />
+          <p>{fieldState.isTouched && "Touched"}</p>
+          <p>{fieldState.isDirty && "Dirty"}</p>
+          <p>{fieldState.invalid ? "invalid" : "valid"}</p>
+        </div>
+      );
     }
     
     return (
@@ -112,43 +139,43 @@ export const ProfileForm: React.FC = () => {
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">Name:</IonLabel>
-            <IonInput {...register('name') as any } placeholder="First Last" autocomplete="name" required={true}/>
+            <Input control={control} name="name" rules={{ required: true }}/>
           </IonItem>
         </IonCard>
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">Address:</IonLabel>
-            <IonInput { ...register('addressLine1') as any } placeholder="Line 1" autocomplete="address-line1" required={true}></IonInput>
-            <IonInput { ...register('addressLine2') as any } placeholder="Line 2" autocomplete="address-line2"></IonInput>
+            <IonInput { ...register('addressLine1') as any } placeholder="Line 1" required={true}></IonInput>
+            <IonInput { ...register('addressLine2') as any } placeholder="Line 2" ></IonInput>
           </IonItem>
         </IonCard>
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">City:</IonLabel>
-            <IonInput { ...register('city') as any } placeholder="City" autocomplete="address-level2" required={true}></IonInput>
+            <IonInput { ...register('city') as any } placeholder="City" required={true}></IonInput>
           </IonItem>
         </IonCard>    
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">State</IonLabel>
-            <IonInput { ...register('state') as any } placeholder="State" autocomplete="address-level1" required={true}></IonInput>
+            <IonInput { ...register('state') as any } placeholder="State" required={true}></IonInput>
           </IonItem>
         </IonCard>
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">Zip Code</IonLabel>
-            <IonInput { ...register('zipCode') as any } placeholder="Zip Code" autocomplete="postal-code" required={true}></IonInput>
+            <IonInput { ...register('zipCode') as any } placeholder="99999" required={true}></IonInput>
           </IonItem>
         </IonCard>
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">Phone Number</IonLabel>
-            <IonInput { ...register('phoneNumber') as any } inputmode="tel" placeholder="999-999-9999" autocomplete="tel" required={true}></IonInput>
+            <IonInput { ...register('phoneNumber') as any } inputmode="tel" placeholder="999-999-9999" required={true}></IonInput>
           </IonItem>
         </IonCard>    
 
