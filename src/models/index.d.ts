@@ -13,7 +13,7 @@ export declare class UserProfile {
   readonly name: string;
   readonly email: string;
   readonly addressLine1: string;
-  readonly addressLine2: string;
+  readonly addressLine2?: string;
   readonly city: string;
   readonly state: string;
   readonly zipCode: string;

@@ -35,7 +35,7 @@ export const schema = {
                     "name": "addressLine2",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "city": {
@@ -128,5 +128,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "4d958783bbed8a17c99788dd8ef68f10"
+    "version": "c4cdc7e29e5b5cb08041a49df08983f5"
 };

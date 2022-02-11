@@ -1,42 +1,55 @@
-import { IonItem, IonInput, IonLabel, IonTextarea, IonLoading, IonCard, IonButton } from "@ionic/react";
+import { IonItem, IonInput, IonLabel, IonLoading, IonCard, IonButton, IonTextarea } from "@ionic/react";
 import { API, Auth } from "aws-amplify";
 import { useEffect, useState } from "react";
-import { useController, UseControllerProps, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { ErrorMessage } from '@hookform/error-message';
 import { CreateUserProfileMutation, GetUserProfileQuery, UserProfile } from "../API";
 import { createUserProfile, updateUserProfile } from "../graphql/mutations";
 import { getUserProfile } from "../graphql/queries";
 import { scrubData } from "../utils/ModelUtil";
+import "./ProfileForm.css";
 
-type FormValues = {
-  name: string;
+interface FormValues {
+  email: string
+  name: string
+  addressLine1: string
+  addressLine2: string
+  city: string
+  state: string
+  zipCode: string
+  phoneNumber: string
+  bio: string
+  trackingUrl: string | null | undefined
 };
+
 
 interface CognitoData {
   sub: String
   email: String
 }
 
+
 export const ProfileForm: React.FC = () => {
     const [loading, setLoading] = useState<Boolean>(false);
+    const [autofill, setAutofill] = useState<Boolean>(false);
     const [isNew, setIsNew] = useState<Boolean>(false);
     const [cognitoData, setCognitoData] = useState<CognitoData | null>(null);
     const [profile, setProfile] = useState<UserProfile | null>(null);
-    const { register, getValues, reset, formState: { errors } } = useForm();
-    const { handleSubmit, control } = useForm<FormValues>({
-      defaultValues: {
-        name: ""
-      },
+
+    const { handleSubmit, register, reset, formState: { errors }, } = useForm<FormValues>({
       mode: "onChange"
     });
+
+    const onFocus = (event: any) => {
+      console.log('onFocus: ', event.target.value);
     
-    
-        
-    const onSubmit = () => {
-      console.log('Test: ', getValues());
-      const data = getValues() as UserProfile;
-      console.log('test: ', data);
-      
-      
+    }
+
+    const onSubmit = (event: any) => {
+      console.log('event.target: ', event);
+
+      const data = event as UserProfile;
+
       if (isNew) {
         return createProfile(data);
       }
@@ -58,7 +71,8 @@ export const ProfileForm: React.FC = () => {
           return;
         }
 
-        reset(profileData.data.getUserProfile)
+        //reset(profileData.data.getUserProfile)
+        console.log(' prof data: ', profileData.data.getUserProfile)
         setProfile(profileData.data.getUserProfile);
       }
 
@@ -85,7 +99,7 @@ export const ProfileForm: React.FC = () => {
           input: {
             ...data,
             id: cognitoData?.sub,
-          } 
+          }
         },
         authMode: 'AMAZON_COGNITO_USER_POOLS'
       }) as { data: CreateUserProfileMutation })
@@ -98,7 +112,7 @@ export const ProfileForm: React.FC = () => {
         variables: {
           input: {
             ...scrubData(data),
-          } 
+          }
         },
         authMode: 'AMAZON_COGNITO_USER_POOLS'
       });
@@ -112,77 +126,73 @@ export const ProfileForm: React.FC = () => {
         <IonLoading isOpen={true}></IonLoading>
       )
     }
-    
-    function Input(props: UseControllerProps<FormValues>) {
-      const { field, fieldState } = useController(props);
-    
-      return (
-        <div>
-          <input {...field} placeholder={props.name} />
-          <p>{fieldState.isTouched && "Touched"}</p>
-          <p>{fieldState.isDirty && "Dirty"}</p>
-          <p>{fieldState.invalid ? "invalid" : "valid"}</p>
-        </div>
-      );
-    }
-    
+
     return (
-        /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
-      <form id="profile-form">
-        <IonCard>
+      /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
+      <form onSubmit={handleSubmit(onSubmit)} >
+      <IonCard>
           <IonItem>
             <IonLabel position="stacked">Email:</IonLabel>
-            <IonInput { ...register('email') as any} readonly={true} value={cognitoData?.email} />
+            <IonInput type="email" autocomplete="new-password" { ...register('email', { required: "Email is required" }) as any} readonly={true} value={cognitoData?.email} />
+            <ErrorMessage errors={errors} name="email" as="p" /> 
           </IonItem>
         </IonCard>
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">Name:</IonLabel>
-            <Input control={control} name="name" rules={{ required: true }}/>
+            <IonInput type="text" autocomplete="new-password" { ...register('name', { required: "Name is required" }) as any} rules={{ required: true }}/>
+            <ErrorMessage errors={errors} name="name" as="p" /> 
           </IonItem>
         </IonCard>
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">Address:</IonLabel>
-            <IonInput { ...register('addressLine1') as any } placeholder="Line 1" required={true}></IonInput>
-            <IonInput { ...register('addressLine2') as any } placeholder="Line 2" ></IonInput>
+            <IonInput autocomplete="new-password" { ...register('addressLine1', { required: "Address is required" }) as any } placeholder="Line 1"></IonInput>
+            <IonInput autocomplete="new-password" { ...register('addressLine2') as any } placeholder="Line 2" ></IonInput>
+            <ErrorMessage errors={errors} name="addressLine1" as="p" /> 
           </IonItem>
         </IonCard>
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">City:</IonLabel>
-            <IonInput { ...register('city') as any } placeholder="City" required={true}></IonInput>
+            <IonInput autocomplete="new-password"{ ...register('city', { required: "City is required"}) as any } placeholder="City"></IonInput>
+            <ErrorMessage errors={errors} name="city" as="p" /> 
           </IonItem>
         </IonCard>    
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">State</IonLabel>
-            <IonInput { ...register('state') as any } placeholder="State" required={true}></IonInput>
+            <IonInput autocomplete="new-password"{ ...register('state', { required: "State is required" }) as any } placeholder="State"></IonInput>
+            <ErrorMessage errors={errors} name="state" as="p" /> 
           </IonItem>
         </IonCard>
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">Zip Code</IonLabel>
-            <IonInput { ...register('zipCode') as any } placeholder="99999" required={true}></IonInput>
+            <IonInput autocomplete="new-password" { ...register('zipCode', { required: "Zip code is required" }) as any } placeholder="99999"></IonInput>
+            <ErrorMessage errors={errors} name="zipCode" as="p" /> 
           </IonItem>
         </IonCard>
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">Phone Number</IonLabel>
-            <IonInput { ...register('phoneNumber') as any } inputmode="tel" placeholder="999-999-9999" required={true}></IonInput>
+            <IonInput type="tel" autocomplete="new-password" { ...register('phoneNumber', { required: "Phone number is required" }) as any } inputmode="tel" placeholder="999-999-9999"></IonInput>
+            <ErrorMessage errors={errors} name="phoneNumber" as="p" />  
           </IonItem>
-        </IonCard>    
+        </IonCard>  
+      
 
         <IonCard>
           <IonItem>
             <IonLabel position="stacked">Bio:</IonLabel>
-            <IonTextarea { ...register('bio') as any } placeholder="Previous sports, hobbies experience" autoGrow={true} required={true}></IonTextarea> 
+            <IonTextarea { ...register('bio',{ required: "Bio is required" }) as any } placeholder="Previous sports, hobbies experience"  autoGrow={true}></IonTextarea> 
+            <ErrorMessage errors={errors} name="bio" as="p" />
           </IonItem>
         </IonCard>
 
@@ -190,13 +200,13 @@ export const ProfileForm: React.FC = () => {
           <IonItem>
             <IonLabel position="stacked">Inreach/Spot Tracking URL:</IonLabel>
             <IonInput { ...register('trackingUrl') as any } placeholder="Optional"></IonInput> 
+            <ErrorMessage errors={errors} name="trackingUrl" as="p" />
           </IonItem>
         </IonCard>
+        
 
-        <IonButton expand="block" onClick={onSubmit}>{isNew ? "Create Profile" : "Update Profile"}</IonButton>
-
-  </form>
-  
+        <IonButton type="submit">Submit</IonButton>
+      </form>
     );
 }
 
