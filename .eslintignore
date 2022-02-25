@@ -1,2 +1,10 @@
-src\models
+**/*.js
+**/models/index.d.ts
+**/models/schema.d.ts
+**/modules/**/*
+**/serviceWorkerRegistration.ts
+**/reportWebVitals.ts
+**/service-worker.ts
+**/setupTests.ts
+**/react-app-env.d.ts
 src/models
