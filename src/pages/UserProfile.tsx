@@ -1,7 +1,7 @@
 import {
   IonContent, IonHeader, IonPage, IonTitle, IonToolbar,
 } from '@ionic/react';
-import { ProfileForm } from '../components/ProfileForm';
+import ProfileForm from '../components/ProfileForm';
 import './UserProfile.css';
 
 const UserProfile: React.FC = () => (

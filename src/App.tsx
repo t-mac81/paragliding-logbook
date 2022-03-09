@@ -1,4 +1,4 @@
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify from 'aws-amplify';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { Redirect, Route } from 'react-router-dom';

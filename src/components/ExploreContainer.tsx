@@ -4,9 +4,9 @@ interface ContainerProps {
   name: string;
 }
 
-export const ExploreContainer: React.FC<ContainerProps> = ({ name }) => (
+const ExploreContainer: React.FC<ContainerProps> = () => (
   <div className='container'>
-    <strong>{name}</strong>
+    <strong>{ }</strong>
     <p>
       Explore
       <a target='_blank' rel='noopener noreferrer' href='https://ionicframework.com/docs/components'>UI Components</a>

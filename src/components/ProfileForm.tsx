@@ -19,7 +19,7 @@ import {
 } from '../API';
 import { createUserProfile, updateUserProfile } from '../graphql/mutations';
 import { getUserProfile } from '../graphql/queries';
-import { scrubData } from '../utils/ModelUtil';
+import scrubData from '../utils/ModelUtil';
 import './ProfileForm.css';
 
 interface FormValues {
@@ -40,7 +40,7 @@ interface CognitoData {
   email: String;
 }
 
-export const ProfileForm: React.FC = () => {
+const ProfileForm: React.FC = () => {
   const [loading, setLoading] = useState<Boolean>(false);
   const [isNew, setIsNew] = useState<Boolean>(false);
   const [cognitoData, setCognitoData] = useState<CognitoData | null>(null);
@@ -73,6 +73,7 @@ export const ProfileForm: React.FC = () => {
   useEffect(() => {
     if (!cognitoData) return;
 
+    setLoading(true);
     const getProfile = async () => {
       try {
         const profileData = (await API.graphql({
@@ -80,19 +81,19 @@ export const ProfileForm: React.FC = () => {
           variables: { id: cognitoData?.sub },
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         })) as { data: GetUserProfileQuery };
+
         if (!profileData?.data?.getUserProfile) {
           setIsNew(true);
           return;
         }
 
-        const { getUserProfile: profile } = profileData.data;
-        reset(scrubData(profile));
+        const { getUserProfile: userProfile } = profileData.data;
+
+        setProfile(userProfile);
         console.log(' prof data: ', profileData.data.getUserProfile);
-        setProfile(profileData.data.getUserProfile);
       } catch (error) {
         setShowToastError(true);
-        setTimeout(() => setShowToastError(false), 3000);
-
+        setTimeout(() => setShowToastError(false), 5000);
       } finally {
         setLoading(false);
       }
@@ -100,6 +101,13 @@ export const ProfileForm: React.FC = () => {
 
     getProfile();
   }, [cognitoData, reset]);
+
+  useEffect(() => {
+    if (!profile) return;
+
+    console.log('Resetting form: ', scrubData(profile));
+    reset(scrubData(profile), { keepIsValid: true });
+  }, [reset, profile]);
 
   useEffect(() => {
     getCognitoData();
@@ -115,7 +123,7 @@ export const ProfileForm: React.FC = () => {
   };
 
   const createProfile = async (data: UserProfile) => {
-    const profileData = (await API.graphql({
+    const response = await API.graphql({
       query: createUserProfile,
       variables: {
         input: {
@@ -124,9 +132,13 @@ export const ProfileForm: React.FC = () => {
         },
       },
       authMode: 'AMAZON_COGNITO_USER_POOLS',
-    })) as { data: CreateUserProfileMutation };
+    }) as { data: CreateUserProfileMutation };
+
+    const { createUserProfile: newProfile } = response.data;
+    setProfile(scrubData(newProfile));
+    setIsNew(false);
     setShowToastCreate(true);
-    setTimeout(() => setShowToastCreate(false), 1500);
+    setTimeout(() => setShowToastCreate(false), 2000);
   };
 
   const updateProfile = async (data: UserProfile) => {
@@ -142,16 +154,19 @@ export const ProfileForm: React.FC = () => {
 
     console.log('Updated profile data: ', profileData);
     setShowToastUpdate(true);
-    setTimeout(() => setShowToastUpdate(false), 1500);
+    setTimeout(() => setShowToastUpdate(false), 2000);
   };
 
-  if ((!profile && !isNew) || loading) {
+  if (loading) {
     return <IonLoading isOpen />;
   }
 
   return (
     /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form>
+      <IonToast isOpen={showToastError} message='Network Error! Please try again' />
+      <IonToast isOpen={showToastCreate} message='Your profile has been created!' />
+      <IonToast isOpen={showToastUpdate} message='Your profile has been updated!' />
       <IonCard>
         <IonItem>
           <IonLabel position='stacked'> Email: </IonLabel>
@@ -278,13 +293,11 @@ export const ProfileForm: React.FC = () => {
         </IonItem>
       </IonCard>
 
-      <IonButton type='submit' disabled={loading}>
+      <IonButton onClick={handleSubmit(onSubmit)} disabled={loading}>
         {isNew ? 'Create Profile' : 'Update Profile'}
       </IonButton>
-      <IonToast isOpen={showToastError} message='Network Error! Please refresh and try again' />
-      <IonToast isOpen={showToastCreate} message='Your profile has been created!' />
-      <IonToast isOpen={showToastUpdate} message='Your profile has been updated!' />
-
     </form>
   );
 };
+
+export default ProfileForm;

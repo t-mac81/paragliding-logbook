@@ -3,7 +3,7 @@
 import { restaurant } from 'ionicons/icons';
 
 // function used for removing extra crap from the data object
-export const scrubData = (dataObject: any) => {
+const scrubData = (dataObject: any) => {
   const {
     __typename,
     createdAt,
@@ -16,3 +16,5 @@ export const scrubData = (dataObject: any) => {
 
   return rest;
 };
+
+export default scrubData;

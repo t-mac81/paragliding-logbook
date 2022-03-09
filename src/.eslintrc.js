@@ -37,10 +37,10 @@ module.exports = {
         // Use single quotes in jsx.
         'jsx-quotes': [2, 'prefer-single'],
         // Let's not use explicit any.
-        '@typescript-eslint/no-explicit-any': [2, {
-            'fixToUnknown': false,
-            'ignoreRestArgs': false
-        }],
+        //'@typescript-eslint/no-explicit-any': [2, {
+        //    'fixToUnknown': false,
+        //    'ignoreRestArgs': false
+        //}],
         // Since React v17, it's not required to import React.
         'react/react-in-jsx-scope': 'off',
     },
