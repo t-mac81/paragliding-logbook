@@ -1,3 +1,4 @@
+// TODO: remove hookform packages and other hookform useless crap
 import {
   IonItem,
   IonInput,
@@ -8,12 +9,10 @@ import {
   IonTextarea,
   IonToast,
 } from '@ionic/react';
-import {
-  Formik,
-} from 'formik';
+import { ErrorMessage, Formik } from 'formik';
+import * as yup from 'yup';
 import { API, Auth } from 'aws-amplify';
 import { useEffect, useState } from 'react';
-import { ErrorMessage } from '@hookform/error-message';
 import {
   CreateUserProfileMutation,
   GetUserProfileQuery,
@@ -23,6 +22,49 @@ import { createUserProfile, updateUserProfile } from '../graphql/mutations';
 import { getUserProfile } from '../graphql/queries';
 import scrubData from '../utils/ModelUtil';
 import './ProfileForm.css';
+
+const validationSchema = yup.object({
+  name: yup
+    .string()
+    .nullable()
+    .required('Name is required'),
+  addressLine1: yup
+    .string()
+    .nullable()
+    .required('Address is required'),
+  addressLine2: yup
+    .string()
+    .nullable(),
+  city: yup
+    .string()
+    .nullable()
+    .required('City is required'),
+  state: yup
+    .string()
+    .nullable()
+    .max(2, 'Use two letter abbreviation')
+    .required('State is required'),
+  zipCode: yup
+    .string()
+    .nullable()
+    .min(5, 'Must be 5 digit zip code')
+    .max(5, 'Must be 5 digit zip code')
+    .required('Zip code is required'),
+  phoneNumber: yup
+    .string()
+    .nullable()
+    .required('Phone number is required'),
+  // TODO: need to add better phone number validate, maybe yup-phone?
+  bio: yup
+    .string()
+    .nullable()
+    .required('A short bio is required'),
+  trackingUrl: yup
+    .string()
+    .nullable()
+    .url('Must be a valid URL'),
+  // TODO: maybe better way of doing url?
+});
 
 interface FormValues {
   email: string;
@@ -163,7 +205,7 @@ const ProfileForm: React.FC = () => {
   return (
     <Formik
       initialValues={profile || emptyProfile}
-      // validationSchema={validationSchema}
+      validationSchema={validationSchema}
       onSubmit={(values) => {
         alert(JSON.stringify(values, null, 2));
       }}
@@ -183,10 +225,8 @@ const ProfileForm: React.FC = () => {
                 autocomplete='new-password'
                 value={formikProps.values.email}
                 readonly
+                onIonChange={formikProps.handleChange}
               />
-              <ErrorMessage name='email' as='p'>
-                {formikProps.touched.email && formikProps.errors.email}
-              </ErrorMessage>
             </IonItem>
           </IonCard>
 
@@ -198,10 +238,11 @@ const ProfileForm: React.FC = () => {
                 autocomplete='new-password'
                 name='name'
                 value={formikProps.values.name}
+                onIonChange={formikProps.handleChange}
               />
-              <ErrorMessage name='name' as='p'>
+              <div className='error'>
                 {formikProps.touched.name && formikProps.errors.name}
-              </ErrorMessage>
+              </div>
             </IonItem>
           </IonCard>
 
@@ -214,6 +255,7 @@ const ProfileForm: React.FC = () => {
                 name='addressLine1'
                 placeholder='Line 1'
                 value={formikProps.values.addressLine1}
+                onIonChange={formikProps.handleChange}
               />
               <IonInput
                 type='text'
@@ -221,10 +263,11 @@ const ProfileForm: React.FC = () => {
                 name='addressLine2'
                 placeholder='Line 2'
                 value={formikProps.values.addressLine2}
+                onIonChange={formikProps.handleChange}
               />
-              <ErrorMessage name='addressLine1' as='p'>
+              <div className='error'>
                 {formikProps.touched.addressLine1 && formikProps.errors.addressLine1}
-              </ErrorMessage>
+              </div>
             </IonItem>
           </IonCard>
 
@@ -237,10 +280,11 @@ const ProfileForm: React.FC = () => {
                 name='city'
                 placeholder='City'
                 value={formikProps.values.city}
+                onIonChange={formikProps.handleChange}
               />
-              <ErrorMessage name='city' as='p'>
+              <div className='error'>
                 {formikProps.touched.city && formikProps.errors.city}
-              </ErrorMessage>
+              </div>
             </IonItem>
           </IonCard>
 
@@ -253,10 +297,11 @@ const ProfileForm: React.FC = () => {
                 name='state'
                 placeholder='State'
                 value={formikProps.values.state}
+                onIonChange={formikProps.handleChange}
               />
-              <ErrorMessage name='state' as='p'>
+              <div className='error'>
                 {formikProps.touched.state && formikProps.errors.state}
-              </ErrorMessage>
+              </div>
             </IonItem>
           </IonCard>
 
@@ -268,10 +313,11 @@ const ProfileForm: React.FC = () => {
                 name='zipCode'
                 placeholder='99999'
                 value={formikProps.values.zipCode}
+                onIonChange={formikProps.handleChange}
               />
-              <ErrorMessage name='zipCode' as='p'>
+              <div className='error'>
                 {formikProps.touched.zipCode && formikProps.errors.zipCode}
-              </ErrorMessage>
+              </div>
             </IonItem>
           </IonCard>
 
@@ -285,10 +331,11 @@ const ProfileForm: React.FC = () => {
                 inputmode='tel'
                 placeholder='999-999-9999'
                 value={formikProps.values.phoneNumber}
+                onIonChange={formikProps.handleChange}
               />
-              <ErrorMessage name='phoneNumber' as='p'>
+              <div className='error'>
                 {formikProps.touched.phoneNumber && formikProps.errors.phoneNumber}
-              </ErrorMessage>
+              </div>
             </IonItem>
           </IonCard>
 
@@ -300,10 +347,11 @@ const ProfileForm: React.FC = () => {
                 autoGrow
                 name='bio'
                 value={formikProps.values.bio}
+                onIonChange={formikProps.handleChange}
               />
-              <ErrorMessage name='bio' as='p'>
+              <div className='error'>
                 {formikProps.touched.bio && formikProps.errors.bio}
-              </ErrorMessage>
+              </div>
             </IonItem>
           </IonCard>
 
@@ -314,10 +362,11 @@ const ProfileForm: React.FC = () => {
                 placeholder='Optional'
                 name='trackingUrl'
                 value={formikProps.values.trackingUrl}
+                onIonChange={formikProps.handleChange}
               />
-              <ErrorMessage name='trackingUrl' as='p'>
+              <div className='error'>
                 {formikProps.touched.trackingUrl && formikProps.errors.trackingUrl}
-              </ErrorMessage>
+              </div>
             </IonItem>
           </IonCard>
 
