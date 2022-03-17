@@ -6,11 +6,12 @@ module.exports = {
         'airbnb',
         'airbnb-typescript',
     ],
+
     parserOptions: {
         project: ['./tsconfig.json']
     },
     rules: {
-
+        
         // A list of allowed function definition syntaxes.
         'react/function-component-definition': [2, {
             'namedComponents': ['function-declaration', 'arrow-function'],

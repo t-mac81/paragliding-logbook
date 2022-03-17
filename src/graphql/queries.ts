@@ -93,3 +93,79 @@ export const syncUserProfiles = /* GraphQL */ `
     }
   }
 `;
+export const getGlider = /* GraphQL */ `
+  query GetGlider($id: ID!) {
+    getGlider(id: $id) {
+      id
+      manufacture
+      model
+      size
+      color
+      certification
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const listGliders = /* GraphQL */ `
+  query ListGliders(
+    $filter: ModelGliderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGliders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        manufacture
+        model
+        size
+        color
+        certification
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncGliders = /* GraphQL */ `
+  query SyncGliders(
+    $filter: ModelGliderFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncGliders(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        manufacture
+        model
+        size
+        color
+        certification
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;

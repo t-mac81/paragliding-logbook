@@ -71,3 +71,57 @@ export const onDeleteUserProfile = /* GraphQL */ `
     }
   }
 `;
+export const onCreateGlider = /* GraphQL */ `
+  subscription OnCreateGlider($owner: String) {
+    onCreateGlider(owner: $owner) {
+      id
+      manufacture
+      model
+      size
+      color
+      certification
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onUpdateGlider = /* GraphQL */ `
+  subscription OnUpdateGlider($owner: String) {
+    onUpdateGlider(owner: $owner) {
+      id
+      manufacture
+      model
+      size
+      color
+      certification
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onDeleteGlider = /* GraphQL */ `
+  subscription OnDeleteGlider($owner: String) {
+    onDeleteGlider(owner: $owner) {
+      id
+      manufacture
+      model
+      size
+      color
+      certification
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;

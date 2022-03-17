@@ -15,3 +15,12 @@ type UserProfile @model @auth(rules: [{ allow: owner}]) {
   bio: String!
   trackingUrl: String
 } 
+
+type Glider @model @auth(rules: [{ allow: owner}]) {
+  id: ID!
+  manufacture: String!
+  model: String!
+  size: String!
+  color: String!
+  certification: String!
+}

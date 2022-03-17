@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { restaurant } from 'ionicons/icons';
-
 // function used for removing extra crap from the data object
 const scrubData = (dataObject: any) => {
   const {

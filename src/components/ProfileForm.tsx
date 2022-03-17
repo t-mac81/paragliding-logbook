@@ -9,7 +9,7 @@ import {
   IonTextarea,
   IonToast,
 } from '@ionic/react';
-import { ErrorMessage, Formik } from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 import { API, Auth } from 'aws-amplify';
 import { useEffect, useState } from 'react';
@@ -66,19 +66,6 @@ const validationSchema = yup.object({
   // TODO: maybe better way of doing url?
 });
 
-interface FormValues {
-  email: string;
-  name: string;
-  addressLine1: string;
-  addressLine2: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  phoneNumber: string;
-  bio: string;
-  trackingUrl: string | null | undefined;
-}
-
 interface CognitoData {
   sub: String;
   email: String;
@@ -94,7 +81,7 @@ const ProfileForm: React.FC = () => {
   const [showToastUpdate, setShowToastUpdate] = useState<boolean>(false);
 
   const emptyProfile = {
-    email: '',
+    email: cognitoData?.email,
     name: '',
     addressLine1: '',
     addressLine2: '',
@@ -129,6 +116,7 @@ const ProfileForm: React.FC = () => {
           variables: { id: cognitoData?.sub },
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         })) as { data: GetUserProfileQuery };
+        console.log(profileData);
 
         if (!profileData?.data?.getUserProfile) {
           setIsNew(true);
@@ -136,10 +124,10 @@ const ProfileForm: React.FC = () => {
         }
 
         const { getUserProfile: userProfile } = profileData.data;
-        (scrubData(profile));
         setProfile(userProfile);
         console.log(' prof data: ', profileData.data.getUserProfile);
       } catch (error) {
+        console.log(error);
         setShowToastError(true);
         setTimeout(() => setShowToastError(false), 5000);
       } finally {
@@ -148,7 +136,7 @@ const ProfileForm: React.FC = () => {
     };
 
     getProfile();
-  }, [cognitoData, profile]);
+  }, [cognitoData]);
 
   useEffect(() => {
     getCognitoData();
@@ -187,6 +175,7 @@ const ProfileForm: React.FC = () => {
       query: updateUserProfile,
       variables: {
         input: {
+          ...scrubData(profile),
           ...scrubData(data),
         },
       },
@@ -206,8 +195,9 @@ const ProfileForm: React.FC = () => {
     <Formik
       initialValues={profile || emptyProfile}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
-        alert(JSON.stringify(values, null, 2));
+      onSubmit={(event) => {
+        console.log('running onsubmit');
+        onSubmit(event);
       }}
     >
 
@@ -369,7 +359,7 @@ const ProfileForm: React.FC = () => {
               </div>
             </IonItem>
           </IonCard>
-
+          { /* TODO: add genric error for form issues */}
           <IonButton type='submit' disabled={loading}>
             {isNew ? 'Create Profile' : 'Update Profile'}
           </IonButton>

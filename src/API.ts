@@ -114,6 +114,58 @@ export type DeleteUserProfileInput = {
   _version?: number | null,
 };
 
+export type CreateGliderInput = {
+  id?: string | null,
+  manufacture: string,
+  model: string,
+  size: string,
+  color: string,
+  certification: string,
+  _version?: number | null,
+};
+
+export type ModelGliderConditionInput = {
+  manufacture?: ModelStringInput | null,
+  model?: ModelStringInput | null,
+  size?: ModelStringInput | null,
+  color?: ModelStringInput | null,
+  certification?: ModelStringInput | null,
+  and?: Array< ModelGliderConditionInput | null > | null,
+  or?: Array< ModelGliderConditionInput | null > | null,
+  not?: ModelGliderConditionInput | null,
+};
+
+export type Glider = {
+  __typename: "Glider",
+  id: string,
+  manufacture: string,
+  model: string,
+  size: string,
+  color: string,
+  certification: string,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+  owner?: string | null,
+};
+
+export type UpdateGliderInput = {
+  id: string,
+  manufacture?: string | null,
+  model?: string | null,
+  size?: string | null,
+  color?: string | null,
+  certification?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteGliderInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelUserProfileFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -150,6 +202,25 @@ export type ModelIDInput = {
 export type ModelUserProfileConnection = {
   __typename: "ModelUserProfileConnection",
   items:  Array<UserProfile | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelGliderFilterInput = {
+  id?: ModelIDInput | null,
+  manufacture?: ModelStringInput | null,
+  model?: ModelStringInput | null,
+  size?: ModelStringInput | null,
+  color?: ModelStringInput | null,
+  certification?: ModelStringInput | null,
+  and?: Array< ModelGliderFilterInput | null > | null,
+  or?: Array< ModelGliderFilterInput | null > | null,
+  not?: ModelGliderFilterInput | null,
+};
+
+export type ModelGliderConnection = {
+  __typename: "ModelGliderConnection",
+  items:  Array<Glider | null >,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -229,6 +300,75 @@ export type DeleteUserProfileMutation = {
     phoneNumber: string,
     bio: string,
     trackingUrl?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type CreateGliderMutationVariables = {
+  input: CreateGliderInput,
+  condition?: ModelGliderConditionInput | null,
+};
+
+export type CreateGliderMutation = {
+  createGlider?:  {
+    __typename: "Glider",
+    id: string,
+    manufacture: string,
+    model: string,
+    size: string,
+    color: string,
+    certification: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateGliderMutationVariables = {
+  input: UpdateGliderInput,
+  condition?: ModelGliderConditionInput | null,
+};
+
+export type UpdateGliderMutation = {
+  updateGlider?:  {
+    __typename: "Glider",
+    id: string,
+    manufacture: string,
+    model: string,
+    size: string,
+    color: string,
+    certification: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteGliderMutationVariables = {
+  input: DeleteGliderInput,
+  condition?: ModelGliderConditionInput | null,
+};
+
+export type DeleteGliderMutation = {
+  deleteGlider?:  {
+    __typename: "Glider",
+    id: string,
+    manufacture: string,
+    model: string,
+    size: string,
+    color: string,
+    certification: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -334,6 +474,87 @@ export type SyncUserProfilesQuery = {
   } | null,
 };
 
+export type GetGliderQueryVariables = {
+  id: string,
+};
+
+export type GetGliderQuery = {
+  getGlider?:  {
+    __typename: "Glider",
+    id: string,
+    manufacture: string,
+    model: string,
+    size: string,
+    color: string,
+    certification: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListGlidersQueryVariables = {
+  filter?: ModelGliderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListGlidersQuery = {
+  listGliders?:  {
+    __typename: "ModelGliderConnection",
+    items:  Array< {
+      __typename: "Glider",
+      id: string,
+      manufacture: string,
+      model: string,
+      size: string,
+      color: string,
+      certification: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncGlidersQueryVariables = {
+  filter?: ModelGliderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncGlidersQuery = {
+  syncGliders?:  {
+    __typename: "ModelGliderConnection",
+    items:  Array< {
+      __typename: "Glider",
+      id: string,
+      manufacture: string,
+      model: string,
+      size: string,
+      color: string,
+      certification: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateUserProfileSubscriptionVariables = {
   owner?: string | null,
 };
@@ -406,6 +627,72 @@ export type OnDeleteUserProfileSubscription = {
     phoneNumber: string,
     bio: string,
     trackingUrl?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnCreateGliderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateGliderSubscription = {
+  onCreateGlider?:  {
+    __typename: "Glider",
+    id: string,
+    manufacture: string,
+    model: string,
+    size: string,
+    color: string,
+    certification: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateGliderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateGliderSubscription = {
+  onUpdateGlider?:  {
+    __typename: "Glider",
+    id: string,
+    manufacture: string,
+    model: string,
+    size: string,
+    color: string,
+    certification: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteGliderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteGliderSubscription = {
+  onDeleteGlider?:  {
+    __typename: "Glider",
+    id: string,
+    manufacture: string,
+    model: string,
+    size: string,
+    color: string,
+    certification: string,
     createdAt: string,
     updatedAt: string,
     _version: number,

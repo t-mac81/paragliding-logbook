@@ -36,6 +36,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import Glider from './pages/Glider';
 
 Amplify.configure(awsconfig);
 
@@ -53,6 +54,9 @@ const App: React.FC = () => (
           <Route path='/user-profile'>
             <UserProfile />
           </Route>
+          <Route path='/glider'>
+            <Glider />
+          </Route>
           <Route exact path='/'>
             <Redirect to='/tab1' />
           </Route>
@@ -69,6 +73,10 @@ const App: React.FC = () => (
           <IonTabButton tab='user-profile' href='/user-profile'>
             <IonIcon icon={square} />
             <IonLabel>Profile</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab='glider' href='/glider'>
+            <IonIcon icon={square} />
+            <IonLabel>Glider</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
