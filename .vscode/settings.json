@@ -9,5 +9,5 @@
     "amplify/backend/awscloudformation": true
   },
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

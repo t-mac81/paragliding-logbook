@@ -1,6 +1,4 @@
-import {
-  IonContent, IonHeader, IonPage, IonTitle, IonToolbar,
-} from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import GliderList from '../components/GliderList';
 
 import './Glider.css';

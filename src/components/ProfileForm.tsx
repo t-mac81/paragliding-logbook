@@ -13,32 +13,17 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { API, Auth } from 'aws-amplify';
 import { useEffect, useState } from 'react';
-import {
-  CreateUserProfileMutation,
-  GetUserProfileQuery,
-  UserProfile,
-} from '../API';
+import { CreateUserProfileMutation, GetUserProfileQuery, UserProfile } from '../API';
 import { createUserProfile, updateUserProfile } from '../graphql/mutations';
 import { getUserProfile } from '../graphql/queries';
 import scrubData from '../utils/ModelUtil';
 import './ProfileForm.css';
 
 const validationSchema = yup.object({
-  name: yup
-    .string()
-    .nullable()
-    .required('Name is required'),
-  addressLine1: yup
-    .string()
-    .nullable()
-    .required('Address is required'),
-  addressLine2: yup
-    .string()
-    .nullable(),
-  city: yup
-    .string()
-    .nullable()
-    .required('City is required'),
+  name: yup.string().nullable().required('Name is required'),
+  addressLine1: yup.string().nullable().required('Address is required'),
+  addressLine2: yup.string().nullable(),
+  city: yup.string().nullable().required('City is required'),
   state: yup
     .string()
     .nullable()
@@ -50,19 +35,10 @@ const validationSchema = yup.object({
     .min(5, 'Must be 5 digit zip code')
     .max(5, 'Must be 5 digit zip code')
     .required('Zip code is required'),
-  phoneNumber: yup
-    .string()
-    .nullable()
-    .required('Phone number is required'),
+  phoneNumber: yup.string().nullable().required('Phone number is required'),
   // TODO: need to add better phone number validate, maybe yup-phone?
-  bio: yup
-    .string()
-    .nullable()
-    .required('A short bio is required'),
-  trackingUrl: yup
-    .string()
-    .nullable()
-    .url('Must be a valid URL'),
+  bio: yup.string().nullable().required('A short bio is required'),
+  trackingUrl: yup.string().nullable().url('Must be a valid URL'),
   // TODO: maybe better way of doing url?
 });
 
@@ -152,7 +128,7 @@ const ProfileForm: React.FC = () => {
   };
 
   const createProfile = async (data: UserProfile) => {
-    const response = await API.graphql({
+    const response = (await API.graphql({
       query: createUserProfile,
       variables: {
         input: {
@@ -161,7 +137,7 @@ const ProfileForm: React.FC = () => {
         },
       },
       authMode: 'AMAZON_COGNITO_USER_POOLS',
-    }) as { data: CreateUserProfileMutation };
+    })) as { data: CreateUserProfileMutation };
 
     const { createUserProfile: newProfile } = response.data;
     setProfile(scrubData(newProfile));
@@ -195,13 +171,11 @@ const ProfileForm: React.FC = () => {
     <Formik
       initialValues={profile || emptyProfile}
       validationSchema={validationSchema}
-      onSubmit={(event) => {
-        console.log('running onsubmit');
+      onSubmit={event => {
         onSubmit(event);
       }}
     >
-
-      {(formikProps) => (
+      {formikProps => (
         /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
         <form onSubmit={formikProps.handleSubmit}>
           <IonToast isOpen={showToastError} message='Network Error! Please try again' />
@@ -212,7 +186,6 @@ const ProfileForm: React.FC = () => {
               <IonLabel position='stacked'> Email: </IonLabel>
               <IonInput
                 type='email'
-                autocomplete='new-password'
                 value={formikProps.values.email}
                 readonly
                 onIonChange={formikProps.handleChange}
@@ -230,9 +203,7 @@ const ProfileForm: React.FC = () => {
                 value={formikProps.values.name}
                 onIonChange={formikProps.handleChange}
               />
-              <div className='error'>
-                {formikProps.touched.name && formikProps.errors.name}
-              </div>
+              <div className='error'>{formikProps.touched.name && formikProps.errors.name}</div>
             </IonItem>
           </IonCard>
 
@@ -272,9 +243,7 @@ const ProfileForm: React.FC = () => {
                 value={formikProps.values.city}
                 onIonChange={formikProps.handleChange}
               />
-              <div className='error'>
-                {formikProps.touched.city && formikProps.errors.city}
-              </div>
+              <div className='error'>{formikProps.touched.city && formikProps.errors.city}</div>
             </IonItem>
           </IonCard>
 
@@ -289,9 +258,7 @@ const ProfileForm: React.FC = () => {
                 value={formikProps.values.state}
                 onIonChange={formikProps.handleChange}
               />
-              <div className='error'>
-                {formikProps.touched.state && formikProps.errors.state}
-              </div>
+              <div className='error'>{formikProps.touched.state && formikProps.errors.state}</div>
             </IonItem>
           </IonCard>
 
@@ -339,9 +306,7 @@ const ProfileForm: React.FC = () => {
                 value={formikProps.values.bio}
                 onIonChange={formikProps.handleChange}
               />
-              <div className='error'>
-                {formikProps.touched.bio && formikProps.errors.bio}
-              </div>
+              <div className='error'>{formikProps.touched.bio && formikProps.errors.bio}</div>
             </IonItem>
           </IonCard>
 
@@ -359,7 +324,7 @@ const ProfileForm: React.FC = () => {
               </div>
             </IonItem>
           </IonCard>
-          { /* TODO: add genric error for form issues */}
+          {/* TODO: add genric error for form issues */}
           <IonButton type='submit' disabled={loading}>
             {isNew ? 'Create Profile' : 'Update Profile'}
           </IonButton>
