@@ -1,7 +1,11 @@
-import { IonButton, IonCard, IonInput, IonItem, IonLabel, IonModal } from '@ionic/react';
+import { IonButton, IonCard, IonInput, IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
+import { API } from 'aws-amplify';
 import { Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as yup from 'yup';
+import { CreateGliderMutation, Glider, ListGlidersQuery } from '../API';
+import { createGlider } from '../graphql/mutations';
+import { listGliders } from '../graphql/queries';
 
 const validationSchema = yup.object({
   manufacture: yup.string().nullable().required('Manufacture is required'),
@@ -11,25 +15,79 @@ const validationSchema = yup.object({
   certification: yup.string().nullable().required('Certification is required'),
 });
 
+const emptyGlider = {
+  manufacturer: '',
+  model: '',
+  size: '',
+  color: '',
+  certification: '',
+};
+
 const GliderList: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const [gliderList, setGliderList] = useState<Array<any> | null>(null);
+  const [gliderEdit, setGliderEdit] = useState<Glider | null>(null);
 
-  const emptyGlider = {
-    manufacture: '',
-    model: '',
-    size: '',
-    color: '',
-    certification: '',
+  useEffect(() => {
+    const getGliders = async () => {
+      try {
+        const glidersData = (await API.graphql({
+          query: listGliders,
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        })) as { data: ListGlidersQuery };
+        console.log(glidersData);
+        setGliderList(glidersData?.data?.listGliders?.items || null);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getGliders();
+  }, []);
+
+  const editGlider = (glider: Glider) => {
+    setGliderEdit(glider);
+    setShowModal(true);
   };
 
+  const newGlider = () => {
+    setGliderEdit(null);
+    setShowModal(true);
+  };
+
+  const createNewGlider = async (data: Glider) => {
+    const response = (await API.graphql({
+      query: createGlider,
+      variables: {
+        input: {
+          ...data,
+        },
+      },
+      authMode: 'AMAZON_COGNITO_USER_POOLS',
+    })) as { data: CreateGliderMutation };
+
+    setShowModal(false);
+  };
+
+  const onSubmit = (event: any) => {
+    console.log('running onsubmit');
+    console.log('event.target: ', event);
+    const data = event as Glider;
+
+    return createNewGlider(data);
+  };
   return (
     <div>
+      <IonList>
+        {gliderList?.map(glider => {
+          return <IonItem onClick={() => editGlider(glider)}>{glider.color}</IonItem>;
+        })}
+      </IonList>
       <IonModal isOpen={showModal}>
         <Formik
-          initialValues={emptyGlider}
+          initialValues={gliderEdit || emptyGlider}
           validationSchema={validationSchema}
-          onSubmit={values => {
-            alert(JSON.stringify(values, null, 2));
+          onSubmit={event => {
+            onSubmit(event);
           }}
         >
           {formikProps => (
@@ -37,15 +95,15 @@ const GliderList: React.FC = () => {
             <form onSubmit={formikProps.handleSubmit}>
               <IonCard>
                 <IonItem>
-                  <IonLabel position='stacked'> Manufacture: </IonLabel>
+                  <IonLabel position='stacked'> Manufacturer: </IonLabel>
                   <IonInput
                     type='text'
-                    name='manufacture'
-                    value={formikProps.values.manufacture}
+                    name='manufacturer'
+                    value={formikProps.values.manufacturer}
                     onIonChange={formikProps.handleChange}
                   />
                   <div className='error'>
-                    {formikProps.touched.manufacture && formikProps.errors.manufacture}
+                    {formikProps.touched.manufacturer && formikProps.errors.manufacturer}
                   </div>
                 </IonItem>
               </IonCard>
@@ -110,13 +168,13 @@ const GliderList: React.FC = () => {
                 </IonItem>
               </IonCard>
 
-              <IonButton type='submit'>Submit</IonButton>
+              <IonButton type='submit'> {gliderEdit ? 'Update' : 'Submit'}</IonButton>
               <IonButton onClick={() => setShowModal(false)}>Cancel</IonButton>
             </form>
           )}
         </Formik>
       </IonModal>
-      <IonButton onClick={() => setShowModal(true)}>Add Glider</IonButton>
+      <IonButton onClick={newGlider}>Add Glider</IonButton>
     </div>
   );
 };

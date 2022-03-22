@@ -116,7 +116,7 @@ export type DeleteUserProfileInput = {
 
 export type CreateGliderInput = {
   id?: string | null,
-  manufacture: string,
+  manufacturer: string,
   model: string,
   size: string,
   color: string,
@@ -125,7 +125,7 @@ export type CreateGliderInput = {
 };
 
 export type ModelGliderConditionInput = {
-  manufacture?: ModelStringInput | null,
+  manufacturer?: ModelStringInput | null,
   model?: ModelStringInput | null,
   size?: ModelStringInput | null,
   color?: ModelStringInput | null,
@@ -138,7 +138,7 @@ export type ModelGliderConditionInput = {
 export type Glider = {
   __typename: "Glider",
   id: string,
-  manufacture: string,
+  manufacturer: string,
   model: string,
   size: string,
   color: string,
@@ -153,7 +153,7 @@ export type Glider = {
 
 export type UpdateGliderInput = {
   id: string,
-  manufacture?: string | null,
+  manufacturer?: string | null,
   model?: string | null,
   size?: string | null,
   color?: string | null,
@@ -208,7 +208,7 @@ export type ModelUserProfileConnection = {
 
 export type ModelGliderFilterInput = {
   id?: ModelIDInput | null,
-  manufacture?: ModelStringInput | null,
+  manufacturer?: ModelStringInput | null,
   model?: ModelStringInput | null,
   size?: ModelStringInput | null,
   color?: ModelStringInput | null,
@@ -318,7 +318,7 @@ export type CreateGliderMutation = {
   createGlider?:  {
     __typename: "Glider",
     id: string,
-    manufacture: string,
+    manufacturer: string,
     model: string,
     size: string,
     color: string,
@@ -341,7 +341,7 @@ export type UpdateGliderMutation = {
   updateGlider?:  {
     __typename: "Glider",
     id: string,
-    manufacture: string,
+    manufacturer: string,
     model: string,
     size: string,
     color: string,
@@ -364,7 +364,7 @@ export type DeleteGliderMutation = {
   deleteGlider?:  {
     __typename: "Glider",
     id: string,
-    manufacture: string,
+    manufacturer: string,
     model: string,
     size: string,
     color: string,
@@ -482,7 +482,7 @@ export type GetGliderQuery = {
   getGlider?:  {
     __typename: "Glider",
     id: string,
-    manufacture: string,
+    manufacturer: string,
     model: string,
     size: string,
     color: string,
@@ -508,7 +508,7 @@ export type ListGlidersQuery = {
     items:  Array< {
       __typename: "Glider",
       id: string,
-      manufacture: string,
+      manufacturer: string,
       model: string,
       size: string,
       color: string,
@@ -538,7 +538,7 @@ export type SyncGlidersQuery = {
     items:  Array< {
       __typename: "Glider",
       id: string,
-      manufacture: string,
+      manufacturer: string,
       model: string,
       size: string,
       color: string,
@@ -644,7 +644,7 @@ export type OnCreateGliderSubscription = {
   onCreateGlider?:  {
     __typename: "Glider",
     id: string,
-    manufacture: string,
+    manufacturer: string,
     model: string,
     size: string,
     color: string,
@@ -666,7 +666,7 @@ export type OnUpdateGliderSubscription = {
   onUpdateGlider?:  {
     __typename: "Glider",
     id: string,
-    manufacture: string,
+    manufacturer: string,
     model: string,
     size: string,
     color: string,
@@ -688,7 +688,7 @@ export type OnDeleteGliderSubscription = {
   onDeleteGlider?:  {
     __typename: "Glider",
     id: string,
-    manufacture: string,
+    manufacturer: string,
     model: string,
     size: string,
     color: string,

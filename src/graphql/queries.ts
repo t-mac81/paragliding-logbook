@@ -97,7 +97,7 @@ export const getGlider = /* GraphQL */ `
   query GetGlider($id: ID!) {
     getGlider(id: $id) {
       id
-      manufacture
+      manufacturer
       model
       size
       color
@@ -120,7 +120,7 @@ export const listGliders = /* GraphQL */ `
     listGliders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        manufacture
+        manufacturer
         model
         size
         color
@@ -152,7 +152,7 @@ export const syncGliders = /* GraphQL */ `
     ) {
       items {
         id
-        manufacture
+        manufacturer
         model
         size
         color

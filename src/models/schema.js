@@ -135,8 +135,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "manufacture": {
-                    "name": "manufacture",
+                "manufacturer": {
+                    "name": "manufacturer",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -218,5 +218,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "f94dc8771fc5b778dbd9bc314bcf1ad0"
+    "version": "e8a028d131546a91d40488db52e694dd"
 };

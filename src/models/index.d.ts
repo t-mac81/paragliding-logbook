@@ -32,7 +32,7 @@ export declare class UserProfile {
 
 export declare class Glider {
   readonly id: string;
-  readonly manufacture: string;
+  readonly manufacturer: string;
   readonly model: string;
   readonly size: string;
   readonly color: string;

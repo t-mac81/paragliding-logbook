@@ -87,7 +87,7 @@ export const createGlider = /* GraphQL */ `
   ) {
     createGlider(input: $input, condition: $condition) {
       id
-      manufacture
+      manufacturer
       model
       size
       color
@@ -108,7 +108,7 @@ export const updateGlider = /* GraphQL */ `
   ) {
     updateGlider(input: $input, condition: $condition) {
       id
-      manufacture
+      manufacturer
       model
       size
       color
@@ -129,7 +129,7 @@ export const deleteGlider = /* GraphQL */ `
   ) {
     deleteGlider(input: $input, condition: $condition) {
       id
-      manufacture
+      manufacturer
       model
       size
       color
