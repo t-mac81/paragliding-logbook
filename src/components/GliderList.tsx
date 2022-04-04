@@ -3,12 +3,13 @@ import { API } from 'aws-amplify';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import * as yup from 'yup';
-import { CreateGliderMutation, Glider, ListGlidersQuery } from '../API';
-import { createGlider } from '../graphql/mutations';
+import { Glider, ListGlidersQuery } from '../API';
+import { createGlider, updateGlider as updateGliderMutation } from '../graphql/mutations';
 import { listGliders } from '../graphql/queries';
+import scrubData from '../utils/ModelUtil';
 
 const validationSchema = yup.object({
-  manufacture: yup.string().nullable().required('Manufacture is required'),
+  manufacturer: yup.string().nullable().required('Manufacturer is required'),
   model: yup.string().nullable().required('Model is required'),
   size: yup.string().nullable().required('Size is required'),
   color: yup.string().nullable().required('Color is required'),
@@ -28,19 +29,20 @@ const GliderList: React.FC = () => {
   const [gliderList, setGliderList] = useState<Array<any> | null>(null);
   const [gliderEdit, setGliderEdit] = useState<Glider | null>(null);
 
+  const getGliders = async () => {
+    try {
+      const glidersData = (await API.graphql({
+        query: listGliders,
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })) as { data: ListGlidersQuery };
+      console.log(glidersData);
+      setGliderList(glidersData?.data?.listGliders?.items || null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const getGliders = async () => {
-      try {
-        const glidersData = (await API.graphql({
-          query: listGliders,
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })) as { data: ListGlidersQuery };
-        console.log(glidersData);
-        setGliderList(glidersData?.data?.listGliders?.items || null);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getGliders();
   }, []);
 
@@ -55,7 +57,7 @@ const GliderList: React.FC = () => {
   };
 
   const createNewGlider = async (data: Glider) => {
-    const response = (await API.graphql({
+    await API.graphql({
       query: createGlider,
       variables: {
         input: {
@@ -63,32 +65,52 @@ const GliderList: React.FC = () => {
         },
       },
       authMode: 'AMAZON_COGNITO_USER_POOLS',
-    })) as { data: CreateGliderMutation };
+    });
 
+    getGliders();
+    setShowModal(false);
+  };
+
+  const updateGlider = async (data: Glider) => {
+    await API.graphql({
+      query: updateGliderMutation,
+      variables: {
+        input: {
+          ...scrubData(data),
+        },
+      },
+      authMode: 'AMAZON_COGNITO_USER_POOLS',
+    });
+
+    getGliders();
     setShowModal(false);
   };
 
   const onSubmit = (event: any) => {
-    console.log('running onsubmit');
     console.log('event.target: ', event);
     const data = event as Glider;
-
-    return createNewGlider(data);
+    if (data?.id) {
+      updateGlider(data);
+    } else {
+      createNewGlider(data);
+    }
   };
   return (
     <div>
       <IonList>
         {gliderList?.map(glider => {
-          return <IonItem onClick={() => editGlider(glider)}>{glider.color}</IonItem>;
+          return (
+            <IonItem key={glider.id} onClick={() => editGlider(glider)}>
+              {glider.model}
+            </IonItem>
+          );
         })}
       </IonList>
       <IonModal isOpen={showModal}>
         <Formik
           initialValues={gliderEdit || emptyGlider}
           validationSchema={validationSchema}
-          onSubmit={event => {
-            onSubmit(event);
-          }}
+          onSubmit={onSubmit}
         >
           {formikProps => (
             /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
@@ -107,7 +129,6 @@ const GliderList: React.FC = () => {
                   </div>
                 </IonItem>
               </IonCard>
-
               <IonCard>
                 <IonItem>
                   <IonLabel position='stacked'> Model: </IonLabel>
@@ -122,7 +143,6 @@ const GliderList: React.FC = () => {
                   </div>
                 </IonItem>
               </IonCard>
-
               <IonCard>
                 <IonItem>
                   <IonLabel position='stacked'> Size: </IonLabel>
@@ -136,7 +156,6 @@ const GliderList: React.FC = () => {
                   <div className='error'>{formikProps.touched.size && formikProps.errors.size}</div>
                 </IonItem>
               </IonCard>
-
               <IonCard>
                 <IonItem>
                   <IonLabel position='stacked'> Color: </IonLabel>
@@ -151,7 +170,6 @@ const GliderList: React.FC = () => {
                   </div>
                 </IonItem>
               </IonCard>
-
               <IonCard>
                 <IonItem>
                   <IonLabel position='stacked'> Certfication: </IonLabel>
@@ -167,7 +185,6 @@ const GliderList: React.FC = () => {
                   </div>
                 </IonItem>
               </IonCard>
-
               <IonButton type='submit'> {gliderEdit ? 'Update' : 'Submit'}</IonButton>
               <IonButton onClick={() => setShowModal(false)}>Cancel</IonButton>
             </form>

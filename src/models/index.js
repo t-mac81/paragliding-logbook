@@ -4,9 +4,10 @@ import { schema } from './schema';
 
 
 
-const { UserProfile, Glider } = initSchema(schema);
+const { UserProfile, Glider, FlightLog } = initSchema(schema);
 
 export {
   UserProfile,
-  Glider
+  Glider,
+  FlightLog
 };

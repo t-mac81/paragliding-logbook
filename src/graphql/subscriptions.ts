@@ -125,3 +125,105 @@ export const onDeleteGlider = /* GraphQL */ `
     }
   }
 `;
+export const onCreateFlightLog = /* GraphQL */ `
+  subscription OnCreateFlightLog($owner: String) {
+    onCreateFlightLog(owner: $owner) {
+      startDate
+      startTime
+      duration
+      launchSite
+      launchConditions
+      description
+      glider {
+        id
+        manufacturer
+        model
+        size
+        color
+        certification
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      flightLogGliderId
+      owner
+    }
+  }
+`;
+export const onUpdateFlightLog = /* GraphQL */ `
+  subscription OnUpdateFlightLog($owner: String) {
+    onUpdateFlightLog(owner: $owner) {
+      startDate
+      startTime
+      duration
+      launchSite
+      launchConditions
+      description
+      glider {
+        id
+        manufacturer
+        model
+        size
+        color
+        certification
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      flightLogGliderId
+      owner
+    }
+  }
+`;
+export const onDeleteFlightLog = /* GraphQL */ `
+  subscription OnDeleteFlightLog($owner: String) {
+    onDeleteFlightLog(owner: $owner) {
+      startDate
+      startTime
+      duration
+      launchSite
+      launchConditions
+      description
+      glider {
+        id
+        manufacturer
+        model
+        size
+        color
+        certification
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      flightLogGliderId
+      owner
+    }
+  }
+`;

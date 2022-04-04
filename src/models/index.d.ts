@@ -12,6 +12,10 @@ type GliderMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type FlightLogMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 export declare class UserProfile {
   readonly id: string;
   readonly name: string;
@@ -41,4 +45,20 @@ export declare class Glider {
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Glider, GliderMetaData>);
   static copyOf(source: Glider, mutator: (draft: MutableModel<Glider, GliderMetaData>) => MutableModel<Glider, GliderMetaData> | void): Glider;
+}
+
+export declare class FlightLog {
+  readonly id: string;
+  readonly startDate: string;
+  readonly startTime: string;
+  readonly duration: number;
+  readonly launchSite: string;
+  readonly launchConditions: string;
+  readonly description: string;
+  readonly glider: Glider;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly flightLogGliderId: string;
+  constructor(init: ModelInit<FlightLog, FlightLogMetaData>);
+  static copyOf(source: FlightLog, mutator: (draft: MutableModel<FlightLog, FlightLogMetaData>) => MutableModel<FlightLog, FlightLogMetaData> | void): FlightLog;
 }

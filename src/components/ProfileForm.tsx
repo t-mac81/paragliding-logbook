@@ -39,7 +39,6 @@ const validationSchema = yup.object({
   // TODO: need to add better phone number validate, maybe yup-phone?
   bio: yup.string().nullable().required('A short bio is required'),
   trackingUrl: yup.string().nullable().url('Must be a valid URL'),
-  // TODO: maybe better way of doing url?
 });
 
 interface CognitoData {

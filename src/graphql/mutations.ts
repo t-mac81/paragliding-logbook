@@ -143,3 +143,114 @@ export const deleteGlider = /* GraphQL */ `
     }
   }
 `;
+export const createFlightLog = /* GraphQL */ `
+  mutation CreateFlightLog(
+    $input: CreateFlightLogInput!
+    $condition: ModelFlightLogConditionInput
+  ) {
+    createFlightLog(input: $input, condition: $condition) {
+      startDate
+      startTime
+      duration
+      launchSite
+      launchConditions
+      description
+      glider {
+        id
+        manufacturer
+        model
+        size
+        color
+        certification
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      flightLogGliderId
+      owner
+    }
+  }
+`;
+export const updateFlightLog = /* GraphQL */ `
+  mutation UpdateFlightLog(
+    $input: UpdateFlightLogInput!
+    $condition: ModelFlightLogConditionInput
+  ) {
+    updateFlightLog(input: $input, condition: $condition) {
+      startDate
+      startTime
+      duration
+      launchSite
+      launchConditions
+      description
+      glider {
+        id
+        manufacturer
+        model
+        size
+        color
+        certification
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      flightLogGliderId
+      owner
+    }
+  }
+`;
+export const deleteFlightLog = /* GraphQL */ `
+  mutation DeleteFlightLog(
+    $input: DeleteFlightLogInput!
+    $condition: ModelFlightLogConditionInput
+  ) {
+    deleteFlightLog(input: $input, condition: $condition) {
+      startDate
+      startTime
+      duration
+      launchSite
+      launchConditions
+      description
+      glider {
+        id
+        manufacturer
+        model
+        size
+        color
+        certification
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      flightLogGliderId
+      owner
+    }
+  }
+`;

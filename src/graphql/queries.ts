@@ -169,3 +169,127 @@ export const syncGliders = /* GraphQL */ `
     }
   }
 `;
+export const getFlightLog = /* GraphQL */ `
+  query GetFlightLog($id: ID!) {
+    getFlightLog(id: $id) {
+      startDate
+      startTime
+      duration
+      launchSite
+      launchConditions
+      description
+      glider {
+        id
+        manufacturer
+        model
+        size
+        color
+        certification
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      flightLogGliderId
+      owner
+    }
+  }
+`;
+export const listFlightLogs = /* GraphQL */ `
+  query ListFlightLogs(
+    $filter: ModelFlightLogFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFlightLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        startDate
+        startTime
+        duration
+        launchSite
+        launchConditions
+        description
+        glider {
+          id
+          manufacturer
+          model
+          size
+          color
+          certification
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        flightLogGliderId
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncFlightLogs = /* GraphQL */ `
+  query SyncFlightLogs(
+    $filter: ModelFlightLogFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncFlightLogs(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        startDate
+        startTime
+        duration
+        launchSite
+        launchConditions
+        description
+        glider {
+          id
+          manufacturer
+          model
+          size
+          color
+          certification
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        flightLogGliderId
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;

@@ -24,3 +24,13 @@ type Glider @model @auth(rules: [{ allow: owner }]) {
   color: String!
   certification: String!
 }
+
+type FlightLog @model @auth(rules: [{ allow: owner }]) {
+  startDate: AWSDate!
+  startTime: AWSTime!
+  duration: Int!
+  launchSite: String!
+  launchConditions: String!
+  description: String!
+  glider: Glider! @hasOne
+}

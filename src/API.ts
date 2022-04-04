@@ -166,21 +166,41 @@ export type DeleteGliderInput = {
   _version?: number | null,
 };
 
-export type ModelUserProfileFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  email?: ModelStringInput | null,
-  addressLine1?: ModelStringInput | null,
-  addressLine2?: ModelStringInput | null,
-  city?: ModelStringInput | null,
-  state?: ModelStringInput | null,
-  zipCode?: ModelStringInput | null,
-  phoneNumber?: ModelStringInput | null,
-  bio?: ModelStringInput | null,
-  trackingUrl?: ModelStringInput | null,
-  and?: Array< ModelUserProfileFilterInput | null > | null,
-  or?: Array< ModelUserProfileFilterInput | null > | null,
-  not?: ModelUserProfileFilterInput | null,
+export type CreateFlightLogInput = {
+  startDate: string,
+  startTime: string,
+  duration: number,
+  launchSite: string,
+  launchConditions: string,
+  description: string,
+  id?: string | null,
+  _version?: number | null,
+  flightLogGliderId: string,
+};
+
+export type ModelFlightLogConditionInput = {
+  startDate?: ModelStringInput | null,
+  startTime?: ModelStringInput | null,
+  duration?: ModelIntInput | null,
+  launchSite?: ModelStringInput | null,
+  launchConditions?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  and?: Array< ModelFlightLogConditionInput | null > | null,
+  or?: Array< ModelFlightLogConditionInput | null > | null,
+  not?: ModelFlightLogConditionInput | null,
+  flightLogGliderId?: ModelIDInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type ModelIDInput = {
@@ -197,6 +217,59 @@ export type ModelIDInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
+};
+
+export type FlightLog = {
+  __typename: "FlightLog",
+  startDate: string,
+  startTime: string,
+  duration: number,
+  launchSite: string,
+  launchConditions: string,
+  description: string,
+  glider: Glider,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+  flightLogGliderId: string,
+  owner?: string | null,
+};
+
+export type UpdateFlightLogInput = {
+  startDate?: string | null,
+  startTime?: string | null,
+  duration?: number | null,
+  launchSite?: string | null,
+  launchConditions?: string | null,
+  description?: string | null,
+  id: string,
+  _version?: number | null,
+  flightLogGliderId?: string | null,
+};
+
+export type DeleteFlightLogInput = {
+  id: string,
+  _version?: number | null,
+};
+
+export type ModelUserProfileFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  addressLine1?: ModelStringInput | null,
+  addressLine2?: ModelStringInput | null,
+  city?: ModelStringInput | null,
+  state?: ModelStringInput | null,
+  zipCode?: ModelStringInput | null,
+  phoneNumber?: ModelStringInput | null,
+  bio?: ModelStringInput | null,
+  trackingUrl?: ModelStringInput | null,
+  and?: Array< ModelUserProfileFilterInput | null > | null,
+  or?: Array< ModelUserProfileFilterInput | null > | null,
+  not?: ModelUserProfileFilterInput | null,
 };
 
 export type ModelUserProfileConnection = {
@@ -221,6 +294,26 @@ export type ModelGliderFilterInput = {
 export type ModelGliderConnection = {
   __typename: "ModelGliderConnection",
   items:  Array<Glider | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelFlightLogFilterInput = {
+  startDate?: ModelStringInput | null,
+  startTime?: ModelStringInput | null,
+  duration?: ModelIntInput | null,
+  launchSite?: ModelStringInput | null,
+  launchConditions?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  and?: Array< ModelFlightLogFilterInput | null > | null,
+  or?: Array< ModelFlightLogFilterInput | null > | null,
+  not?: ModelFlightLogFilterInput | null,
+  flightLogGliderId?: ModelIDInput | null,
+};
+
+export type ModelFlightLogConnection = {
+  __typename: "ModelFlightLogConnection",
+  items:  Array<FlightLog | null >,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -374,6 +467,126 @@ export type DeleteGliderMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type CreateFlightLogMutationVariables = {
+  input: CreateFlightLogInput,
+  condition?: ModelFlightLogConditionInput | null,
+};
+
+export type CreateFlightLogMutation = {
+  createFlightLog?:  {
+    __typename: "FlightLog",
+    startDate: string,
+    startTime: string,
+    duration: number,
+    launchSite: string,
+    launchConditions: string,
+    description: string,
+    glider:  {
+      __typename: "Glider",
+      id: string,
+      manufacturer: string,
+      model: string,
+      size: string,
+      color: string,
+      certification: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    flightLogGliderId: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateFlightLogMutationVariables = {
+  input: UpdateFlightLogInput,
+  condition?: ModelFlightLogConditionInput | null,
+};
+
+export type UpdateFlightLogMutation = {
+  updateFlightLog?:  {
+    __typename: "FlightLog",
+    startDate: string,
+    startTime: string,
+    duration: number,
+    launchSite: string,
+    launchConditions: string,
+    description: string,
+    glider:  {
+      __typename: "Glider",
+      id: string,
+      manufacturer: string,
+      model: string,
+      size: string,
+      color: string,
+      certification: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    flightLogGliderId: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteFlightLogMutationVariables = {
+  input: DeleteFlightLogInput,
+  condition?: ModelFlightLogConditionInput | null,
+};
+
+export type DeleteFlightLogMutation = {
+  deleteFlightLog?:  {
+    __typename: "FlightLog",
+    startDate: string,
+    startTime: string,
+    duration: number,
+    launchSite: string,
+    launchConditions: string,
+    description: string,
+    glider:  {
+      __typename: "Glider",
+      id: string,
+      manufacturer: string,
+      model: string,
+      size: string,
+      color: string,
+      certification: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    flightLogGliderId: string,
     owner?: string | null,
   } | null,
 };
@@ -555,6 +768,138 @@ export type SyncGlidersQuery = {
   } | null,
 };
 
+export type GetFlightLogQueryVariables = {
+  id: string,
+};
+
+export type GetFlightLogQuery = {
+  getFlightLog?:  {
+    __typename: "FlightLog",
+    startDate: string,
+    startTime: string,
+    duration: number,
+    launchSite: string,
+    launchConditions: string,
+    description: string,
+    glider:  {
+      __typename: "Glider",
+      id: string,
+      manufacturer: string,
+      model: string,
+      size: string,
+      color: string,
+      certification: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    flightLogGliderId: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListFlightLogsQueryVariables = {
+  filter?: ModelFlightLogFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListFlightLogsQuery = {
+  listFlightLogs?:  {
+    __typename: "ModelFlightLogConnection",
+    items:  Array< {
+      __typename: "FlightLog",
+      startDate: string,
+      startTime: string,
+      duration: number,
+      launchSite: string,
+      launchConditions: string,
+      description: string,
+      glider:  {
+        __typename: "Glider",
+        id: string,
+        manufacturer: string,
+        model: string,
+        size: string,
+        color: string,
+        certification: string,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        owner?: string | null,
+      },
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      flightLogGliderId: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncFlightLogsQueryVariables = {
+  filter?: ModelFlightLogFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncFlightLogsQuery = {
+  syncFlightLogs?:  {
+    __typename: "ModelFlightLogConnection",
+    items:  Array< {
+      __typename: "FlightLog",
+      startDate: string,
+      startTime: string,
+      duration: number,
+      launchSite: string,
+      launchConditions: string,
+      description: string,
+      glider:  {
+        __typename: "Glider",
+        id: string,
+        manufacturer: string,
+        model: string,
+        size: string,
+        color: string,
+        certification: string,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        owner?: string | null,
+      },
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      flightLogGliderId: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateUserProfileSubscriptionVariables = {
   owner?: string | null,
 };
@@ -698,6 +1043,123 @@ export type OnDeleteGliderSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnCreateFlightLogSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateFlightLogSubscription = {
+  onCreateFlightLog?:  {
+    __typename: "FlightLog",
+    startDate: string,
+    startTime: string,
+    duration: number,
+    launchSite: string,
+    launchConditions: string,
+    description: string,
+    glider:  {
+      __typename: "Glider",
+      id: string,
+      manufacturer: string,
+      model: string,
+      size: string,
+      color: string,
+      certification: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    flightLogGliderId: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateFlightLogSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateFlightLogSubscription = {
+  onUpdateFlightLog?:  {
+    __typename: "FlightLog",
+    startDate: string,
+    startTime: string,
+    duration: number,
+    launchSite: string,
+    launchConditions: string,
+    description: string,
+    glider:  {
+      __typename: "Glider",
+      id: string,
+      manufacturer: string,
+      model: string,
+      size: string,
+      color: string,
+      certification: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    flightLogGliderId: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteFlightLogSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteFlightLogSubscription = {
+  onDeleteFlightLog?:  {
+    __typename: "FlightLog",
+    startDate: string,
+    startTime: string,
+    duration: number,
+    launchSite: string,
+    launchConditions: string,
+    description: string,
+    glider:  {
+      __typename: "Glider",
+      id: string,
+      manufacturer: string,
+      model: string,
+      size: string,
+      color: string,
+      certification: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    flightLogGliderId: string,
     owner?: string | null,
   } | null,
 };
