@@ -167,8 +167,7 @@ export type DeleteGliderInput = {
 };
 
 export type CreateFlightLogInput = {
-  startDate: string,
-  startTime: string,
+  startDateTime: string,
   duration: number,
   launchSite: string,
   launchConditions: string,
@@ -179,8 +178,7 @@ export type CreateFlightLogInput = {
 };
 
 export type ModelFlightLogConditionInput = {
-  startDate?: ModelStringInput | null,
-  startTime?: ModelStringInput | null,
+  startDateTime?: ModelStringInput | null,
   duration?: ModelIntInput | null,
   launchSite?: ModelStringInput | null,
   launchConditions?: ModelStringInput | null,
@@ -221,8 +219,7 @@ export type ModelIDInput = {
 
 export type FlightLog = {
   __typename: "FlightLog",
-  startDate: string,
-  startTime: string,
+  startDateTime: string,
   duration: number,
   launchSite: string,
   launchConditions: string,
@@ -239,8 +236,7 @@ export type FlightLog = {
 };
 
 export type UpdateFlightLogInput = {
-  startDate?: string | null,
-  startTime?: string | null,
+  startDateTime?: string | null,
   duration?: number | null,
   launchSite?: string | null,
   launchConditions?: string | null,
@@ -299,8 +295,7 @@ export type ModelGliderConnection = {
 };
 
 export type ModelFlightLogFilterInput = {
-  startDate?: ModelStringInput | null,
-  startTime?: ModelStringInput | null,
+  startDateTime?: ModelStringInput | null,
   duration?: ModelIntInput | null,
   launchSite?: ModelStringInput | null,
   launchConditions?: ModelStringInput | null,
@@ -479,8 +474,7 @@ export type CreateFlightLogMutationVariables = {
 export type CreateFlightLogMutation = {
   createFlightLog?:  {
     __typename: "FlightLog",
-    startDate: string,
-    startTime: string,
+    startDateTime: string,
     duration: number,
     launchSite: string,
     launchConditions: string,
@@ -519,8 +513,7 @@ export type UpdateFlightLogMutationVariables = {
 export type UpdateFlightLogMutation = {
   updateFlightLog?:  {
     __typename: "FlightLog",
-    startDate: string,
-    startTime: string,
+    startDateTime: string,
     duration: number,
     launchSite: string,
     launchConditions: string,
@@ -559,8 +552,7 @@ export type DeleteFlightLogMutationVariables = {
 export type DeleteFlightLogMutation = {
   deleteFlightLog?:  {
     __typename: "FlightLog",
-    startDate: string,
-    startTime: string,
+    startDateTime: string,
     duration: number,
     launchSite: string,
     launchConditions: string,
@@ -775,8 +767,7 @@ export type GetFlightLogQueryVariables = {
 export type GetFlightLogQuery = {
   getFlightLog?:  {
     __typename: "FlightLog",
-    startDate: string,
-    startTime: string,
+    startDateTime: string,
     duration: number,
     launchSite: string,
     launchConditions: string,
@@ -818,8 +809,7 @@ export type ListFlightLogsQuery = {
     __typename: "ModelFlightLogConnection",
     items:  Array< {
       __typename: "FlightLog",
-      startDate: string,
-      startTime: string,
+      startDateTime: string,
       duration: number,
       launchSite: string,
       launchConditions: string,
@@ -865,8 +855,7 @@ export type SyncFlightLogsQuery = {
     __typename: "ModelFlightLogConnection",
     items:  Array< {
       __typename: "FlightLog",
-      startDate: string,
-      startTime: string,
+      startDateTime: string,
       duration: number,
       launchSite: string,
       launchConditions: string,
@@ -1054,8 +1043,7 @@ export type OnCreateFlightLogSubscriptionVariables = {
 export type OnCreateFlightLogSubscription = {
   onCreateFlightLog?:  {
     __typename: "FlightLog",
-    startDate: string,
-    startTime: string,
+    startDateTime: string,
     duration: number,
     launchSite: string,
     launchConditions: string,
@@ -1093,8 +1081,7 @@ export type OnUpdateFlightLogSubscriptionVariables = {
 export type OnUpdateFlightLogSubscription = {
   onUpdateFlightLog?:  {
     __typename: "FlightLog",
-    startDate: string,
-    startTime: string,
+    startDateTime: string,
     duration: number,
     launchSite: string,
     launchConditions: string,
@@ -1132,8 +1119,7 @@ export type OnDeleteFlightLogSubscriptionVariables = {
 export type OnDeleteFlightLogSubscription = {
   onDeleteFlightLog?:  {
     __typename: "FlightLog",
-    startDate: string,
-    startTime: string,
+    startDateTime: string,
     duration: number,
     launchSite: string,
     launchConditions: string,

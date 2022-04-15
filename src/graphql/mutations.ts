@@ -149,8 +149,7 @@ export const createFlightLog = /* GraphQL */ `
     $condition: ModelFlightLogConditionInput
   ) {
     createFlightLog(input: $input, condition: $condition) {
-      startDate
-      startTime
+      startDateTime
       duration
       launchSite
       launchConditions
@@ -186,8 +185,7 @@ export const updateFlightLog = /* GraphQL */ `
     $condition: ModelFlightLogConditionInput
   ) {
     updateFlightLog(input: $input, condition: $condition) {
-      startDate
-      startTime
+      startDateTime
       duration
       launchSite
       launchConditions
@@ -223,8 +221,7 @@ export const deleteFlightLog = /* GraphQL */ `
     $condition: ModelFlightLogConditionInput
   ) {
     deleteFlightLog(input: $input, condition: $condition) {
-      startDate
-      startTime
+      startDateTime
       duration
       launchSite
       launchConditions

@@ -128,8 +128,7 @@ export const onDeleteGlider = /* GraphQL */ `
 export const onCreateFlightLog = /* GraphQL */ `
   subscription OnCreateFlightLog($owner: String) {
     onCreateFlightLog(owner: $owner) {
-      startDate
-      startTime
+      startDateTime
       duration
       launchSite
       launchConditions
@@ -162,8 +161,7 @@ export const onCreateFlightLog = /* GraphQL */ `
 export const onUpdateFlightLog = /* GraphQL */ `
   subscription OnUpdateFlightLog($owner: String) {
     onUpdateFlightLog(owner: $owner) {
-      startDate
-      startTime
+      startDateTime
       duration
       launchSite
       launchConditions
@@ -196,8 +194,7 @@ export const onUpdateFlightLog = /* GraphQL */ `
 export const onDeleteFlightLog = /* GraphQL */ `
   subscription OnDeleteFlightLog($owner: String) {
     onDeleteFlightLog(owner: $owner) {
-      startDate
-      startTime
+      startDateTime
       duration
       launchSite
       launchConditions

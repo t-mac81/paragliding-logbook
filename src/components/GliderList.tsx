@@ -106,7 +106,7 @@ const GliderList: React.FC = () => {
           );
         })}
       </IonList>
-      <IonModal isOpen={showModal}>
+      <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
         <Formik
           initialValues={gliderEdit || emptyGlider}
           validationSchema={validationSchema}

@@ -49,8 +49,7 @@ export declare class Glider {
 
 export declare class FlightLog {
   readonly id: string;
-  readonly startDate: string;
-  readonly startTime: string;
+  readonly startDateTime: string;
   readonly duration: number;
   readonly launchSite: string;
   readonly launchConditions: string;

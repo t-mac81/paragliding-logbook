@@ -172,8 +172,7 @@ export const syncGliders = /* GraphQL */ `
 export const getFlightLog = /* GraphQL */ `
   query GetFlightLog($id: ID!) {
     getFlightLog(id: $id) {
-      startDate
-      startTime
+      startDateTime
       duration
       launchSite
       launchConditions
@@ -211,8 +210,7 @@ export const listFlightLogs = /* GraphQL */ `
   ) {
     listFlightLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        startDate
-        startTime
+        startDateTime
         duration
         launchSite
         launchConditions
@@ -259,8 +257,7 @@ export const syncFlightLogs = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        startDate
-        startTime
+        startDateTime
         duration
         launchSite
         launchConditions

@@ -225,17 +225,10 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "startDate": {
-                    "name": "startDate",
+                "startDateTime": {
+                    "name": "startDateTime",
                     "isArray": false,
-                    "type": "AWSDate",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "startTime": {
-                    "name": "startTime",
-                    "isArray": false,
-                    "type": "AWSTime",
+                    "type": "AWSDateTime",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -336,5 +329,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "b0842e224974e435e5d5b1c3250b7187"
+    "version": "8687ae9774149f5e14ea69f00f41e7f0"
 };
