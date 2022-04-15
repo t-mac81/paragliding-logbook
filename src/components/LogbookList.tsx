@@ -9,11 +9,16 @@ import {
   IonLabel,
   IonList,
   IonModal,
+  IonSelect,
+  IonSelectOption,
   IonTextarea,
 } from '@ionic/react';
+import { API } from 'aws-amplify';
 import { Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as yup from 'yup';
+import { Glider, ListGlidersQuery } from '../API';
+import { listGliders } from '../graphql/queries';
 
 const validationSchema = yup.object({
   startDateTime: yup.string().nullable().required('Start date/time is required'),
@@ -21,7 +26,7 @@ const validationSchema = yup.object({
   launchSite: yup.string().nullable().required('Launch site is required'),
   launchConditions: yup.string().nullable().required('Launch conditions are required'),
   description: yup.string().nullable().required('Description is required'),
-  glider: yup.string().nullable().required('Glider is required'),
+  glider: yup.object().nullable().required('Glider is required'),
 });
 
 const emptyFlightLog = {
@@ -35,6 +40,25 @@ const emptyFlightLog = {
 
 const LogbookList: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const [gliderList, setGliderList] = useState<Array<any> | null>(null);
+  const [selectedGlider, setSelectedGlider] = useState<Glider | null>(null);
+
+  const getGliders = async () => {
+    try {
+      const glidersData = (await API.graphql({
+        query: listGliders,
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })) as { data: ListGlidersQuery };
+      console.log(glidersData);
+      setGliderList(glidersData?.data?.listGliders?.items || null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getGliders();
+  }, []);
 
   return (
     <div>
@@ -104,13 +128,18 @@ const LogbookList: React.FC = () => {
                 <IonCard>
                   <IonItem>
                     <IonLabel position='stacked'>Glider:</IonLabel>
-                    <IonInput
-                      type='text'
+                    <IonSelect
                       name='glider'
                       placeholder='Select the glider flown'
-                      value={formikProps.values.glider}
-                      onIonChange={formikProps.handleChange}
-                    />
+                      value={selectedGlider}
+                      onIonChange={e => setSelectedGlider(e.detail.value)}
+                    >
+                      {gliderList?.map(glider => (
+                        <IonSelectOption key={glider.id} value={glider}>
+                          {glider.manufacturer} {glider.model}
+                        </IonSelectOption>
+                      ))}
+                    </IonSelect>
                     <div className='error'>
                       {formikProps.touched.glider && formikProps.errors.glider}
                     </div>
@@ -120,7 +149,7 @@ const LogbookList: React.FC = () => {
                   <IonItem>
                     <IonLabel position='stacked'>Launch Conditions:</IonLabel>
                     <IonTextarea
-                      placeholder='Wind direction & speed, cloud cover.'
+                      placeholder='Wind direction & speed, cloud cover'
                       name='launchConditions'
                       value={formikProps.values.launchConditions}
                       onIonChange={formikProps.handleChange}
