@@ -56,7 +56,7 @@ const ProfileForm: React.FC = () => {
   const [showToastUpdate, setShowToastUpdate] = useState<boolean>(false);
 
   const emptyProfile = {
-    email: cognitoData?.email,
+    email: cognitoData?.email as string,
     name: '',
     addressLine1: '',
     addressLine2: '',
@@ -185,7 +185,7 @@ const ProfileForm: React.FC = () => {
               <IonLabel position='stacked'> Email: </IonLabel>
               <IonInput
                 type='email'
-                value={formikProps.values.email}
+                value={formikProps?.values?.email || null}
                 readonly
                 onIonChange={formikProps.handleChange}
               />
