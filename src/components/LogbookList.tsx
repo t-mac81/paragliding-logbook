@@ -132,7 +132,10 @@ const LogbookList: React.FC = () => {
                       name='glider'
                       placeholder='Select the glider flown'
                       value={selectedGlider}
-                      onIonChange={e => setSelectedGlider(e.detail.value)}
+                      onIonChange={e => {
+                        formikProps.setFieldValue('glider', e.detail.value);
+                        setSelectedGlider(e.detail.value);
+                      }}
                     >
                       {gliderList?.map(glider => (
                         <IonSelectOption key={glider.id} value={glider}>
