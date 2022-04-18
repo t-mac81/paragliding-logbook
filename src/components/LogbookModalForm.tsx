@@ -1,0 +1,224 @@
+import {
+  IonButton,
+  IonCard,
+  IonContent,
+  IonDatetime,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonModal,
+  IonSelect,
+  IonSelectOption,
+  IonTextarea,
+} from '@ionic/react';
+import { API } from 'aws-amplify';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import { useEffect, useState } from 'react';
+import { FlightLog, ListGlidersQuery } from '../API';
+import { createFlightLog, updateFlightLog } from '../graphql/mutations';
+import { listGliders } from '../graphql/queries';
+import scrubData from '../utils/ModelUtil';
+
+export interface ShowModalProps {
+  showModal: boolean;
+  setShowModal: Function;
+  flightlogEdit: FlightLog;
+  setFlightlogEdit: Function;
+}
+
+const LogbookModalForm = ({ showModal, setShowModal, flightlogEdit }: ShowModalProps) => {
+  const [gliderList, setGliderList] = useState<Array<any> | null>(null);
+
+  const validationSchema = yup.object({
+    startDateTime: yup.string().nullable().required('Start date/time is required'),
+    duration: yup.number().nullable().required('Duration is required'),
+    launchSite: yup.string().nullable().required('Launch site is required'),
+    launchConditions: yup.string().nullable().required('Launch conditions are required'),
+    description: yup.string().nullable().required('Description is required'),
+    flightLogGliderId: yup.string().nullable().required('Glider is required'),
+  });
+
+  const emptyFlightLog = {
+    id: undefined,
+    startDateTime: null,
+    duration: null,
+    launchSite: null,
+    launchConditions: null,
+    description: null,
+    flightLogGliderId: null,
+  };
+
+  useEffect(() => {
+    const getGliders = async () => {
+      if (!showModal) return;
+
+      try {
+        const glidersData = (await API.graphql({
+          query: listGliders,
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        })) as { data: ListGlidersQuery };
+        console.log(glidersData);
+        setGliderList(glidersData?.data?.listGliders?.items || null);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getGliders();
+  }, [showModal]);
+
+  const createNewFlightLog = async (data: FlightLog) => {
+    await API.graphql({
+      query: createFlightLog,
+      variables: {
+        input: {
+          ...data,
+        },
+      },
+      authMode: 'AMAZON_COGNITO_USER_POOLS',
+    });
+    setShowModal(false);
+  };
+
+  const updateExistingFlightLog = async (data: FlightLog) => {
+    await API.graphql({
+      query: updateFlightLog,
+      variables: {
+        input: {
+          ...scrubData(data),
+        },
+      },
+      authMode: 'AMAZON_COGNITO_USER_POOLS',
+    });
+    setShowModal(false);
+  };
+
+  const onSubmit = (data: FlightLog) => {
+    if (data?.id) {
+      updateExistingFlightLog(data);
+      return;
+    }
+
+    createNewFlightLog(data);
+  };
+
+  return (
+    <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+      <IonContent>
+        <Formik
+          initialValues={flightlogEdit || emptyFlightLog}
+          validationSchema={validationSchema}
+          onSubmit={values => {
+            const data = values as unknown as FlightLog;
+            onSubmit(data);
+          }}
+        >
+          {formikProps => (
+            /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
+
+            <form onSubmit={formikProps.handleSubmit}>
+              <IonCard>
+                <IonItem>
+                  <IonLabel position='stacked'>Date and Time:</IonLabel>
+                  <IonDatetime
+                    displayFormat='MMM DD, YYYY HH:mm'
+                    name='startDateTime'
+                    placeholder='Date and time you launched'
+                    value={formikProps.values.startDateTime}
+                    onIonChange={formikProps.handleChange}
+                  />
+                  <div className='error'>
+                    {formikProps.touched.startDateTime && formikProps.errors.startDateTime}
+                  </div>
+                </IonItem>
+              </IonCard>
+              <IonCard>
+                <IonItem>
+                  <IonLabel position='stacked'>Duration:</IonLabel>
+                  <IonInput
+                    type='text'
+                    name='duration'
+                    placeholder='Duration of flight in minutes'
+                    value={formikProps.values.duration}
+                    onIonChange={formikProps.handleChange}
+                  />
+                  <div className='error'>
+                    {formikProps.touched.duration && formikProps.errors.duration}
+                  </div>
+                </IonItem>
+              </IonCard>
+              <IonCard>
+                <IonItem>
+                  <IonLabel position='stacked'>Launch Site:</IonLabel>
+                  <IonInput
+                    type='text'
+                    name='launchSite'
+                    placeholder='Name of launch site'
+                    value={formikProps.values.launchSite}
+                    onIonChange={formikProps.handleChange}
+                  />
+                  <div className='error'>
+                    {formikProps.touched.launchSite && formikProps.errors.launchSite}
+                  </div>
+                </IonItem>
+              </IonCard>
+              <IonCard>
+                <IonItem>
+                  <IonLabel position='stacked'>Glider:</IonLabel>
+                  <IonSelect
+                    name='flightLogGliderId'
+                    placeholder='Select the glider flown'
+                    onIonChange={e => {
+                      formikProps.setFieldValue('flightLogGliderId', e.detail.value.id);
+                    }}
+                  >
+                    {gliderList?.map(glider => (
+                      <IonSelectOption key={glider.id} value={glider}>
+                        {glider.manufacturer} {glider.model}
+                      </IonSelectOption>
+                    ))}
+                  </IonSelect>
+                  <div className='error'>
+                    {formikProps.touched.flightLogGliderId && formikProps.errors.flightLogGliderId}
+                  </div>
+                </IonItem>
+              </IonCard>
+              <IonCard>
+                <IonItem>
+                  <IonLabel position='stacked'>Launch Conditions:</IonLabel>
+                  <IonTextarea
+                    placeholder='Wind direction & speed, cloud cover'
+                    name='launchConditions'
+                    value={formikProps.values.launchConditions}
+                    onIonChange={formikProps.handleChange}
+                  />
+                  <div className='error'>
+                    {formikProps.touched.launchConditions && formikProps.errors.launchConditions}
+                  </div>
+                </IonItem>
+              </IonCard>
+              <IonCard>
+                <IonItem>
+                  <IonLabel position='stacked'>Flight Description:</IonLabel>
+                  <IonTextarea
+                    placeholder='Decribe your flight!'
+                    name='description'
+                    value={formikProps.values.description}
+                    onIonChange={formikProps.handleChange}
+                  />
+                  <div className='error'>
+                    {formikProps.touched.description && formikProps.errors.description}
+                  </div>
+                </IonItem>
+              </IonCard>
+              <IonButton type='submit'>{formikProps?.values?.id ? 'Update' : 'Submit'}</IonButton>
+              <IonButton onClick={() => setShowModal(false)}>Cancel</IonButton>
+            </form>
+          )}
+        </Formik>
+      </IonContent>
+    </IonModal>
+  );
+};
+
+export default LogbookModalForm;

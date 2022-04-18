@@ -24,6 +24,7 @@
     "aws-amplify": "^4.3.10",
     "formik": "^2.2.9",
     "ionicons": "^5.4.0",
+    "moment": "^2.29.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^7.22.0",
