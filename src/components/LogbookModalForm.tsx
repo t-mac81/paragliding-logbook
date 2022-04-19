@@ -81,11 +81,12 @@ const LogbookModalForm = ({ showModal, setShowModal, flightlogEdit }: ShowModalP
   };
 
   const updateExistingFlightLog = async (data: FlightLog) => {
+    const { glider, ...rest } = data;
     await API.graphql({
       query: updateFlightLog,
       variables: {
         input: {
-          ...scrubData(data),
+          ...scrubData(rest),
         },
       },
       authMode: 'AMAZON_COGNITO_USER_POOLS',
