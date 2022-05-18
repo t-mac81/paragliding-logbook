@@ -1,5 +1,6 @@
 import Amplify, { Auth } from 'aws-amplify';
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import { useSelector } from 'react-redux';
 import '@aws-amplify/ui-react/styles.css';
 import { Redirect, Route } from 'react-router-dom';
 import {
@@ -13,11 +14,12 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import awsconfig from './aws-exports';
 import Tab1 from './pages/Tab1';
 import Logbook from './pages/Logbook';
 import UserProfile from './pages/UserProfile';
+import { RootState } from './app/store';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -39,26 +41,43 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import Glider from './pages/Glider';
 
+import { useAppDispatch } from './app/hooks';
+import { setCognitoIdentity, clearCognitoIdentity } from './features/cognitoSlice';
+import { ICognitoData } from './app/CognitoIdentityTypes';
+
 Amplify.configure(awsconfig);
 
 const App: React.FC = () => {
-  const [cognitoGroups, setCognitoGroups] = useState<Array<string>>([]);
-
-  const getCognitoData = async () => {
-    try {
-      const awsAuth = await Auth.currentSession();
-      const authPayload = awsAuth.getIdToken().payload;
-      const groups: Array<string> = authPayload['cognito:groups'];
-      console.log(groups);
-      setCognitoGroups(groups || []);
-    } catch (e) {
-      setCognitoGroups([]);
-    }
-  };
+  // const [cognitoGroups, setCognitoGroups] = useState<Array<string>>([]);
+  // const cognitoGroups = useAppSelector(state => state.cognitoIdentity);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const getCognitoData = async () => {
+      try {
+        console.log('getCognitoData()...');
+        const awsAuth = await Auth.currentSession();
+        const authPayload = awsAuth.getIdToken().payload;
+        const groups: Array<string> = authPayload['cognito:groups'];
+        const { sub, email } = authPayload;
+        const cognitoIdentity: ICognitoData = {
+          sub,
+          email,
+          groups,
+        };
+
+        console.log('Got cognito identity: ', cognitoIdentity);
+        dispatch(setCognitoIdentity(cognitoIdentity));
+      } catch (e) {
+        clearCognitoIdentity();
+      }
+    };
+
     getCognitoData();
-  }, []);
+  }, [dispatch]);
+
+  const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
+  const cognitoGroups = cognitoIdentity.cognito.groups || [];
 
   return (
     <IonApp>
