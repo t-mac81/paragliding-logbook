@@ -1,4 +1,13 @@
-import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
 import { useState } from 'react';
 import LogbookList from '../components/LogbookList';
 import LogbookModalForm from '../components/LogbookModalForm';
@@ -15,6 +24,9 @@ const Logbook: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot='start'>
+            <IonMenuButton />
+          </IonButtons>
           <IonTitle>Logbook</IonTitle>
         </IonToolbar>
       </IonHeader>

@@ -5,20 +5,26 @@ import '@aws-amplify/ui-react/styles.css';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
+  IonContent,
+  IonHeader,
   IonIcon,
+  IonItem,
   IonLabel,
+  IonList,
+  IonMenu,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { airplane, book, clipboard, lockClosed, person, trailSign } from 'ionicons/icons';
 import { useEffect } from 'react';
 import awsconfig from './aws-exports';
-import Tab1 from './pages/Tab1';
 import Logbook from './pages/Logbook';
 import UserProfile from './pages/UserProfile';
+import Gliders from './pages/Gliders';
+import Admins from './pages/Admins';
+
 import { RootState } from './app/store';
 
 /* Core CSS required for Ionic components to work properly */
@@ -39,17 +45,16 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import Glider from './pages/Glider';
 
 import { useAppDispatch } from './app/hooks';
 import { setCognitoIdentity, clearCognitoIdentity } from './features/cognitoSlice';
 import { ICognitoData } from './app/CognitoIdentityTypes';
+import LandingPage from './pages/LandingPage';
+import Instructors from './pages/Instructors';
 
 Amplify.configure(awsconfig);
 
 const App: React.FC = () => {
-  // const [cognitoGroups, setCognitoGroups] = useState<Array<string>>([]);
-  // const cognitoGroups = useAppSelector(state => state.cognitoIdentity);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -82,48 +87,68 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route exact path='/tab1'>
-              <Tab1 />
-            </Route>
-            <Route exact path='/logbook'>
-              <Logbook />
-            </Route>
-            <Route path='/user-profile'>
-              <UserProfile />
-            </Route>
-            <Route path='/glider'>
-              <Glider />
-            </Route>
-            <Route exact path='/'>
-              <Redirect to='/tab1' />
-            </Route>
-          </IonRouterOutlet>
-          <IonTabBar slot='bottom'>
-            {cognitoGroups.includes('Administrators') ? (
-              <IonTabButton tab='tab1' href='/tab1'>
-                <IonIcon icon={triangle} />
-                <IonLabel>Tab 1</IonLabel>
-              </IonTabButton>
-            ) : (
-              ''
-            )}
-
-            <IonTabButton tab='logbook' href='/logbook'>
-              <IonIcon icon={ellipse} />
-              <IonLabel>Logbook</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab='user-profile' href='/user-profile'>
-              <IonIcon icon={square} />
-              <IonLabel>Profile</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab='glider' href='/glider'>
-              <IonIcon icon={square} />
-              <IonLabel>Glider</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
+        <IonRouterOutlet id='menuContent'>
+          <Route exact path='/landingpage'>
+            <LandingPage />
+          </Route>
+          <Route exact path='/logbook'>
+            <Logbook />
+          </Route>
+          <Route path='/user-profile'>
+            <UserProfile />
+          </Route>
+          <Route path='/gliders'>
+            <Gliders />
+          </Route>
+          <Route exact path='/'>
+            <Redirect to='/landingpage' />
+          </Route>
+          <Route exact path='/instructors'>
+            <Instructors />
+          </Route>
+          <Route exact path='/admins'>
+            <Admins />
+          </Route>
+        </IonRouterOutlet>
+        <IonMenu side='start' contentId='menuContent'>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Menu</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent>
+            <IonList>
+              <IonItem item-id='landingpage' href='/landingpage'>
+                <IonIcon icon={trailSign} />
+                <IonLabel>Landing Page</IonLabel>
+              </IonItem>
+              <IonItem item-id='logbook' href='/logbook'>
+                <IonIcon icon={book} />
+                <IonLabel>Logbook</IonLabel>
+              </IonItem>
+              <IonItem item-id='user-profile' href='/user-profile'>
+                <IonIcon icon={person} />
+                <IonLabel>Profile</IonLabel>
+              </IonItem>
+              <IonItem item-id='gliders' href='/gliders'>
+                <IonIcon icon={airplane} />
+                <IonLabel>Gliders</IonLabel>
+              </IonItem>
+              <IonItem item-id='instructors' href='/instructors'>
+                <IonIcon icon={clipboard} />
+                <IonLabel>Instructors Area</IonLabel>
+              </IonItem>
+              {cognitoGroups.includes('Administrators') ? (
+                <IonItem item-id='admins' href='/admins'>
+                  <IonIcon icon={lockClosed} />
+                  <IonLabel>Admins Area</IonLabel>
+                </IonItem>
+              ) : (
+                ''
+              )}
+            </IonList>
+          </IonContent>
+        </IonMenu>
       </IonReactRouter>
     </IonApp>
   );

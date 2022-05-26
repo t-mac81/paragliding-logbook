@@ -7,23 +7,24 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import ProfileForm from '../components/ProfileForm';
-import './UserProfile.css';
+import GliderList from '../components/GliderList';
 
-const UserProfile: React.FC = () => (
+import './Gliders.css';
+
+const Gliders: React.FC = () => (
   <IonPage>
     <IonHeader>
       <IonToolbar>
         <IonButtons slot='start'>
           <IonMenuButton />
         </IonButtons>
-        <IonTitle>User Profile</IonTitle>
+        <IonTitle>Gliders</IonTitle>
       </IonToolbar>
     </IonHeader>
     <IonContent fullscreen>
-      <ProfileForm />
+      <GliderList />
     </IonContent>
   </IonPage>
 );
 
-export default UserProfile;
+export default Gliders;
