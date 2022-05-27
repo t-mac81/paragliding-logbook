@@ -100,7 +100,7 @@ const GliderList: React.FC = () => {
       <IonList>
         {gliderList?.map(glider => {
           return (
-            <IonItem key={glider.id} onClick={() => editGlider(glider)}>
+            <IonItem button key={glider.id} onClick={() => editGlider(glider)}>
               {glider.model}
             </IonItem>
           );

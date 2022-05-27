@@ -17,7 +17,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { airplane, book, clipboard, lockClosed, person, trailSign } from 'ionicons/icons';
+import { airplane, book, clipboard, lockClosed, logOut, person, trailSign } from 'ionicons/icons';
 import { useEffect } from 'react';
 import awsconfig from './aws-exports';
 import Logbook from './pages/Logbook';
@@ -83,7 +83,10 @@ const App: React.FC = () => {
 
   const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
   const cognitoGroups = cognitoIdentity.cognito.groups || [];
-
+  const logout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
   return (
     <IonApp>
       <IonReactRouter>
@@ -134,10 +137,14 @@ const App: React.FC = () => {
                 <IonIcon icon={airplane} />
                 <IonLabel>Gliders</IonLabel>
               </IonItem>
-              <IonItem item-id='instructors' href='/instructors'>
-                <IonIcon icon={clipboard} />
-                <IonLabel>Instructors Area</IonLabel>
-              </IonItem>
+              {cognitoGroups.includes('Instructors') ? (
+                <IonItem item-id='instructors' href='/instructors'>
+                  <IonIcon icon={clipboard} />
+                  <IonLabel>Instructors Area</IonLabel>
+                </IonItem>
+              ) : (
+                ''
+              )}
               {cognitoGroups.includes('Administrators') ? (
                 <IonItem item-id='admins' href='/admins'>
                   <IonIcon icon={lockClosed} />
@@ -146,6 +153,10 @@ const App: React.FC = () => {
               ) : (
                 ''
               )}
+              <IonItem item-id='logout' href='/' onClick={() => logout()}>
+                <IonIcon icon={logOut} />
+                <IonLabel>Logout</IonLabel>
+              </IonItem>
             </IonList>
           </IonContent>
         </IonMenu>

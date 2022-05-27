@@ -51,7 +51,7 @@ const LogbookList = ({
       <IonList>
         {logbookList?.map((flightLog: FlightLog) => {
           return (
-            <IonItem key={flightLog.id} onClick={() => editFlightLog(flightLog)}>
+            <IonItem button key={flightLog.id} onClick={() => editFlightLog(flightLog)}>
               {' '}
               {moment(flightLog.startDateTime).format('MMM Do YYYY HH:mm')} {flightLog.launchSite}{' '}
             </IonItem>

@@ -7,7 +7,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import StudentRoster from '../components/StudentRoster';
 import './Instructors.css';
 
 const Instructors: React.FC = () => (
@@ -21,12 +21,7 @@ const Instructors: React.FC = () => (
       </IonToolbar>
     </IonHeader>
     <IonContent fullscreen>
-      <IonHeader collapse='condense'>
-        <IonToolbar>
-          <IonTitle size='large'>Instructors Area</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <ExploreContainer name='Instructors Area' />
+      <StudentRoster />
     </IonContent>
   </IonPage>
 );
