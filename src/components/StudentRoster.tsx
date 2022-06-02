@@ -50,20 +50,20 @@ const StudentRoster: React.FC = () => {
           {
             text: 'View Profile',
             handler: () => {
-              console.log('Add Clicked');
+              console.log('View Profile Clicked');
             },
           },
           {
             text: 'View Flights',
             handler: () => {
-              console.log('Add Clicked');
+              console.log('View Flights Clicked');
             },
           },
           {
             text: 'Cancel',
             role: 'cancel',
             handler: () => {
-              console.log('Add Clicked');
+              console.log('Cancel Clicked');
             },
           },
         ]}
