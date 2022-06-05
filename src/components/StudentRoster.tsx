@@ -8,6 +8,7 @@ import './StudentRoster.css';
 const StudentRoster: React.FC = () => {
   const [studentList, setStudentList] = useState<Array<UserProfile>>([] as UserProfile[]);
   const [showActionSheet, setShowActionSheet] = useState(false);
+  const [userProfileId, setUserProfileId] = useState<String>('');
 
   const getStudentList = async () => {
     try {
@@ -31,7 +32,14 @@ const StudentRoster: React.FC = () => {
       <IonList>
         {studentList?.map((userProfile: UserProfile) => {
           return (
-            <IonItem button key={userProfile.id} onClick={() => setShowActionSheet(true)}>
+            <IonItem
+              button
+              key={userProfile.id}
+              onClick={() => {
+                setShowActionSheet(true);
+                setUserProfileId(userProfile.id);
+              }}
+            >
               {' '}
               {userProfile.name}
             </IonItem>
@@ -51,7 +59,7 @@ const StudentRoster: React.FC = () => {
           {
             text: 'View Profile',
             handler: () => {
-              console.log('View Profile Clicked');
+              window.location.href = `/user-profile/${userProfileId}`;
             },
           },
           {
