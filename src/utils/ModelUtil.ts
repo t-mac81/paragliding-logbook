@@ -2,7 +2,8 @@
 
 // function used for removing extra crap from the data object
 const scrubData = (dataObject: any) => {
-  const { __typename, createdAt, updatedAt, _deleted, _lastChangedAt, owner, ...rest } = dataObject;
+  const { __typename, createdAt, updatedAt, _deleted, _lastChangedAt, owner, comments, ...rest } =
+    dataObject;
 
   return rest;
 };

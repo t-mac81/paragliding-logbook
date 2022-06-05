@@ -46,7 +46,12 @@ interface CognitoData {
   email: String;
 }
 
-const ProfileForm: React.FC = () => {
+interface ProfileFormProps {
+  id: string | null;
+}
+
+const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
+  const { id: propId } = props;
   const [loading, setLoading] = useState<Boolean>(false);
   const [isNew, setIsNew] = useState<Boolean>(false);
   const [cognitoData, setCognitoData] = useState<CognitoData | null>(null);
@@ -88,7 +93,7 @@ const ProfileForm: React.FC = () => {
       try {
         const profileData = (await API.graphql({
           query: getUserProfile,
-          variables: { id: cognitoData?.sub },
+          variables: { id: propId || cognitoData?.sub },
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         })) as { data: GetUserProfileQuery };
         console.log(profileData);

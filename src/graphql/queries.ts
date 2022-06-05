@@ -16,11 +16,19 @@ export const getUserProfile = /* GraphQL */ `
       phoneNumber
       bio
       trackingUrl
+      comments {
+        items {
+          id
+          message
+          createdAt
+          updatedAt
+          userProfileCommentsId
+          commentAuthorId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -44,32 +52,22 @@ export const listUserProfiles = /* GraphQL */ `
         phoneNumber
         bio
         trackingUrl
+        comments {
+          nextToken
+        }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
-      startedAt
     }
   }
 `;
-export const syncUserProfiles = /* GraphQL */ `
-  query SyncUserProfiles(
-    $filter: ModelUserProfileFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncUserProfiles(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
+export const getComment = /* GraphQL */ `
+  query GetComment($id: ID!) {
+    getComment(id: $id) {
+      id
+      author {
         id
         name
         email
@@ -81,15 +79,53 @@ export const syncUserProfiles = /* GraphQL */ `
         phoneNumber
         bio
         trackingUrl
+        comments {
+          nextToken
+        }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
+      message
+      createdAt
+      updatedAt
+      userProfileCommentsId
+      commentAuthorId
+    }
+  }
+`;
+export const listComments = /* GraphQL */ `
+  query ListComments(
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        author {
+          id
+          name
+          email
+          addressLine1
+          addressLine2
+          city
+          state
+          zipCode
+          phoneNumber
+          bio
+          trackingUrl
+          createdAt
+          updatedAt
+          owner
+        }
+        message
+        createdAt
+        updatedAt
+        userProfileCommentsId
+        commentAuthorId
+      }
       nextToken
-      startedAt
     }
   }
 `;
@@ -104,9 +140,6 @@ export const getGlider = /* GraphQL */ `
       certification
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -127,45 +160,9 @@ export const listGliders = /* GraphQL */ `
         certification
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncGliders = /* GraphQL */ `
-  query SyncGliders(
-    $filter: ModelGliderFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncGliders(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        manufacturer
-        model
-        size
-        color
-        certification
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -186,17 +183,11 @@ export const getFlightLog = /* GraphQL */ `
         certification
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       flightLogGliderId
       owner
     }
@@ -224,69 +215,15 @@ export const listFlightLogs = /* GraphQL */ `
           certification
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         id
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         flightLogGliderId
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncFlightLogs = /* GraphQL */ `
-  query SyncFlightLogs(
-    $filter: ModelFlightLogFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncFlightLogs(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        startDateTime
-        duration
-        launchSite
-        launchConditions
-        description
-        glider {
-          id
-          manufacturer
-          model
-          size
-          color
-          certification
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        flightLogGliderId
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;

@@ -6,7 +6,7 @@ import { listUserProfiles } from '../graphql/queries';
 import './StudentRoster.css';
 
 const StudentRoster: React.FC = () => {
-  const [studentList, setStudentList] = useState<Array<UserProfile> | any>([]);
+  const [studentList, setStudentList] = useState<Array<UserProfile>>([] as UserProfile[]);
   const [showActionSheet, setShowActionSheet] = useState(false);
 
   const getStudentList = async () => {
@@ -15,7 +15,8 @@ const StudentRoster: React.FC = () => {
         query: listUserProfiles,
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })) as { data: ListUserProfilesQuery };
-      setStudentList(studentData?.data?.listUserProfiles?.items || []);
+      const userProfiles = studentData?.data?.listUserProfiles?.items as UserProfile[];
+      setStudentList(userProfiles);
     } catch (e) {
       console.log(e);
     }

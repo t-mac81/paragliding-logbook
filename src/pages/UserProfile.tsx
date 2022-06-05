@@ -10,20 +10,27 @@ import {
 import ProfileForm from '../components/ProfileForm';
 import './UserProfile.css';
 
-const UserProfile: React.FC = () => (
-  <IonPage>
-    <IonHeader>
-      <IonToolbar>
-        <IonButtons slot='start'>
-          <IonMenuButton />
-        </IonButtons>
-        <IonTitle>User Profile</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent fullscreen>
-      <ProfileForm />
-    </IonContent>
-  </IonPage>
-);
+interface UserProfileProps {
+  id: string | null;
+}
+
+const UserProfile: React.FC<UserProfileProps> = (props: UserProfileProps) => {
+  const { id } = props;
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot='start'>
+            <IonMenuButton />
+          </IonButtons>
+          <IonTitle>User Profile</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen>
+        <ProfileForm id={id} />
+      </IonContent>
+    </IonPage>
+  );
+};
 
 export default UserProfile;

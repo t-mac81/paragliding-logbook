@@ -22,5 +22,29 @@
         "logbookd7346641": {}
       }
     }
+  },
+  "logbook": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-logbook-logbook-160846-authRole",
+      "UnauthRoleArn": "arn:aws:iam::300020240867:role/amplify-logbook-logbook-160846-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::300020240867:role/amplify-logbook-logbook-160846-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-logbook-logbook-160846-deployment",
+      "UnauthRoleName": "amplify-logbook-logbook-160846-unauthRole",
+      "StackName": "amplify-logbook-logbook-160846",
+      "StackId": "arn:aws:cloudformation:us-west-2:300020240867:stack/amplify-logbook-logbook-160846/f5176350-e2c8-11ec-9462-067aa1d2621d",
+      "AmplifyAppId": "dcbqz0jfj4xyo"
+    },
+    "categories": {
+      "auth": {
+        "logbookd7346641": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "dcbqz0jfj4xyo",
+          "type": "manual"
+        }
+      }
+    }
   }
 }

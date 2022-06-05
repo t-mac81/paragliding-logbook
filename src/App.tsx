@@ -19,6 +19,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { airplane, book, clipboard, lockClosed, logOut, person, trailSign } from 'ionicons/icons';
 import { useEffect } from 'react';
+import { RouteComponentProps } from 'react-router';
 import awsconfig from './aws-exports';
 import Logbook from './pages/Logbook';
 import UserProfile from './pages/UserProfile';
@@ -53,6 +54,12 @@ import LandingPage from './pages/LandingPage';
 import Instructors from './pages/Instructors';
 
 Amplify.configure(awsconfig);
+
+interface MatchParams {
+  id?: string | undefined;
+}
+
+interface MatchProps extends RouteComponentProps<MatchParams> {}
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -98,8 +105,14 @@ const App: React.FC = () => {
             <Logbook />
           </Route>
           <Route path='/user-profile'>
-            <UserProfile />
+            <UserProfile id={null} />
           </Route>
+
+          <Route
+            path='/user-profile/:id'
+            render={({ match }: MatchProps) => <UserProfile id={match.params.id || null} />}
+          />
+
           <Route path='/gliders'>
             <Gliders />
           </Route>

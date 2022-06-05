@@ -14,7 +14,6 @@ export type CreateUserProfileInput = {
   phoneNumber: string,
   bio: string,
   trackingUrl?: string | null,
-  _version?: number | null,
 };
 
 export type ModelUserProfileConditionInput = {
@@ -86,12 +85,27 @@ export type UserProfile = {
   phoneNumber: string,
   bio: string,
   trackingUrl?: string | null,
+  comments?: ModelCommentConnection | null,
   createdAt: string,
   updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
   owner?: string | null,
+};
+
+export type ModelCommentConnection = {
+  __typename: "ModelCommentConnection",
+  items:  Array<Comment | null >,
+  nextToken?: string | null,
+};
+
+export type Comment = {
+  __typename: "Comment",
+  id: string,
+  author?: UserProfile | null,
+  message: string,
+  createdAt: string,
+  updatedAt: string,
+  userProfileCommentsId?: string | null,
+  commentAuthorId?: string | null,
 };
 
 export type UpdateUserProfileInput = {
@@ -106,12 +120,53 @@ export type UpdateUserProfileInput = {
   phoneNumber?: string | null,
   bio?: string | null,
   trackingUrl?: string | null,
-  _version?: number | null,
 };
 
 export type DeleteUserProfileInput = {
   id: string,
-  _version?: number | null,
+};
+
+export type CreateCommentInput = {
+  id?: string | null,
+  message: string,
+  userProfileCommentsId?: string | null,
+  commentAuthorId?: string | null,
+};
+
+export type ModelCommentConditionInput = {
+  message?: ModelStringInput | null,
+  and?: Array< ModelCommentConditionInput | null > | null,
+  or?: Array< ModelCommentConditionInput | null > | null,
+  not?: ModelCommentConditionInput | null,
+  userProfileCommentsId?: ModelIDInput | null,
+  commentAuthorId?: ModelIDInput | null,
+};
+
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
+export type UpdateCommentInput = {
+  id: string,
+  message?: string | null,
+  userProfileCommentsId?: string | null,
+  commentAuthorId?: string | null,
+};
+
+export type DeleteCommentInput = {
+  id: string,
 };
 
 export type CreateGliderInput = {
@@ -121,7 +176,6 @@ export type CreateGliderInput = {
   size: string,
   color: string,
   certification: string,
-  _version?: number | null,
 };
 
 export type ModelGliderConditionInput = {
@@ -145,9 +199,6 @@ export type Glider = {
   certification: string,
   createdAt: string,
   updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
   owner?: string | null,
 };
 
@@ -158,12 +209,10 @@ export type UpdateGliderInput = {
   size?: string | null,
   color?: string | null,
   certification?: string | null,
-  _version?: number | null,
 };
 
 export type DeleteGliderInput = {
   id: string,
-  _version?: number | null,
 };
 
 export type CreateFlightLogInput = {
@@ -173,7 +222,6 @@ export type CreateFlightLogInput = {
   launchConditions: string,
   description: string,
   id?: string | null,
-  _version?: number | null,
   flightLogGliderId: string,
 };
 
@@ -201,22 +249,6 @@ export type ModelIntInput = {
   attributeType?: ModelAttributeTypes | null,
 };
 
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
-};
-
 export type FlightLog = {
   __typename: "FlightLog",
   startDateTime: string,
@@ -228,9 +260,6 @@ export type FlightLog = {
   id: string,
   createdAt: string,
   updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
   flightLogGliderId: string,
   owner?: string | null,
 };
@@ -242,13 +271,11 @@ export type UpdateFlightLogInput = {
   launchConditions?: string | null,
   description?: string | null,
   id: string,
-  _version?: number | null,
   flightLogGliderId?: string | null,
 };
 
 export type DeleteFlightLogInput = {
   id: string,
-  _version?: number | null,
 };
 
 export type ModelUserProfileFilterInput = {
@@ -272,7 +299,16 @@ export type ModelUserProfileConnection = {
   __typename: "ModelUserProfileConnection",
   items:  Array<UserProfile | null >,
   nextToken?: string | null,
-  startedAt?: number | null,
+};
+
+export type ModelCommentFilterInput = {
+  id?: ModelIDInput | null,
+  message?: ModelStringInput | null,
+  and?: Array< ModelCommentFilterInput | null > | null,
+  or?: Array< ModelCommentFilterInput | null > | null,
+  not?: ModelCommentFilterInput | null,
+  userProfileCommentsId?: ModelIDInput | null,
+  commentAuthorId?: ModelIDInput | null,
 };
 
 export type ModelGliderFilterInput = {
@@ -291,7 +327,6 @@ export type ModelGliderConnection = {
   __typename: "ModelGliderConnection",
   items:  Array<Glider | null >,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type ModelFlightLogFilterInput = {
@@ -310,7 +345,6 @@ export type ModelFlightLogConnection = {
   __typename: "ModelFlightLogConnection",
   items:  Array<FlightLog | null >,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type CreateUserProfileMutationVariables = {
@@ -332,11 +366,21 @@ export type CreateUserProfileMutation = {
     phoneNumber: string,
     bio: string,
     trackingUrl?: string | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items:  Array< {
+        __typename: "Comment",
+        id: string,
+        message: string,
+        createdAt: string,
+        updatedAt: string,
+        userProfileCommentsId?: string | null,
+        commentAuthorId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -360,11 +404,21 @@ export type UpdateUserProfileMutation = {
     phoneNumber: string,
     bio: string,
     trackingUrl?: string | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items:  Array< {
+        __typename: "Comment",
+        id: string,
+        message: string,
+        createdAt: string,
+        updatedAt: string,
+        userProfileCommentsId?: string | null,
+        commentAuthorId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -388,12 +442,136 @@ export type DeleteUserProfileMutation = {
     phoneNumber: string,
     bio: string,
     trackingUrl?: string | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items:  Array< {
+        __typename: "Comment",
+        id: string,
+        message: string,
+        createdAt: string,
+        updatedAt: string,
+        userProfileCommentsId?: string | null,
+        commentAuthorId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
+  } | null,
+};
+
+export type CreateCommentMutationVariables = {
+  input: CreateCommentInput,
+  condition?: ModelCommentConditionInput | null,
+};
+
+export type CreateCommentMutation = {
+  createComment?:  {
+    __typename: "Comment",
+    id: string,
+    author?:  {
+      __typename: "UserProfile",
+      id: string,
+      name: string,
+      email: string,
+      addressLine1: string,
+      addressLine2?: string | null,
+      city: string,
+      state: string,
+      zipCode: string,
+      phoneNumber: string,
+      bio: string,
+      trackingUrl?: string | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    message: string,
+    createdAt: string,
+    updatedAt: string,
+    userProfileCommentsId?: string | null,
+    commentAuthorId?: string | null,
+  } | null,
+};
+
+export type UpdateCommentMutationVariables = {
+  input: UpdateCommentInput,
+  condition?: ModelCommentConditionInput | null,
+};
+
+export type UpdateCommentMutation = {
+  updateComment?:  {
+    __typename: "Comment",
+    id: string,
+    author?:  {
+      __typename: "UserProfile",
+      id: string,
+      name: string,
+      email: string,
+      addressLine1: string,
+      addressLine2?: string | null,
+      city: string,
+      state: string,
+      zipCode: string,
+      phoneNumber: string,
+      bio: string,
+      trackingUrl?: string | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    message: string,
+    createdAt: string,
+    updatedAt: string,
+    userProfileCommentsId?: string | null,
+    commentAuthorId?: string | null,
+  } | null,
+};
+
+export type DeleteCommentMutationVariables = {
+  input: DeleteCommentInput,
+  condition?: ModelCommentConditionInput | null,
+};
+
+export type DeleteCommentMutation = {
+  deleteComment?:  {
+    __typename: "Comment",
+    id: string,
+    author?:  {
+      __typename: "UserProfile",
+      id: string,
+      name: string,
+      email: string,
+      addressLine1: string,
+      addressLine2?: string | null,
+      city: string,
+      state: string,
+      zipCode: string,
+      phoneNumber: string,
+      bio: string,
+      trackingUrl?: string | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    message: string,
+    createdAt: string,
+    updatedAt: string,
+    userProfileCommentsId?: string | null,
+    commentAuthorId?: string | null,
   } | null,
 };
 
@@ -413,9 +591,6 @@ export type CreateGliderMutation = {
     certification: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -436,9 +611,6 @@ export type UpdateGliderMutation = {
     certification: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -459,9 +631,6 @@ export type DeleteGliderMutation = {
     certification: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -489,17 +658,11 @@ export type CreateFlightLogMutation = {
       certification: string,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       owner?: string | null,
     },
     id: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     flightLogGliderId: string,
     owner?: string | null,
   } | null,
@@ -528,17 +691,11 @@ export type UpdateFlightLogMutation = {
       certification: string,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       owner?: string | null,
     },
     id: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     flightLogGliderId: string,
     owner?: string | null,
   } | null,
@@ -567,17 +724,11 @@ export type DeleteFlightLogMutation = {
       certification: string,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       owner?: string | null,
     },
     id: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     flightLogGliderId: string,
     owner?: string | null,
   } | null,
@@ -601,11 +752,21 @@ export type GetUserProfileQuery = {
     phoneNumber: string,
     bio: string,
     trackingUrl?: string | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items:  Array< {
+        __typename: "Comment",
+        id: string,
+        message: string,
+        createdAt: string,
+        updatedAt: string,
+        userProfileCommentsId?: string | null,
+        commentAuthorId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -632,29 +793,27 @@ export type ListUserProfilesQuery = {
       phoneNumber: string,
       bio: string,
       trackingUrl?: string | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       owner?: string | null,
     } | null >,
     nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
-export type SyncUserProfilesQueryVariables = {
-  filter?: ModelUserProfileFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+export type GetCommentQueryVariables = {
+  id: string,
 };
 
-export type SyncUserProfilesQuery = {
-  syncUserProfiles?:  {
-    __typename: "ModelUserProfileConnection",
-    items:  Array< {
+export type GetCommentQuery = {
+  getComment?:  {
+    __typename: "Comment",
+    id: string,
+    author?:  {
       __typename: "UserProfile",
       id: string,
       name: string,
@@ -667,15 +826,58 @@ export type SyncUserProfilesQuery = {
       phoneNumber: string,
       bio: string,
       trackingUrl?: string | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       owner?: string | null,
+    } | null,
+    message: string,
+    createdAt: string,
+    updatedAt: string,
+    userProfileCommentsId?: string | null,
+    commentAuthorId?: string | null,
+  } | null,
+};
+
+export type ListCommentsQueryVariables = {
+  filter?: ModelCommentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListCommentsQuery = {
+  listComments?:  {
+    __typename: "ModelCommentConnection",
+    items:  Array< {
+      __typename: "Comment",
+      id: string,
+      author?:  {
+        __typename: "UserProfile",
+        id: string,
+        name: string,
+        email: string,
+        addressLine1: string,
+        addressLine2?: string | null,
+        city: string,
+        state: string,
+        zipCode: string,
+        phoneNumber: string,
+        bio: string,
+        trackingUrl?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null,
+      message: string,
+      createdAt: string,
+      updatedAt: string,
+      userProfileCommentsId?: string | null,
+      commentAuthorId?: string | null,
     } | null >,
     nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -694,9 +896,6 @@ export type GetGliderQuery = {
     certification: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -720,43 +919,9 @@ export type ListGlidersQuery = {
       certification: string,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       owner?: string | null,
     } | null >,
     nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncGlidersQueryVariables = {
-  filter?: ModelGliderFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncGlidersQuery = {
-  syncGliders?:  {
-    __typename: "ModelGliderConnection",
-    items:  Array< {
-      __typename: "Glider",
-      id: string,
-      manufacturer: string,
-      model: string,
-      size: string,
-      color: string,
-      certification: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -782,17 +947,11 @@ export type GetFlightLogQuery = {
       certification: string,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       owner?: string | null,
     },
     id: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     flightLogGliderId: string,
     owner?: string | null,
   } | null,
@@ -824,68 +983,15 @@ export type ListFlightLogsQuery = {
         certification: string,
         createdAt: string,
         updatedAt: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
         owner?: string | null,
       },
       id: string,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       flightLogGliderId: string,
       owner?: string | null,
     } | null >,
     nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncFlightLogsQueryVariables = {
-  filter?: ModelFlightLogFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncFlightLogsQuery = {
-  syncFlightLogs?:  {
-    __typename: "ModelFlightLogConnection",
-    items:  Array< {
-      __typename: "FlightLog",
-      startDateTime: string,
-      duration: number,
-      launchSite: string,
-      launchConditions: string,
-      description: string,
-      glider:  {
-        __typename: "Glider",
-        id: string,
-        manufacturer: string,
-        model: string,
-        size: string,
-        color: string,
-        certification: string,
-        createdAt: string,
-        updatedAt: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        owner?: string | null,
-      },
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      flightLogGliderId: string,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -907,11 +1013,21 @@ export type OnCreateUserProfileSubscription = {
     phoneNumber: string,
     bio: string,
     trackingUrl?: string | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items:  Array< {
+        __typename: "Comment",
+        id: string,
+        message: string,
+        createdAt: string,
+        updatedAt: string,
+        userProfileCommentsId?: string | null,
+        commentAuthorId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -934,11 +1050,21 @@ export type OnUpdateUserProfileSubscription = {
     phoneNumber: string,
     bio: string,
     trackingUrl?: string | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items:  Array< {
+        __typename: "Comment",
+        id: string,
+        message: string,
+        createdAt: string,
+        updatedAt: string,
+        userProfileCommentsId?: string | null,
+        commentAuthorId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -961,12 +1087,121 @@ export type OnDeleteUserProfileSubscription = {
     phoneNumber: string,
     bio: string,
     trackingUrl?: string | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items:  Array< {
+        __typename: "Comment",
+        id: string,
+        message: string,
+        createdAt: string,
+        updatedAt: string,
+        userProfileCommentsId?: string | null,
+        commentAuthorId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
+  } | null,
+};
+
+export type OnCreateCommentSubscription = {
+  onCreateComment?:  {
+    __typename: "Comment",
+    id: string,
+    author?:  {
+      __typename: "UserProfile",
+      id: string,
+      name: string,
+      email: string,
+      addressLine1: string,
+      addressLine2?: string | null,
+      city: string,
+      state: string,
+      zipCode: string,
+      phoneNumber: string,
+      bio: string,
+      trackingUrl?: string | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    message: string,
+    createdAt: string,
+    updatedAt: string,
+    userProfileCommentsId?: string | null,
+    commentAuthorId?: string | null,
+  } | null,
+};
+
+export type OnUpdateCommentSubscription = {
+  onUpdateComment?:  {
+    __typename: "Comment",
+    id: string,
+    author?:  {
+      __typename: "UserProfile",
+      id: string,
+      name: string,
+      email: string,
+      addressLine1: string,
+      addressLine2?: string | null,
+      city: string,
+      state: string,
+      zipCode: string,
+      phoneNumber: string,
+      bio: string,
+      trackingUrl?: string | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    message: string,
+    createdAt: string,
+    updatedAt: string,
+    userProfileCommentsId?: string | null,
+    commentAuthorId?: string | null,
+  } | null,
+};
+
+export type OnDeleteCommentSubscription = {
+  onDeleteComment?:  {
+    __typename: "Comment",
+    id: string,
+    author?:  {
+      __typename: "UserProfile",
+      id: string,
+      name: string,
+      email: string,
+      addressLine1: string,
+      addressLine2?: string | null,
+      city: string,
+      state: string,
+      zipCode: string,
+      phoneNumber: string,
+      bio: string,
+      trackingUrl?: string | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    message: string,
+    createdAt: string,
+    updatedAt: string,
+    userProfileCommentsId?: string | null,
+    commentAuthorId?: string | null,
   } | null,
 };
 
@@ -985,9 +1220,6 @@ export type OnCreateGliderSubscription = {
     certification: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -1007,9 +1239,6 @@ export type OnUpdateGliderSubscription = {
     certification: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -1029,9 +1258,6 @@ export type OnDeleteGliderSubscription = {
     certification: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -1058,17 +1284,11 @@ export type OnCreateFlightLogSubscription = {
       certification: string,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       owner?: string | null,
     },
     id: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     flightLogGliderId: string,
     owner?: string | null,
   } | null,
@@ -1096,17 +1316,11 @@ export type OnUpdateFlightLogSubscription = {
       certification: string,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       owner?: string | null,
     },
     id: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     flightLogGliderId: string,
     owner?: string | null,
   } | null,
@@ -1134,17 +1348,11 @@ export type OnDeleteFlightLogSubscription = {
       certification: string,
       createdAt: string,
       updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       owner?: string | null,
     },
     id: string,
     createdAt: string,
     updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     flightLogGliderId: string,
     owner?: string | null,
   } | null,

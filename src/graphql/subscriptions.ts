@@ -16,11 +16,19 @@ export const onCreateUserProfile = /* GraphQL */ `
       phoneNumber
       bio
       trackingUrl
+      comments {
+        items {
+          id
+          message
+          createdAt
+          updatedAt
+          userProfileCommentsId
+          commentAuthorId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -39,11 +47,19 @@ export const onUpdateUserProfile = /* GraphQL */ `
       phoneNumber
       bio
       trackingUrl
+      comments {
+        items {
+          id
+          message
+          createdAt
+          updatedAt
+          userProfileCommentsId
+          commentAuthorId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -62,12 +78,113 @@ export const onDeleteUserProfile = /* GraphQL */ `
       phoneNumber
       bio
       trackingUrl
+      comments {
+        items {
+          id
+          message
+          createdAt
+          updatedAt
+          userProfileCommentsId
+          commentAuthorId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
+    }
+  }
+`;
+export const onCreateComment = /* GraphQL */ `
+  subscription OnCreateComment {
+    onCreateComment {
+      id
+      author {
+        id
+        name
+        email
+        addressLine1
+        addressLine2
+        city
+        state
+        zipCode
+        phoneNumber
+        bio
+        trackingUrl
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      message
+      createdAt
+      updatedAt
+      userProfileCommentsId
+      commentAuthorId
+    }
+  }
+`;
+export const onUpdateComment = /* GraphQL */ `
+  subscription OnUpdateComment {
+    onUpdateComment {
+      id
+      author {
+        id
+        name
+        email
+        addressLine1
+        addressLine2
+        city
+        state
+        zipCode
+        phoneNumber
+        bio
+        trackingUrl
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      message
+      createdAt
+      updatedAt
+      userProfileCommentsId
+      commentAuthorId
+    }
+  }
+`;
+export const onDeleteComment = /* GraphQL */ `
+  subscription OnDeleteComment {
+    onDeleteComment {
+      id
+      author {
+        id
+        name
+        email
+        addressLine1
+        addressLine2
+        city
+        state
+        zipCode
+        phoneNumber
+        bio
+        trackingUrl
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      message
+      createdAt
+      updatedAt
+      userProfileCommentsId
+      commentAuthorId
     }
   }
 `;
@@ -82,9 +199,6 @@ export const onCreateGlider = /* GraphQL */ `
       certification
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -100,9 +214,6 @@ export const onUpdateGlider = /* GraphQL */ `
       certification
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -118,9 +229,6 @@ export const onDeleteGlider = /* GraphQL */ `
       certification
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -142,17 +250,11 @@ export const onCreateFlightLog = /* GraphQL */ `
         certification
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       flightLogGliderId
       owner
     }
@@ -175,17 +277,11 @@ export const onUpdateFlightLog = /* GraphQL */ `
         certification
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       flightLogGliderId
       owner
     }
@@ -208,17 +304,11 @@ export const onDeleteFlightLog = /* GraphQL */ `
         certification
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       flightLogGliderId
       owner
     }

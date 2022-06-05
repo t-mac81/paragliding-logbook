@@ -19,11 +19,19 @@ export const createUserProfile = /* GraphQL */ `
       phoneNumber
       bio
       trackingUrl
+      comments {
+        items {
+          id
+          message
+          createdAt
+          updatedAt
+          userProfileCommentsId
+          commentAuthorId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -45,11 +53,19 @@ export const updateUserProfile = /* GraphQL */ `
       phoneNumber
       bio
       trackingUrl
+      comments {
+        items {
+          id
+          message
+          createdAt
+          updatedAt
+          userProfileCommentsId
+          commentAuthorId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -71,12 +87,122 @@ export const deleteUserProfile = /* GraphQL */ `
       phoneNumber
       bio
       trackingUrl
+      comments {
+        items {
+          id
+          message
+          createdAt
+          updatedAt
+          userProfileCommentsId
+          commentAuthorId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
+    }
+  }
+`;
+export const createComment = /* GraphQL */ `
+  mutation CreateComment(
+    $input: CreateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    createComment(input: $input, condition: $condition) {
+      id
+      author {
+        id
+        name
+        email
+        addressLine1
+        addressLine2
+        city
+        state
+        zipCode
+        phoneNumber
+        bio
+        trackingUrl
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      message
+      createdAt
+      updatedAt
+      userProfileCommentsId
+      commentAuthorId
+    }
+  }
+`;
+export const updateComment = /* GraphQL */ `
+  mutation UpdateComment(
+    $input: UpdateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    updateComment(input: $input, condition: $condition) {
+      id
+      author {
+        id
+        name
+        email
+        addressLine1
+        addressLine2
+        city
+        state
+        zipCode
+        phoneNumber
+        bio
+        trackingUrl
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      message
+      createdAt
+      updatedAt
+      userProfileCommentsId
+      commentAuthorId
+    }
+  }
+`;
+export const deleteComment = /* GraphQL */ `
+  mutation DeleteComment(
+    $input: DeleteCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    deleteComment(input: $input, condition: $condition) {
+      id
+      author {
+        id
+        name
+        email
+        addressLine1
+        addressLine2
+        city
+        state
+        zipCode
+        phoneNumber
+        bio
+        trackingUrl
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      message
+      createdAt
+      updatedAt
+      userProfileCommentsId
+      commentAuthorId
     }
   }
 `;
@@ -94,9 +220,6 @@ export const createGlider = /* GraphQL */ `
       certification
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -115,9 +238,6 @@ export const updateGlider = /* GraphQL */ `
       certification
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -136,9 +256,6 @@ export const deleteGlider = /* GraphQL */ `
       certification
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -163,17 +280,11 @@ export const createFlightLog = /* GraphQL */ `
         certification
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       flightLogGliderId
       owner
     }
@@ -199,17 +310,11 @@ export const updateFlightLog = /* GraphQL */ `
         certification
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       flightLogGliderId
       owner
     }
@@ -235,17 +340,11 @@ export const deleteFlightLog = /* GraphQL */ `
         certification
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       flightLogGliderId
       owner
     }
