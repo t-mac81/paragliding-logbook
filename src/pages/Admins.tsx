@@ -9,7 +9,7 @@ import {
 } from '@ionic/react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
-import ExploreContainer from '../components/ExploreContainer';
+import UserList from '../components/UserList';
 import './Admins.css';
 
 const Admins: React.FC = () => {
@@ -29,12 +29,7 @@ const Admins: React.FC = () => {
       </IonHeader>
       {showAdminView ? (
         <IonContent fullscreen>
-          <IonHeader collapse='condense'>
-            <IonToolbar>
-              <IonTitle size='large'>Admins Area</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <ExploreContainer name='Tab 1 page' />
+          <UserList />
         </IonContent>
       ) : (
         ''

@@ -5,8 +5,8 @@ import { ListUserProfilesQuery, UserProfile } from '../API';
 import { listUserProfiles } from '../graphql/queries';
 import './StudentRoster.css';
 
-const StudentRoster: React.FC = () => {
-  const [studentList, setStudentList] = useState<Array<UserProfile>>([] as UserProfile[]);
+const UserList: React.FC = () => {
+  const [userList, setUserList] = useState<Array<UserProfile>>([] as UserProfile[]);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [userProfileId, setUserProfileId] = useState<String>('');
 
@@ -17,7 +17,7 @@ const StudentRoster: React.FC = () => {
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })) as { data: ListUserProfilesQuery };
       const userProfiles = studentData?.data?.listUserProfiles?.items as UserProfile[];
-      setStudentList(userProfiles);
+      setUserList(userProfiles);
     } catch (e) {
       console.log(e);
     }
@@ -30,8 +30,8 @@ const StudentRoster: React.FC = () => {
   return (
     <div>
       <IonList>
-        <IonListHeader lines='full'>Student Roster:</IonListHeader>
-        {studentList?.map((userProfile: UserProfile) => {
+        <IonListHeader lines='full'>User List:</IonListHeader>
+        {userList?.map((userProfile: UserProfile) => {
           return (
             <IonItem
               button
@@ -39,6 +39,7 @@ const StudentRoster: React.FC = () => {
               onClick={() => {
                 setShowActionSheet(true);
                 setUserProfileId(userProfile.id);
+                console.log(userProfileId);
               }}
             >
               {' '}
@@ -52,21 +53,29 @@ const StudentRoster: React.FC = () => {
         onDidDismiss={() => setShowActionSheet(false)}
         buttons={[
           {
-            text: 'Add Comment',
+            text: 'Add to Admins',
             handler: () => {
-              console.log('Add Clicked');
+              console.log('add to admins');
             },
           },
           {
-            text: 'View Profile',
+            text: 'Add to Instructors',
             handler: () => {
-              window.location.href = `/user-profile/${userProfileId}`;
+              console.log('add to instructors');
             },
           },
           {
-            text: 'View Flights',
+            text: 'Remove from all Groups',
+            role: 'destructive',
             handler: () => {
-              console.log('View Flights Clicked');
+              console.log('Remove from groups');
+            },
+          },
+          {
+            text: 'Delete User',
+            role: 'destructive',
+            handler: () => {
+              console.log('Delete User');
             },
           },
           {
@@ -82,4 +91,4 @@ const StudentRoster: React.FC = () => {
   );
 };
 
-export default StudentRoster;
+export default UserList;
