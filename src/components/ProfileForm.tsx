@@ -1,4 +1,3 @@
-// TODO: remove hookform packages and other hookform useless crap
 import {
   IonItem,
   IonInput,

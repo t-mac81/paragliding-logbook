@@ -102,17 +102,19 @@ const App: React.FC = () => {
             <LandingPage />
           </Route>
           <Route exact path='/logbook'>
-            <Logbook />
+            <Logbook id={null} />
           </Route>
           <Route path='/user-profile'>
             <UserProfile id={null} />
           </Route>
-
           <Route
             path='/user-profile/:id'
             render={({ match }: MatchProps) => <UserProfile id={match.params.id || null} />}
           />
-
+          <Route
+            path='/logbook/:id'
+            render={({ match }: MatchProps) => <Logbook id={match.params.id || null} />}
+          />
           <Route path='/gliders'>
             <Gliders />
           </Route>

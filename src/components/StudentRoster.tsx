@@ -1,14 +1,17 @@
 import { IonActionSheet, IonItem, IonList, IonListHeader } from '@ionic/react';
+import { useDispatch } from 'react-redux';
 import { API } from 'aws-amplify';
 import { useEffect, useState } from 'react';
 import { ListUserProfilesQuery, UserProfile } from '../API';
 import { listUserProfiles } from '../graphql/queries';
 import './StudentRoster.css';
+import { openModal } from '../features/commentModalSlice';
 
 const StudentRoster: React.FC = () => {
   const [studentList, setStudentList] = useState<Array<UserProfile>>([] as UserProfile[]);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [userProfileId, setUserProfileId] = useState<String>('');
+  const dispatch = useDispatch();
 
   const getStudentList = async () => {
     try {
@@ -54,7 +57,7 @@ const StudentRoster: React.FC = () => {
           {
             text: 'Add Comment',
             handler: () => {
-              console.log('Add Clicked');
+              dispatch(openModal());
             },
           },
           {
@@ -66,7 +69,7 @@ const StudentRoster: React.FC = () => {
           {
             text: 'View Flights',
             handler: () => {
-              console.log('View Flights Clicked');
+              window.location.href = `/logbook/${userProfileId}`;
             },
           },
           {

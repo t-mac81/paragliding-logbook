@@ -15,7 +15,12 @@ import LogbookStats from '../components/LogbookStats';
 import { FlightLog } from '../models';
 import './Logbook.css';
 
-const Logbook: React.FC = () => {
+interface LogbookProps {
+  id: string | null;
+}
+
+const Logbook: React.FC<LogbookProps> = (props: LogbookProps) => {
+  const { id } = props;
   const [showModal, setShowModal] = useState(false);
   const [logbookList, setLogbookList] = useState<Array<FlightLog>>([]);
   const [flightlogEdit, setFlightlogEdit] = useState<FlightLog | any>(null);
@@ -34,6 +39,7 @@ const Logbook: React.FC = () => {
         <LogbookStats logbookList={logbookList} />
         <IonButton onClick={() => setShowModal(true)}>New Entry</IonButton>
         <LogbookList
+          id={id}
           showModal={showModal}
           setShowModal={setShowModal}
           flightlogEdit={flightlogEdit}

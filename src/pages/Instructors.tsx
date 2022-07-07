@@ -9,6 +9,7 @@ import {
 } from '@ionic/react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
+import CommentModal from '../components/CommentModal';
 import StudentRoster from '../components/StudentRoster';
 import './Instructors.css';
 
@@ -32,6 +33,7 @@ const Instructors: React.FC = () => {
       {showInstructorView ? (
         <IonContent fullscreen>
           <StudentRoster />
+          <CommentModal />
         </IonContent>
       ) : (
         ''

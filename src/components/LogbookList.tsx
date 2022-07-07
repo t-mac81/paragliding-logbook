@@ -13,6 +13,7 @@ export interface LogbookListProps {
   setFlightlogEdit: Function;
   logbookList: Array<FlightLog>;
   setLogbookList: Function;
+  id: string | null;
 }
 
 const LogbookList = ({
@@ -21,13 +22,16 @@ const LogbookList = ({
   setFlightlogEdit,
   logbookList,
   setLogbookList,
+  id: propId,
 }: LogbookListProps) => {
   const getLogbookList = async () => {
     try {
+      console.log(propId);
       const logbookData = (await API.graphql({
         query: listFlightLogs,
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })) as { data: ListFlightLogsQuery };
+      console.log(logbookData);
 
       setLogbookList(logbookData?.data?.listFlightLogs?.items || []);
     } catch (e) {

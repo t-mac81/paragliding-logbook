@@ -30,7 +30,14 @@ type Comment
   message: String!
 }
 
-type Glider @model @auth(rules: [{ allow: owner }]) {
+type Glider
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Instructors", "Administrators"] }
+    ]
+  ) {
   id: ID!
   manufacturer: String!
   model: String!
@@ -39,7 +46,14 @@ type Glider @model @auth(rules: [{ allow: owner }]) {
   certification: String!
 }
 
-type FlightLog @model @auth(rules: [{ allow: owner }]) {
+type FlightLog
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Instructors", "Administrators"] }
+    ]
+  ) {
   startDateTime: AWSDateTime!
   duration: Int!
   launchSite: String!
