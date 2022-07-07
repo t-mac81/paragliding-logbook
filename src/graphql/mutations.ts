@@ -282,11 +282,11 @@ export const createFlightLog = /* GraphQL */ `
         updatedAt
         owner
       }
+      owner
       id
       createdAt
       updatedAt
       flightLogGliderId
-      owner
     }
   }
 `;
@@ -312,11 +312,11 @@ export const updateFlightLog = /* GraphQL */ `
         updatedAt
         owner
       }
+      owner
       id
       createdAt
       updatedAt
       flightLogGliderId
-      owner
     }
   }
 `;
@@ -342,11 +342,11 @@ export const deleteFlightLog = /* GraphQL */ `
         updatedAt
         owner
       }
+      owner
       id
       createdAt
       updatedAt
       flightLogGliderId
-      owner
     }
   }
 `;

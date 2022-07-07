@@ -185,11 +185,11 @@ export const getFlightLog = /* GraphQL */ `
         updatedAt
         owner
       }
+      owner
       id
       createdAt
       updatedAt
       flightLogGliderId
-      owner
     }
   }
 `;
@@ -217,11 +217,11 @@ export const listFlightLogs = /* GraphQL */ `
           updatedAt
           owner
         }
+        owner
         id
         createdAt
         updatedAt
         flightLogGliderId
-        owner
       }
       nextToken
     }

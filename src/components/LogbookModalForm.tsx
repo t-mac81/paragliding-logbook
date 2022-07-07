@@ -27,7 +27,12 @@ export interface ShowModalProps {
   setFlightlogEdit: Function;
 }
 
-const LogbookModalForm = ({ showModal, setShowModal, flightlogEdit }: ShowModalProps) => {
+const LogbookModalForm = ({
+  showModal,
+  setShowModal,
+  flightlogEdit,
+  setFlightlogEdit,
+}: ShowModalProps) => {
   const [gliderList, setGliderList] = useState<Array<any> | null>(null);
 
   const validationSchema = yup.object({
@@ -50,9 +55,8 @@ const LogbookModalForm = ({ showModal, setShowModal, flightlogEdit }: ShowModalP
   };
 
   useEffect(() => {
+    console.log('flightlog: ', flightlogEdit);
     const getGliders = async () => {
-      if (!showModal) return;
-
       try {
         const glidersData = (await API.graphql({
           query: listGliders,
@@ -65,7 +69,7 @@ const LogbookModalForm = ({ showModal, setShowModal, flightlogEdit }: ShowModalP
       }
     };
     getGliders();
-  }, [showModal]);
+  }, []);
 
   const createNewFlightLog = async (data: FlightLog) => {
     await API.graphql({
@@ -77,7 +81,7 @@ const LogbookModalForm = ({ showModal, setShowModal, flightlogEdit }: ShowModalP
       },
       authMode: 'AMAZON_COGNITO_USER_POOLS',
     });
-    setShowModal(false);
+    closeModal();
   };
 
   const updateExistingFlightLog = async (data: FlightLog) => {
@@ -91,7 +95,7 @@ const LogbookModalForm = ({ showModal, setShowModal, flightlogEdit }: ShowModalP
       },
       authMode: 'AMAZON_COGNITO_USER_POOLS',
     });
-    setShowModal(false);
+    closeModal();
   };
 
   const onSubmit = (data: FlightLog) => {
@@ -102,9 +106,12 @@ const LogbookModalForm = ({ showModal, setShowModal, flightlogEdit }: ShowModalP
 
     createNewFlightLog(data);
   };
-
+  const closeModal = () => {
+    setFlightlogEdit(emptyFlightLog);
+    setShowModal(false);
+  };
   return (
-    <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+    <IonModal isOpen={showModal} onDidDismiss={() => closeModal()}>
       <IonContent>
         <Formik
           initialValues={flightlogEdit || emptyFlightLog}
@@ -168,13 +175,12 @@ const LogbookModalForm = ({ showModal, setShowModal, flightlogEdit }: ShowModalP
                   <IonLabel position='stacked'>Glider:</IonLabel>
                   <IonSelect
                     name='flightLogGliderId'
+                    value={formikProps.values.flightLogGliderId}
                     placeholder='Select the glider flown'
-                    onIonChange={e => {
-                      formikProps.setFieldValue('flightLogGliderId', e.detail.value.id);
-                    }}
+                    onIonChange={formikProps.handleChange}
                   >
                     {gliderList?.map(glider => (
-                      <IonSelectOption key={glider.id} value={glider}>
+                      <IonSelectOption key={glider.id} value={glider.id}>
                         {glider.manufacturer} {glider.model}
                       </IonSelectOption>
                     ))}
@@ -213,7 +219,7 @@ const LogbookModalForm = ({ showModal, setShowModal, flightlogEdit }: ShowModalP
                 </IonItem>
               </IonCard>
               <IonButton type='submit'>{formikProps?.values?.id ? 'Update' : 'Submit'}</IonButton>
-              <IonButton onClick={() => setShowModal(false)}>Cancel</IonButton>
+              <IonButton onClick={() => closeModal()}>Cancel</IonButton>
             </form>
           )}
         </Formik>

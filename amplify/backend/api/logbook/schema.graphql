@@ -24,7 +24,12 @@ type UserProfile
 
 type Comment
   @model
-  @auth(rules: [{ allow: groups, groups: ["Instructors", "Administrators"] }]) {
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Instructors", "Administrators"] }
+    ]
+  ) {
   id: ID!
   author: UserProfile @hasOne
   message: String!
@@ -60,4 +65,5 @@ type FlightLog
   launchConditions: String!
   description: String!
   glider: Glider! @hasOne
+  owner: ID
 }

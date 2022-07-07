@@ -221,6 +221,7 @@ export type CreateFlightLogInput = {
   launchSite: string,
   launchConditions: string,
   description: string,
+  owner?: string | null,
   id?: string | null,
   flightLogGliderId: string,
 };
@@ -231,6 +232,7 @@ export type ModelFlightLogConditionInput = {
   launchSite?: ModelStringInput | null,
   launchConditions?: ModelStringInput | null,
   description?: ModelStringInput | null,
+  owner?: ModelIDInput | null,
   and?: Array< ModelFlightLogConditionInput | null > | null,
   or?: Array< ModelFlightLogConditionInput | null > | null,
   not?: ModelFlightLogConditionInput | null,
@@ -257,11 +259,11 @@ export type FlightLog = {
   launchConditions: string,
   description: string,
   glider: Glider,
+  owner?: string | null,
   id: string,
   createdAt: string,
   updatedAt: string,
   flightLogGliderId: string,
-  owner?: string | null,
 };
 
 export type UpdateFlightLogInput = {
@@ -270,6 +272,7 @@ export type UpdateFlightLogInput = {
   launchSite?: string | null,
   launchConditions?: string | null,
   description?: string | null,
+  owner?: string | null,
   id: string,
   flightLogGliderId?: string | null,
 };
@@ -335,6 +338,7 @@ export type ModelFlightLogFilterInput = {
   launchSite?: ModelStringInput | null,
   launchConditions?: ModelStringInput | null,
   description?: ModelStringInput | null,
+  owner?: ModelIDInput | null,
   and?: Array< ModelFlightLogFilterInput | null > | null,
   or?: Array< ModelFlightLogFilterInput | null > | null,
   not?: ModelFlightLogFilterInput | null,
@@ -660,11 +664,11 @@ export type CreateFlightLogMutation = {
       updatedAt: string,
       owner?: string | null,
     },
+    owner?: string | null,
     id: string,
     createdAt: string,
     updatedAt: string,
     flightLogGliderId: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -693,11 +697,11 @@ export type UpdateFlightLogMutation = {
       updatedAt: string,
       owner?: string | null,
     },
+    owner?: string | null,
     id: string,
     createdAt: string,
     updatedAt: string,
     flightLogGliderId: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -726,11 +730,11 @@ export type DeleteFlightLogMutation = {
       updatedAt: string,
       owner?: string | null,
     },
+    owner?: string | null,
     id: string,
     createdAt: string,
     updatedAt: string,
     flightLogGliderId: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -949,11 +953,11 @@ export type GetFlightLogQuery = {
       updatedAt: string,
       owner?: string | null,
     },
+    owner?: string | null,
     id: string,
     createdAt: string,
     updatedAt: string,
     flightLogGliderId: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -985,11 +989,11 @@ export type ListFlightLogsQuery = {
         updatedAt: string,
         owner?: string | null,
       },
+      owner?: string | null,
       id: string,
       createdAt: string,
       updatedAt: string,
       flightLogGliderId: string,
-      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1286,11 +1290,11 @@ export type OnCreateFlightLogSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
+    owner?: string | null,
     id: string,
     createdAt: string,
     updatedAt: string,
     flightLogGliderId: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -1318,11 +1322,11 @@ export type OnUpdateFlightLogSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
+    owner?: string | null,
     id: string,
     createdAt: string,
     updatedAt: string,
     flightLogGliderId: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -1350,10 +1354,10 @@ export type OnDeleteFlightLogSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
+    owner?: string | null,
     id: string,
     createdAt: string,
     updatedAt: string,
     flightLogGliderId: string,
-    owner?: string | null,
   } | null,
 };

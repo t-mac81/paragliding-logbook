@@ -2,9 +2,11 @@ import { IonItem, IonList } from '@ionic/react';
 import { API } from 'aws-amplify';
 import { useEffect } from 'react';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 import { ListFlightLogsQuery } from '../API';
 import { listFlightLogs } from '../graphql/queries';
 import { FlightLog } from '../models';
+import { RootState } from '../app/store';
 
 export interface LogbookListProps {
   showModal: boolean;
@@ -24,26 +26,27 @@ const LogbookList = ({
   setLogbookList,
   id: propId,
 }: LogbookListProps) => {
-  const getLogbookList = async () => {
-    try {
-      console.log(propId);
-      const logbookData = (await API.graphql({
-        query: listFlightLogs,
-        authMode: 'AMAZON_COGNITO_USER_POOLS',
-      })) as { data: ListFlightLogsQuery };
-      console.log(logbookData);
-
-      setLogbookList(logbookData?.data?.listFlightLogs?.items || []);
-    } catch (e) {
-      console.error('Error getting logbook list: ', e);
-    }
-  };
+  const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
 
   useEffect(() => {
     if (showModal) return;
+    const ownerId = !propId ? cognitoIdentity.cognito.sub || null : propId;
+    const getLogbookList = async () => {
+      try {
+        const logbookData = (await API.graphql({
+          query: listFlightLogs,
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+          variables: { filter: { owner: { eq: ownerId } } },
+        })) as { data: ListFlightLogsQuery };
+        console.log(logbookData);
 
+        setLogbookList(logbookData?.data?.listFlightLogs?.items || []);
+      } catch (e) {
+        console.error('Error getting logbook list: ', e);
+      }
+    };
     getLogbookList();
-  }, [showModal]);
+  }, [showModal, cognitoIdentity, propId, setLogbookList]);
 
   const editFlightLog = (flightlog: FlightLog) => {
     setFlightlogEdit(flightlog);
