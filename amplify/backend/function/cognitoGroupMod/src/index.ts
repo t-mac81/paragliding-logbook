@@ -14,11 +14,15 @@ Amplify Params - DO NOT EDIT */
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     const { fieldName } = event;
-
+    
+    let response = {};
     switch(fieldName) {
       case "addUserToGroup": 
-        const response = await addUserToGroup(event);
-         return response;
+        response = await addUserToGroup(event);
+        break;
+      case "removeUserFromGroup":
+        response = await removeUserFromGroup(event)
+        break;
       default: 
         return {
           statusCode: 200,
@@ -29,7 +33,41 @@ exports.handler = async (event) => {
           }
         }
     }
+
+    return response;
 };
+
+const removeUserFromGroup = async (event) => {
+  try {
+    const { user, group } = event.arguments.input;
+    const { AUTH_LOGBOOKD7346641_USERPOOLID } = process.env;
+
+    const params = {
+      Username: user,
+      GroupName: group,
+      UserPoolId: AUTH_LOGBOOKD7346641_USERPOOLID
+    }
+
+    console.log('addUserToGroup params: ', params);
+    await cognitoSP.adminRemoveUserFromGroup(params)
+
+    return {
+      statusCode: 200,
+      body: {
+        success: true
+      }
+    }
+  } catch(e) {
+    return {
+      statusCode: 200,
+      body: {
+        success: false,
+        error: 'Could not add user to group',
+        errorMsg: e 
+      }
+    }
+  }
+}
 
 const addUserToGroup = async (event) => {
   try {

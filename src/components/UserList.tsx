@@ -42,6 +42,31 @@ const UserList: React.FC = () => {
     }
   };
 
+  const removeUserFromAllGroups = async (sub: String) => {
+    const groups = ['Instructors', 'Administrators'];
+
+    const results = [];
+    try {
+      for (const group of groups) {
+        const response = API.graphql({
+          query: addUserToGroup,
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+          variables: {
+            input: {
+              user: sub,
+              group,
+            },
+          },
+        }) as unknown as AddUserToGroupResponse;
+        results.push(response);
+      }
+    } catch (e) {
+      console.log('Error: ', e);
+    }
+
+    await Promise.all(results);
+  };
+
   useEffect(() => {
     getStudentList();
   }, []);
@@ -82,6 +107,7 @@ const UserList: React.FC = () => {
             text: 'Add to Instructors',
             handler: () => {
               console.log('add to instructors');
+              addToGroup(userProfileId, 'Instructors');
             },
           },
           {
@@ -89,6 +115,7 @@ const UserList: React.FC = () => {
             role: 'destructive',
             handler: () => {
               console.log('Remove from groups');
+              removeUserFromAllGroups(userProfileId);
             },
           },
           {

@@ -3,8 +3,17 @@
 // this is an auto generated file. This will be overwritten
 
 export const addUserToGroup = /* GraphQL */ `
-  mutation AddUserToGroup($input: AddUserToGroupInput) {
+  mutation AddUserToGroup($input: CognitoGroupInput) {
     addUserToGroup(input: $input) {
+      success
+      error
+      errorMsg
+    }
+  }
+`;
+export const removeUserFromGroup = /* GraphQL */ `
+  mutation RemoveUserFromGroup($input: CognitoGroupInput) {
+    removeUserFromGroup(input: $input) {
       success
       error
       errorMsg

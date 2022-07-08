@@ -2,13 +2,13 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type AddUserToGroupInput = {
+export type CognitoGroupInput = {
   user: string,
   group: string,
 };
 
-export type AddUserToGroupResponse = {
-  __typename: "AddUserToGroupResponse",
+export type CognitoGroupResponse = {
+  __typename: "CognitoGroupResponse",
   success?: boolean | null,
   error?: string | null,
   errorMsg?: string | null,
@@ -369,12 +369,25 @@ export type ModelFlightLogConnection = {
 };
 
 export type AddUserToGroupMutationVariables = {
-  input?: AddUserToGroupInput | null,
+  input?: CognitoGroupInput | null,
 };
 
 export type AddUserToGroupMutation = {
   addUserToGroup?:  {
-    __typename: "AddUserToGroupResponse",
+    __typename: "CognitoGroupResponse",
+    success?: boolean | null,
+    error?: string | null,
+    errorMsg?: string | null,
+  } | null,
+};
+
+export type RemoveUserFromGroupMutationVariables = {
+  input?: CognitoGroupInput | null,
+};
+
+export type RemoveUserFromGroupMutation = {
+  removeUserFromGroup?:  {
+    __typename: "CognitoGroupResponse",
     success?: boolean | null,
     error?: string | null,
     errorMsg?: string | null,

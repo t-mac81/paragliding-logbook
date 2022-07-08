@@ -69,17 +69,18 @@ type FlightLog
   owner: ID
 }
 
-type AddUserToGroupResponse {
+type CognitoGroupResponse {
   success: Boolean
   error: String
   errorMsg: String 
 }
 
-input AddUserToGroupInput {
+input CognitoGroupInput {
   user: String!
   group: String!
 }
 
 type Mutation {
-  addUserToGroup(input: AddUserToGroupInput): AddUserToGroupResponse @function(name: "cognitoGroupMod-${env}") @auth(rules: [{ allow: groups, groups: ["Administrators"] }])
+  addUserToGroup(input: CognitoGroupInput): CognitoGroupResponse @function(name: "cognitoGroupMod-${env}") @auth(rules: [{ allow: groups, groups: ["Administrators"] }])
+  removeUserFromGroup(input: CognitoGroupInput): CognitoGroupResponse @function(name: "cognitoGroupMod-${env}") @auth(rules: [{ allow: groups, groups: ["Administrators"] }])
 }

@@ -24,7 +24,7 @@
       "function": {
         "cognitoGroupMod": {
           "deploymentBucketName": "amplify-logbook-logbook-160846-deployment",
-          "s3Key": "amplify-builds/cognitoGroupMod-686e6944474f41344151-build.zip"
+          "s3Key": "amplify-builds/cognitoGroupMod-36522f4d7459562b694b-build.zip"
         }
       }
     }
