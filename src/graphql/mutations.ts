@@ -27,6 +27,7 @@ export const createUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -61,6 +62,7 @@ export const updateUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -95,6 +97,7 @@ export const deleteUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -135,6 +138,7 @@ export const createComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
@@ -169,6 +173,7 @@ export const updateComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
@@ -203,6 +208,7 @@ export const deleteComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
@@ -218,9 +224,9 @@ export const createGlider = /* GraphQL */ `
       size
       color
       certification
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -236,9 +242,9 @@ export const updateGlider = /* GraphQL */ `
       size
       color
       certification
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -254,9 +260,9 @@ export const deleteGlider = /* GraphQL */ `
       size
       color
       certification
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -278,9 +284,9 @@ export const createFlightLog = /* GraphQL */ `
         size
         color
         certification
+        owner
         createdAt
         updatedAt
-        owner
       }
       owner
       id
@@ -308,9 +314,9 @@ export const updateFlightLog = /* GraphQL */ `
         size
         color
         certification
+        owner
         createdAt
         updatedAt
-        owner
       }
       owner
       id
@@ -338,9 +344,9 @@ export const deleteFlightLog = /* GraphQL */ `
         size
         color
         certification
+        owner
         createdAt
         updatedAt
-        owner
       }
       owner
       id

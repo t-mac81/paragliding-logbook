@@ -2,8 +2,10 @@ import { IonButton, IonCard, IonInput, IonItem, IonLabel, IonList, IonModal } fr
 import { API } from 'aws-amplify';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import * as yup from 'yup';
 import { Glider, ListGlidersQuery } from '../API';
+import { RootState } from '../app/store';
 import { createGlider, updateGlider as updateGliderMutation } from '../graphql/mutations';
 import { listGliders } from '../graphql/queries';
 import scrubData from '../utils/ModelUtil';
@@ -17,34 +19,37 @@ const validationSchema = yup.object({
 });
 
 const emptyGlider = {
-  manufacturer: '',
-  model: '',
-  size: '',
-  color: '',
-  certification: '',
+  id: undefined,
+  manufacturer: null,
+  model: null,
+  size: null,
+  color: null,
+  certification: null,
 };
 
 const GliderList: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [gliderList, setGliderList] = useState<Array<any> | null>(null);
-  const [gliderEdit, setGliderEdit] = useState<Glider | null>(null);
-
-  const getGliders = async () => {
-    try {
-      const glidersData = (await API.graphql({
-        query: listGliders,
-        authMode: 'AMAZON_COGNITO_USER_POOLS',
-      })) as { data: ListGlidersQuery };
-      console.log(glidersData);
-      setGliderList(glidersData?.data?.listGliders?.items || null);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [gliderEdit, setGliderEdit] = useState<Glider | any>(null);
+  const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
 
   useEffect(() => {
+    const ownerId = cognitoIdentity.cognito.sub;
+    const getGliders = async () => {
+      try {
+        const glidersData = (await API.graphql({
+          query: listGliders,
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+          variables: { filter: { owner: { eq: ownerId } } },
+        })) as { data: ListGlidersQuery };
+        console.log(glidersData);
+        setGliderList(glidersData?.data?.listGliders?.items || null);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getGliders();
-  }, []);
+  }, [cognitoIdentity.cognito.sub]);
 
   const editGlider = (glider: Glider) => {
     setGliderEdit(glider);
@@ -67,8 +72,7 @@ const GliderList: React.FC = () => {
       authMode: 'AMAZON_COGNITO_USER_POOLS',
     });
 
-    getGliders();
-    setShowModal(false);
+    closeModal();
   };
 
   const updateGlider = async (data: Glider) => {
@@ -82,8 +86,7 @@ const GliderList: React.FC = () => {
       authMode: 'AMAZON_COGNITO_USER_POOLS',
     });
 
-    getGliders();
-    setShowModal(false);
+    closeModal();
   };
 
   const onSubmit = (event: any) => {
@@ -94,6 +97,11 @@ const GliderList: React.FC = () => {
     } else {
       createNewGlider(data);
     }
+  };
+
+  const closeModal = () => {
+    setGliderEdit(emptyGlider);
+    setShowModal(false);
   };
   return (
     <div>
@@ -106,7 +114,7 @@ const GliderList: React.FC = () => {
           );
         })}
       </IonList>
-      <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+      <IonModal isOpen={showModal} onDidDismiss={() => closeModal()}>
         <Formik
           initialValues={gliderEdit || emptyGlider}
           validationSchema={validationSchema}
@@ -186,7 +194,7 @@ const GliderList: React.FC = () => {
                 </IonItem>
               </IonCard>
               <IonButton type='submit'> {gliderEdit ? 'Update' : 'Submit'}</IonButton>
-              <IonButton onClick={() => setShowModal(false)}>Cancel</IonButton>
+              <IonButton onClick={() => closeModal()}>Cancel</IonButton>
             </form>
           )}
         </Formik>

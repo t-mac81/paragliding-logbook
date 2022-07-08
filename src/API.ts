@@ -106,6 +106,7 @@ export type Comment = {
   updatedAt: string,
   userProfileCommentsId?: string | null,
   commentAuthorId?: string | null,
+  owner?: string | null,
 };
 
 export type UpdateUserProfileInput = {
@@ -176,6 +177,7 @@ export type CreateGliderInput = {
   size: string,
   color: string,
   certification: string,
+  owner?: string | null,
 };
 
 export type ModelGliderConditionInput = {
@@ -184,6 +186,7 @@ export type ModelGliderConditionInput = {
   size?: ModelStringInput | null,
   color?: ModelStringInput | null,
   certification?: ModelStringInput | null,
+  owner?: ModelIDInput | null,
   and?: Array< ModelGliderConditionInput | null > | null,
   or?: Array< ModelGliderConditionInput | null > | null,
   not?: ModelGliderConditionInput | null,
@@ -197,9 +200,9 @@ export type Glider = {
   size: string,
   color: string,
   certification: string,
+  owner?: string | null,
   createdAt: string,
   updatedAt: string,
-  owner?: string | null,
 };
 
 export type UpdateGliderInput = {
@@ -209,6 +212,7 @@ export type UpdateGliderInput = {
   size?: string | null,
   color?: string | null,
   certification?: string | null,
+  owner?: string | null,
 };
 
 export type DeleteGliderInput = {
@@ -321,6 +325,7 @@ export type ModelGliderFilterInput = {
   size?: ModelStringInput | null,
   color?: ModelStringInput | null,
   certification?: ModelStringInput | null,
+  owner?: ModelIDInput | null,
   and?: Array< ModelGliderFilterInput | null > | null,
   or?: Array< ModelGliderFilterInput | null > | null,
   not?: ModelGliderFilterInput | null,
@@ -380,6 +385,7 @@ export type CreateUserProfileMutation = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -418,6 +424,7 @@ export type UpdateUserProfileMutation = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -456,6 +463,7 @@ export type DeleteUserProfileMutation = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -500,6 +508,7 @@ export type CreateCommentMutation = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -538,6 +547,7 @@ export type UpdateCommentMutation = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -576,6 +586,7 @@ export type DeleteCommentMutation = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -593,9 +604,9 @@ export type CreateGliderMutation = {
     size: string,
     color: string,
     certification: string,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -613,9 +624,9 @@ export type UpdateGliderMutation = {
     size: string,
     color: string,
     certification: string,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -633,9 +644,9 @@ export type DeleteGliderMutation = {
     size: string,
     color: string,
     certification: string,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -660,9 +671,9 @@ export type CreateFlightLogMutation = {
       size: string,
       color: string,
       certification: string,
+      owner?: string | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     },
     owner?: string | null,
     id: string,
@@ -693,9 +704,9 @@ export type UpdateFlightLogMutation = {
       size: string,
       color: string,
       certification: string,
+      owner?: string | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     },
     owner?: string | null,
     id: string,
@@ -726,9 +737,9 @@ export type DeleteFlightLogMutation = {
       size: string,
       color: string,
       certification: string,
+      owner?: string | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     },
     owner?: string | null,
     id: string,
@@ -766,6 +777,7 @@ export type GetUserProfileQuery = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -843,6 +855,7 @@ export type GetCommentQuery = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -880,6 +893,7 @@ export type ListCommentsQuery = {
       updatedAt: string,
       userProfileCommentsId?: string | null,
       commentAuthorId?: string | null,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -898,9 +912,9 @@ export type GetGliderQuery = {
     size: string,
     color: string,
     certification: string,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -921,9 +935,9 @@ export type ListGlidersQuery = {
       size: string,
       color: string,
       certification: string,
+      owner?: string | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -949,9 +963,9 @@ export type GetFlightLogQuery = {
       size: string,
       color: string,
       certification: string,
+      owner?: string | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     },
     owner?: string | null,
     id: string,
@@ -985,9 +999,9 @@ export type ListFlightLogsQuery = {
         size: string,
         color: string,
         certification: string,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       },
       owner?: string | null,
       id: string,
@@ -1027,6 +1041,7 @@ export type OnCreateUserProfileSubscription = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1064,6 +1079,7 @@ export type OnUpdateUserProfileSubscription = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1101,6 +1117,7 @@ export type OnDeleteUserProfileSubscription = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1108,6 +1125,10 @@ export type OnDeleteUserProfileSubscription = {
     updatedAt: string,
     owner?: string | null,
   } | null,
+};
+
+export type OnCreateCommentSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnCreateCommentSubscription = {
@@ -1140,7 +1161,12 @@ export type OnCreateCommentSubscription = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
+};
+
+export type OnUpdateCommentSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnUpdateCommentSubscription = {
@@ -1173,7 +1199,12 @@ export type OnUpdateCommentSubscription = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
+};
+
+export type OnDeleteCommentSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnDeleteCommentSubscription = {
@@ -1206,6 +1237,7 @@ export type OnDeleteCommentSubscription = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1222,9 +1254,9 @@ export type OnCreateGliderSubscription = {
     size: string,
     color: string,
     certification: string,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -1241,9 +1273,9 @@ export type OnUpdateGliderSubscription = {
     size: string,
     color: string,
     certification: string,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -1260,9 +1292,9 @@ export type OnDeleteGliderSubscription = {
     size: string,
     color: string,
     certification: string,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -1286,9 +1318,9 @@ export type OnCreateFlightLogSubscription = {
       size: string,
       color: string,
       certification: string,
+      owner?: string | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     },
     owner?: string | null,
     id: string,
@@ -1318,9 +1350,9 @@ export type OnUpdateFlightLogSubscription = {
       size: string,
       color: string,
       certification: string,
+      owner?: string | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     },
     owner?: string | null,
     id: string,
@@ -1350,9 +1382,9 @@ export type OnDeleteFlightLogSubscription = {
       size: string,
       color: string,
       certification: string,
+      owner?: string | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     },
     owner?: string | null,
     id: string,

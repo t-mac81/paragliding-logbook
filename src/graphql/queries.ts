@@ -24,6 +24,7 @@ export const getUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -91,6 +92,7 @@ export const getComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
@@ -124,6 +126,7 @@ export const listComments = /* GraphQL */ `
         updatedAt
         userProfileCommentsId
         commentAuthorId
+        owner
       }
       nextToken
     }
@@ -138,9 +141,9 @@ export const getGlider = /* GraphQL */ `
       size
       color
       certification
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -158,9 +161,9 @@ export const listGliders = /* GraphQL */ `
         size
         color
         certification
+        owner
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
@@ -181,9 +184,9 @@ export const getFlightLog = /* GraphQL */ `
         size
         color
         certification
+        owner
         createdAt
         updatedAt
-        owner
       }
       owner
       id
@@ -213,9 +216,9 @@ export const listFlightLogs = /* GraphQL */ `
           size
           color
           certification
+          owner
           createdAt
           updatedAt
-          owner
         }
         owner
         id

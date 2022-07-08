@@ -24,6 +24,7 @@ export const onCreateUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -55,6 +56,7 @@ export const onUpdateUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -86,6 +88,7 @@ export const onDeleteUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -96,8 +99,8 @@ export const onDeleteUserProfile = /* GraphQL */ `
   }
 `;
 export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment {
-    onCreateComment {
+  subscription OnCreateComment($owner: String) {
+    onCreateComment(owner: $owner) {
       id
       author {
         id
@@ -123,12 +126,13 @@ export const onCreateComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
 export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment {
-    onUpdateComment {
+  subscription OnUpdateComment($owner: String) {
+    onUpdateComment(owner: $owner) {
       id
       author {
         id
@@ -154,12 +158,13 @@ export const onUpdateComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
 export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment {
-    onDeleteComment {
+  subscription OnDeleteComment($owner: String) {
+    onDeleteComment(owner: $owner) {
       id
       author {
         id
@@ -185,6 +190,7 @@ export const onDeleteComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
@@ -197,9 +203,9 @@ export const onCreateGlider = /* GraphQL */ `
       size
       color
       certification
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -212,9 +218,9 @@ export const onUpdateGlider = /* GraphQL */ `
       size
       color
       certification
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -227,9 +233,9 @@ export const onDeleteGlider = /* GraphQL */ `
       size
       color
       certification
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -248,9 +254,9 @@ export const onCreateFlightLog = /* GraphQL */ `
         size
         color
         certification
+        owner
         createdAt
         updatedAt
-        owner
       }
       owner
       id
@@ -275,9 +281,9 @@ export const onUpdateFlightLog = /* GraphQL */ `
         size
         color
         certification
+        owner
         createdAt
         updatedAt
-        owner
       }
       owner
       id
@@ -302,9 +308,9 @@ export const onDeleteFlightLog = /* GraphQL */ `
         size
         color
         certification
+        owner
         createdAt
         updatedAt
-        owner
       }
       owner
       id

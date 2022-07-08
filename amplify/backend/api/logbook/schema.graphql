@@ -49,6 +49,7 @@ type Glider
   size: String!
   color: String!
   certification: String!
+  owner: ID
 }
 
 type FlightLog
