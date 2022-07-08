@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "auth": {
+      "logbookd7346641": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
