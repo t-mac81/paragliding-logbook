@@ -2,6 +2,15 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const addUserToGroup = /* GraphQL */ `
+  mutation AddUserToGroup($input: AddUserToGroupInput) {
+    addUserToGroup(input: $input) {
+      success
+      error
+      errorMsg
+    }
+  }
+`;
 export const createUserProfile = /* GraphQL */ `
   mutation CreateUserProfile(
     $input: CreateUserProfileInput!

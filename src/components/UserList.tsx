@@ -1,7 +1,8 @@
 import { IonActionSheet, IonItem, IonList, IonListHeader } from '@ionic/react';
 import { API } from 'aws-amplify';
 import { useEffect, useState } from 'react';
-import { ListUserProfilesQuery, UserProfile } from '../API';
+import { AddUserToGroupResponse, ListUserProfilesQuery, UserProfile } from '../API';
+import { addUserToGroup } from '../graphql/mutations';
 import { listUserProfiles } from '../graphql/queries';
 import './StudentRoster.css';
 
@@ -20,6 +21,24 @@ const UserList: React.FC = () => {
       setUserList(userProfiles);
     } catch (e) {
       console.log(e);
+    }
+  };
+
+  const addToGroup = async (sub: String, group: String) => {
+    try {
+      const response = (await API.graphql({
+        query: addUserToGroup,
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+        variables: {
+          input: {
+            user: sub,
+            group,
+          },
+        },
+      })) as unknown as AddUserToGroupResponse;
+      console.log('Response: ', response.success);
+    } catch (e) {
+      console.log('Error: ', e);
     }
   };
 
@@ -55,7 +74,8 @@ const UserList: React.FC = () => {
           {
             text: 'Add to Admins',
             handler: () => {
-              console.log('add to admins');
+              console.log('Action: adding to admins...');
+              addToGroup(userProfileId, 'Administrators');
             },
           },
           {

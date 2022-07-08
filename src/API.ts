@@ -2,6 +2,18 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type AddUserToGroupInput = {
+  user: string,
+  group: string,
+};
+
+export type AddUserToGroupResponse = {
+  __typename: "AddUserToGroupResponse",
+  success?: boolean | null,
+  error?: string | null,
+  errorMsg?: string | null,
+};
+
 export type CreateUserProfileInput = {
   id?: string | null,
   name: string,
@@ -278,7 +290,7 @@ export type UpdateFlightLogInput = {
   description?: string | null,
   owner?: string | null,
   id: string,
-  flightLogGliderId?: string | null,
+  flightLogGliderId: string,
 };
 
 export type DeleteFlightLogInput = {
@@ -354,6 +366,19 @@ export type ModelFlightLogConnection = {
   __typename: "ModelFlightLogConnection",
   items:  Array<FlightLog | null >,
   nextToken?: string | null,
+};
+
+export type AddUserToGroupMutationVariables = {
+  input?: AddUserToGroupInput | null,
+};
+
+export type AddUserToGroupMutation = {
+  addUserToGroup?:  {
+    __typename: "AddUserToGroupResponse",
+    success?: boolean | null,
+    error?: string | null,
+    errorMsg?: string | null,
+  } | null,
 };
 
 export type CreateUserProfileMutationVariables = {

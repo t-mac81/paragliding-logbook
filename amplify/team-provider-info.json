@@ -1,28 +1,4 @@
 {
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-logbook-dev-172334-authRole",
-      "UnauthRoleArn": "arn:aws:iam::300020240867:role/amplify-logbook-dev-172334-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::300020240867:role/amplify-logbook-dev-172334-authRole",
-      "Region": "us-west-2",
-      "DeploymentBucketName": "amplify-logbook-dev-172334-deployment",
-      "UnauthRoleName": "amplify-logbook-dev-172334-unauthRole",
-      "StackName": "amplify-logbook-dev-172334",
-      "StackId": "arn:aws:cloudformation:us-west-2:300020240867:stack/amplify-logbook-dev-172334/a262ff80-588e-11ec-8d7a-06159bf7aaf9",
-      "AmplifyAppId": "d2kw5b0nz01dwi"
-    },
-    "categories": {
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d2kw5b0nz01dwi",
-          "type": "manual"
-        }
-      },
-      "auth": {
-        "logbookd7346641": {}
-      }
-    }
-  },
   "logbook": {
     "awscloudformation": {
       "AuthRoleName": "amplify-logbook-logbook-160846-authRole",
@@ -43,6 +19,12 @@
         "amplifyhosting": {
           "appId": "dcbqz0jfj4xyo",
           "type": "manual"
+        }
+      },
+      "function": {
+        "cognitoGroupMod": {
+          "deploymentBucketName": "amplify-logbook-logbook-160846-deployment",
+          "s3Key": "amplify-builds/cognitoGroupMod-686e6944474f41344151-build.zip"
         }
       }
     }

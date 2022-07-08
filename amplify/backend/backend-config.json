@@ -68,5 +68,21 @@
         ]
       }
     }
+  },
+  "function": {
+    "cognitoGroupMod": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "logbookd7346641",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    }
   }
 }
