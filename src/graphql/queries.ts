@@ -24,6 +24,7 @@ export const getUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -91,6 +92,7 @@ export const getComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
@@ -124,6 +126,7 @@ export const listComments = /* GraphQL */ `
         updatedAt
         userProfileCommentsId
         commentAuthorId
+        owner
       }
       nextToken
     }

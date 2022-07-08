@@ -67,3 +67,18 @@ type FlightLog
   glider: Glider! @hasOne
   owner: ID
 }
+
+type AddUserToGroupResponse {
+  success: Boolean
+  error: String
+  errorMsg: String 
+}
+
+input AddUserToGroupInput {
+  user: String!
+  group: String!
+}
+
+type Mutation {
+  addUserToGroup(input: AddUserToGroupInput): AddUserToGroupResponse @function(name: "cognitoGroupMod-${env}") @auth(rules: [{ allow: groups, groups: ["Administrators"] }])
+}

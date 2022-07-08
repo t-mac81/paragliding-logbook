@@ -2,6 +2,18 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type AddUserToGroupInput = {
+  user: string,
+  group: string,
+};
+
+export type AddUserToGroupResponse = {
+  __typename: "AddUserToGroupResponse",
+  success?: boolean | null,
+  error?: string | null,
+  errorMsg?: string | null,
+};
+
 export type CreateUserProfileInput = {
   id?: string | null,
   name: string,
@@ -106,6 +118,7 @@ export type Comment = {
   updatedAt: string,
   userProfileCommentsId?: string | null,
   commentAuthorId?: string | null,
+  owner?: string | null,
 };
 
 export type UpdateUserProfileInput = {
@@ -274,7 +287,7 @@ export type UpdateFlightLogInput = {
   description?: string | null,
   owner?: string | null,
   id: string,
-  flightLogGliderId?: string | null,
+  flightLogGliderId: string,
 };
 
 export type DeleteFlightLogInput = {
@@ -351,6 +364,19 @@ export type ModelFlightLogConnection = {
   nextToken?: string | null,
 };
 
+export type AddUserToGroupMutationVariables = {
+  input?: AddUserToGroupInput | null,
+};
+
+export type AddUserToGroupMutation = {
+  addUserToGroup?:  {
+    __typename: "AddUserToGroupResponse",
+    success?: boolean | null,
+    error?: string | null,
+    errorMsg?: string | null,
+  } | null,
+};
+
 export type CreateUserProfileMutationVariables = {
   input: CreateUserProfileInput,
   condition?: ModelUserProfileConditionInput | null,
@@ -380,6 +406,7 @@ export type CreateUserProfileMutation = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -418,6 +445,7 @@ export type UpdateUserProfileMutation = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -456,6 +484,7 @@ export type DeleteUserProfileMutation = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -500,6 +529,7 @@ export type CreateCommentMutation = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -538,6 +568,7 @@ export type UpdateCommentMutation = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -576,6 +607,7 @@ export type DeleteCommentMutation = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -766,6 +798,7 @@ export type GetUserProfileQuery = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -843,6 +876,7 @@ export type GetCommentQuery = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -880,6 +914,7 @@ export type ListCommentsQuery = {
       updatedAt: string,
       userProfileCommentsId?: string | null,
       commentAuthorId?: string | null,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1027,6 +1062,7 @@ export type OnCreateUserProfileSubscription = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1064,6 +1100,7 @@ export type OnUpdateUserProfileSubscription = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1101,6 +1138,7 @@ export type OnDeleteUserProfileSubscription = {
         updatedAt: string,
         userProfileCommentsId?: string | null,
         commentAuthorId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1108,6 +1146,10 @@ export type OnDeleteUserProfileSubscription = {
     updatedAt: string,
     owner?: string | null,
   } | null,
+};
+
+export type OnCreateCommentSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnCreateCommentSubscription = {
@@ -1140,7 +1182,12 @@ export type OnCreateCommentSubscription = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
+};
+
+export type OnUpdateCommentSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnUpdateCommentSubscription = {
@@ -1173,7 +1220,12 @@ export type OnUpdateCommentSubscription = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
+};
+
+export type OnDeleteCommentSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnDeleteCommentSubscription = {
@@ -1206,6 +1258,7 @@ export type OnDeleteCommentSubscription = {
     updatedAt: string,
     userProfileCommentsId?: string | null,
     commentAuthorId?: string | null,
+    owner?: string | null,
   } | null,
 };
 

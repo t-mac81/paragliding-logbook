@@ -2,6 +2,15 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const addUserToGroup = /* GraphQL */ `
+  mutation AddUserToGroup($input: AddUserToGroupInput) {
+    addUserToGroup(input: $input) {
+      success
+      error
+      errorMsg
+    }
+  }
+`;
 export const createUserProfile = /* GraphQL */ `
   mutation CreateUserProfile(
     $input: CreateUserProfileInput!
@@ -27,6 +36,7 @@ export const createUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -61,6 +71,7 @@ export const updateUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -95,6 +106,7 @@ export const deleteUserProfile = /* GraphQL */ `
           updatedAt
           userProfileCommentsId
           commentAuthorId
+          owner
         }
         nextToken
       }
@@ -135,6 +147,7 @@ export const createComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
@@ -169,6 +182,7 @@ export const updateComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
@@ -203,6 +217,7 @@ export const deleteComment = /* GraphQL */ `
       updatedAt
       userProfileCommentsId
       commentAuthorId
+      owner
     }
   }
 `;
