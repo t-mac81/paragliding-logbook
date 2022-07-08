@@ -27,6 +27,11 @@ yarn-error.log*
 # Optional eslint cache
 .eslintcache
 
+src/graphql/mutations.ts
+src/graphql/queries.ts
+src/graphql/subscriptions.ts
+src/graphql/schema.json
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
