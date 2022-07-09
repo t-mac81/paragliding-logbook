@@ -7,7 +7,8 @@ $util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))
 ## set the typename **
 $util.qr($mergedValues.put("__typename", "Comment"))
 ## set owner ##
-$util.qr($mergedValues.put("owner", $ctx.identity.claims.get("sub"), "___xamznone____"))
+#set( $ownerClaim0 = $util.defaultIfNull($ctx.identity.claims.get("sub"), "___xamznone____") )
+$util.qr($mergedValues.put("owner", $ownerClaim0))
 
 #set( $PutObject = {
   "version": "2018-05-29",
