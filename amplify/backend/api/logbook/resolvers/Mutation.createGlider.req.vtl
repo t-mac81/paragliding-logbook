@@ -7,7 +7,7 @@ $util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))
 ## set the typename **
 $util.qr($mergedValues.put("__typename", "Glider"))
 ## set owner ##
-$util.qr($mergedValues.put("owner", $context.identity.resolverContext.sub))
+$util.qr($mergedValues.put("owner", $ctx.identity.claims.get("sub"), "___xamznone____"))
 
 #set( $PutObject = {
   "version": "2018-05-29",

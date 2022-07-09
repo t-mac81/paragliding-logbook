@@ -1,7 +1,7 @@
 import { IonActionSheet, IonItem, IonList, IonListHeader } from '@ionic/react';
 import { API } from 'aws-amplify';
 import { useEffect, useState } from 'react';
-import { AddUserToGroupResponse, ListUserProfilesQuery, UserProfile } from '../API';
+import { CognitoGroupResponse, ListUserProfilesQuery, UserProfile } from '../API';
 import { addUserToGroup } from '../graphql/mutations';
 import { listUserProfiles } from '../graphql/queries';
 import './StudentRoster.css';
@@ -35,7 +35,7 @@ const UserList: React.FC = () => {
             group,
           },
         },
-      })) as unknown as AddUserToGroupResponse;
+      })) as unknown as CognitoGroupResponse;
       console.log('Response: ', response.success);
     } catch (e) {
       console.log('Error: ', e);
@@ -57,7 +57,7 @@ const UserList: React.FC = () => {
               group,
             },
           },
-        }) as unknown as AddUserToGroupResponse;
+        }) as unknown as CognitoGroupResponse;
         results.push(response);
       }
     } catch (e) {
