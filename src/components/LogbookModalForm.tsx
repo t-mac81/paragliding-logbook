@@ -15,10 +15,12 @@ import { API } from 'aws-amplify';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { FlightLog, ListGlidersQuery } from '../API';
 import { createFlightLog, updateFlightLog } from '../graphql/mutations';
 import { listGliders } from '../graphql/queries';
 import scrubData from '../utils/ModelUtil';
+import { RootState } from '../app/store';
 
 export interface ShowModalProps {
   showModal: boolean;
@@ -54,13 +56,17 @@ const LogbookModalForm = ({
     flightLogGliderId: null,
   };
 
+  const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
+
   useEffect(() => {
+    const ownerId = cognitoIdentity.cognito.sub;
     console.log('flightlog: ', flightlogEdit);
     const getGliders = async () => {
       try {
         const glidersData = (await API.graphql({
           query: listGliders,
           authMode: 'AMAZON_COGNITO_USER_POOLS',
+          variables: { filter: { owner: { eq: ownerId } } },
         })) as { data: ListGlidersQuery };
         console.log(glidersData);
         setGliderList(glidersData?.data?.listGliders?.items || null);
@@ -69,7 +75,7 @@ const LogbookModalForm = ({
       }
     };
     getGliders();
-  }, []);
+  }, [cognitoIdentity.cognito.sub, flightlogEdit]);
 
   const createNewFlightLog = async (data: FlightLog) => {
     await API.graphql({

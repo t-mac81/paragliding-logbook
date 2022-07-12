@@ -115,7 +115,7 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
     };
 
     getProfile();
-  }, [cognitoData]);
+  }, [cognitoData, propId]);
 
   useEffect(() => {
     getCognitoData();

@@ -34,6 +34,7 @@ const GliderList: React.FC = () => {
   const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
 
   useEffect(() => {
+    if (showModal) return;
     const ownerId = cognitoIdentity.cognito.sub;
     const getGliders = async () => {
       try {
@@ -49,7 +50,7 @@ const GliderList: React.FC = () => {
       }
     };
     getGliders();
-  }, [cognitoIdentity.cognito.sub]);
+  }, [cognitoIdentity.cognito.sub, showModal]);
 
   const editGlider = (glider: Glider) => {
     setGliderEdit(glider);
