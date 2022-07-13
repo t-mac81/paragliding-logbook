@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { closeModal } from '../features/commentModalSlice';
+import { Comment } from '../API';
 
 interface ModalState {
   commentModal: any;
@@ -29,6 +30,19 @@ const CommentModal: React.FC = () => {
     message: null,
   };
 
+  // const createNewComment = async (studentComment) => {
+  //   await API.graphql({
+  //     query: createNewComment,
+  //     variables: {
+  //       input: {message: studentComment }
+  //     }
+  //   })
+  // }
+
+  const onSubmit = (data: Comment) => {
+    console.log(data.message);
+  };
+
   return (
     <IonModal isOpen={isOpen} onDidDismiss={() => dispatch(closeModal())}>
       <IonContent>
@@ -36,7 +50,8 @@ const CommentModal: React.FC = () => {
           initialValues={emptyComment}
           validationSchema={validationSchema}
           onSubmit={values => {
-            alert(JSON.stringify(values, null, 2));
+            const data = values as unknown as Comment;
+            onSubmit(data);
           }}
         >
           {formikProps => (

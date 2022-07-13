@@ -195,7 +195,6 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
               />
             </IonItem>
           </IonCard>
-
           <IonCard>
             <IonItem>
               <IonLabel position='stacked'> Name: </IonLabel>
@@ -209,7 +208,6 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
               <div className='error'>{formikProps.touched.name && formikProps.errors.name}</div>
             </IonItem>
           </IonCard>
-
           <IonCard>
             <IonItem>
               <IonLabel position='stacked'> Address: </IonLabel>
@@ -234,7 +232,6 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
               </div>
             </IonItem>
           </IonCard>
-
           <IonCard>
             <IonItem>
               <IonLabel position='stacked'> City: </IonLabel>
@@ -249,7 +246,6 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
               <div className='error'>{formikProps.touched.city && formikProps.errors.city}</div>
             </IonItem>
           </IonCard>
-
           <IonCard>
             <IonItem>
               <IonLabel position='stacked'> State </IonLabel>
@@ -264,7 +260,6 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
               <div className='error'>{formikProps.touched.state && formikProps.errors.state}</div>
             </IonItem>
           </IonCard>
-
           <IonCard>
             <IonItem>
               <IonLabel position='stacked'> Zip Code </IonLabel>
@@ -280,7 +275,6 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
               </div>
             </IonItem>
           </IonCard>
-
           <IonCard>
             <IonItem>
               <IonLabel position='stacked'> Phone Number </IonLabel>
@@ -298,7 +292,6 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
               </div>
             </IonItem>
           </IonCard>
-
           <IonCard>
             <IonItem>
               <IonLabel position='stacked'> Bio: </IonLabel>
@@ -312,7 +305,6 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
               <div className='error'>{formikProps.touched.bio && formikProps.errors.bio}</div>
             </IonItem>
           </IonCard>
-
           <IonCard>
             <IonItem>
               <IonLabel position='stacked'> Inreach / Spot Tracking URL: </IonLabel>
@@ -328,9 +320,13 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
             </IonItem>
           </IonCard>
           {/* TODO: add genric error for form issues */}
-          <IonButton type='submit' disabled={loading}>
-            {isNew ? 'Create Profile' : 'Update Profile'}
-          </IonButton>
+          {propId === null ? (
+            <IonButton type='submit' disabled={loading}>
+              {isNew ? 'Create Profile' : 'Update Profile'}
+            </IonButton>
+          ) : (
+            ''
+          )}
         </form>
       )}
     </Formik>
