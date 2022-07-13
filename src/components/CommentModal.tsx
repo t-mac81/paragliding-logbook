@@ -10,15 +10,21 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { API } from 'aws-amplify';
 import { closeModal } from '../features/commentModalSlice';
 import { Comment } from '../API';
+import { createComment } from '../graphql/mutations';
 
 interface ModalState {
   commentModal: any;
   isOpen: boolean;
 }
 
-const CommentModal: React.FC = () => {
+interface UserIdProps {
+  userProfileId: string;
+}
+
+const CommentModal = ({ userProfileId }: UserIdProps) => {
   const dispatch = useDispatch();
   const { isOpen }: ModalState = useSelector((store: ModalState) => store.commentModal);
   const validationSchema = yup.object({
@@ -30,17 +36,19 @@ const CommentModal: React.FC = () => {
     message: null,
   };
 
-  // const createNewComment = async (studentComment) => {
-  //   await API.graphql({
-  //     query: createNewComment,
-  //     variables: {
-  //       input: {message: studentComment }
-  //     }
-  //   })
-  // }
+  const createNewComment = async (data: Comment) => {
+    await API.graphql({
+      query: createComment,
+      variables: {
+        input: { message: data.message, userProfileCommentsId: userProfileId },
+      },
+      authMode: 'AMAZON_COGNITO_USER_POOLS',
+    });
+    dispatch(closeModal());
+  };
 
   const onSubmit = (data: Comment) => {
-    console.log(data.message);
+    createNewComment(data);
   };
 
   return (

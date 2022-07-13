@@ -7,10 +7,14 @@ import { listUserProfiles } from '../graphql/queries';
 import './StudentRoster.css';
 import { openModal } from '../features/commentModalSlice';
 
-const StudentRoster: React.FC = () => {
+export interface UserIdProps {
+  userProfileId: String;
+  setUserProfileId: Function;
+}
+
+const StudentRoster = ({ userProfileId, setUserProfileId }: UserIdProps) => {
   const [studentList, setStudentList] = useState<Array<UserProfile>>([] as UserProfile[]);
   const [showActionSheet, setShowActionSheet] = useState(false);
-  const [userProfileId, setUserProfileId] = useState<String>('');
   const dispatch = useDispatch();
 
   const getStudentList = async () => {

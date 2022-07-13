@@ -7,6 +7,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 import CommentModal from '../components/CommentModal';
@@ -14,6 +15,7 @@ import StudentRoster from '../components/StudentRoster';
 import './Instructors.css';
 
 const Instructors: React.FC = () => {
+  const [userProfileId, setUserProfileId] = useState<string>('');
   const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
   const cognitoGroups = cognitoIdentity.cognito.groups || [];
   const showInstructorView =
@@ -32,8 +34,8 @@ const Instructors: React.FC = () => {
 
       {showInstructorView ? (
         <IonContent fullscreen>
-          <StudentRoster />
-          <CommentModal />
+          <StudentRoster userProfileId={userProfileId} setUserProfileId={setUserProfileId} />
+          <CommentModal userProfileId={userProfileId} />
         </IonContent>
       ) : (
         ''
