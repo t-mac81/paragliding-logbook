@@ -8,7 +8,7 @@ import './StudentRoster.css';
 import { openModal } from '../features/commentModalSlice';
 
 export interface UserIdProps {
-  userProfileId: String;
+  userProfileId: string;
   setUserProfileId: Function;
 }
 

@@ -12,11 +12,14 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { API, Auth } from 'aws-amplify';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { CreateUserProfileMutation, GetUserProfileQuery, UserProfile } from '../API';
 import { createUserProfile, updateUserProfile } from '../graphql/mutations';
 import { getUserProfile } from '../graphql/queries';
 import scrubData from '../utils/ModelUtil';
 import './ProfileForm.css';
+import CommentList from './CommentList';
+import { RootState } from '../app/store';
 
 const validationSchema = yup.object({
   name: yup.string().nullable().required('Name is required'),
@@ -58,6 +61,8 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
   const [showToastError, setShowToastError] = useState<boolean>(false);
   const [showToastCreate, setShowToastCreate] = useState<boolean>(false);
   const [showToastUpdate, setShowToastUpdate] = useState<boolean>(false);
+  const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
+  const cognitoGroups = cognitoIdentity.cognito.groups || [];
 
   const emptyProfile = {
     email: cognitoData?.email as string,
@@ -171,165 +176,168 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
   }
 
   return (
-    <Formik
-      initialValues={profile || emptyProfile}
-      validationSchema={validationSchema}
-      onSubmit={event => {
-        onSubmit(event);
-      }}
-    >
-      {formikProps => (
-        /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
-        <form onSubmit={formikProps.handleSubmit}>
-          <IonToast isOpen={showToastError} message='Network Error! Please try again' />
-          <IonToast isOpen={showToastCreate} message='Your profile has been created!' />
-          <IonToast isOpen={showToastUpdate} message='Your profile has been updated!' />
-          <IonCard>
-            <IonItem>
-              <IonLabel position='stacked'> Email: </IonLabel>
-              <IonInput
-                type='email'
-                value={formikProps?.values?.email || null}
-                readonly
-                onIonChange={formikProps.handleChange}
-              />
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonItem>
-              <IonLabel position='stacked'> Name: </IonLabel>
-              <IonInput
-                type='text'
-                autocomplete='new-password'
-                name='name'
-                value={formikProps.values.name}
-                onIonChange={formikProps.handleChange}
-              />
-              <div className='error'>{formikProps.touched.name && formikProps.errors.name}</div>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonItem>
-              <IonLabel position='stacked'> Address: </IonLabel>
-              <IonInput
-                type='text'
-                autocomplete='new-password'
-                name='addressLine1'
-                placeholder='Line 1'
-                value={formikProps.values.addressLine1}
-                onIonChange={formikProps.handleChange}
-              />
-              <IonInput
-                type='text'
-                autocomplete='new-password'
-                name='addressLine2'
-                placeholder='Line 2'
-                value={formikProps.values.addressLine2}
-                onIonChange={formikProps.handleChange}
-              />
-              <div className='error'>
-                {formikProps.touched.addressLine1 && formikProps.errors.addressLine1}
-              </div>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonItem>
-              <IonLabel position='stacked'> City: </IonLabel>
-              <IonInput
-                type='text'
-                autocomplete='new-password'
-                name='city'
-                placeholder='City'
-                value={formikProps.values.city}
-                onIonChange={formikProps.handleChange}
-              />
-              <div className='error'>{formikProps.touched.city && formikProps.errors.city}</div>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonItem>
-              <IonLabel position='stacked'> State </IonLabel>
-              <IonInput
-                type='text'
-                autocomplete='new-password'
-                name='state'
-                placeholder='State'
-                value={formikProps.values.state}
-                onIonChange={formikProps.handleChange}
-              />
-              <div className='error'>{formikProps.touched.state && formikProps.errors.state}</div>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonItem>
-              <IonLabel position='stacked'> Zip Code </IonLabel>
-              <IonInput
-                autocomplete='new-password'
-                name='zipCode'
-                placeholder='99999'
-                value={formikProps.values.zipCode}
-                onIonChange={formikProps.handleChange}
-              />
-              <div className='error'>
-                {formikProps.touched.zipCode && formikProps.errors.zipCode}
-              </div>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonItem>
-              <IonLabel position='stacked'> Phone Number </IonLabel>
-              <IonInput
-                type='tel'
-                autocomplete='new-password'
-                name='phoneNumber'
-                inputmode='tel'
-                placeholder='999-999-9999'
-                value={formikProps.values.phoneNumber}
-                onIonChange={formikProps.handleChange}
-              />
-              <div className='error'>
-                {formikProps.touched.phoneNumber && formikProps.errors.phoneNumber}
-              </div>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonItem>
-              <IonLabel position='stacked'> Bio: </IonLabel>
-              <IonTextarea
-                placeholder='Previous sports, hobbies experience'
-                autoGrow
-                name='bio'
-                value={formikProps.values.bio}
-                onIonChange={formikProps.handleChange}
-              />
-              <div className='error'>{formikProps.touched.bio && formikProps.errors.bio}</div>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonItem>
-              <IonLabel position='stacked'> Inreach / Spot Tracking URL: </IonLabel>
-              <IonInput
-                placeholder='Optional'
-                name='trackingUrl'
-                value={formikProps.values.trackingUrl}
-                onIonChange={formikProps.handleChange}
-              />
-              <div className='error'>
-                {formikProps.touched.trackingUrl && formikProps.errors.trackingUrl}
-              </div>
-            </IonItem>
-          </IonCard>
-          {/* TODO: add genric error for form issues */}
-          {propId === null ? (
-            <IonButton type='submit' disabled={loading}>
-              {isNew ? 'Create Profile' : 'Update Profile'}
-            </IonButton>
-          ) : (
-            ''
-          )}
-        </form>
-      )}
-    </Formik>
+    <div>
+      <Formik
+        initialValues={profile || emptyProfile}
+        validationSchema={validationSchema}
+        onSubmit={event => {
+          onSubmit(event);
+        }}
+      >
+        {formikProps => (
+          /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
+          <form onSubmit={formikProps.handleSubmit}>
+            <IonToast isOpen={showToastError} message='Network Error! Please try again' />
+            <IonToast isOpen={showToastCreate} message='Your profile has been created!' />
+            <IonToast isOpen={showToastUpdate} message='Your profile has been updated!' />
+            <IonCard>
+              <IonItem>
+                <IonLabel position='stacked'> Email: </IonLabel>
+                <IonInput
+                  type='email'
+                  value={formikProps?.values?.email || null}
+                  readonly
+                  onIonChange={formikProps.handleChange}
+                />
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonItem>
+                <IonLabel position='stacked'> Name: </IonLabel>
+                <IonInput
+                  type='text'
+                  autocomplete='new-password'
+                  name='name'
+                  value={formikProps.values.name}
+                  onIonChange={formikProps.handleChange}
+                />
+                <div className='error'>{formikProps.touched.name && formikProps.errors.name}</div>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonItem>
+                <IonLabel position='stacked'> Address: </IonLabel>
+                <IonInput
+                  type='text'
+                  autocomplete='new-password'
+                  name='addressLine1'
+                  placeholder='Line 1'
+                  value={formikProps.values.addressLine1}
+                  onIonChange={formikProps.handleChange}
+                />
+                <IonInput
+                  type='text'
+                  autocomplete='new-password'
+                  name='addressLine2'
+                  placeholder='Line 2'
+                  value={formikProps.values.addressLine2}
+                  onIonChange={formikProps.handleChange}
+                />
+                <div className='error'>
+                  {formikProps.touched.addressLine1 && formikProps.errors.addressLine1}
+                </div>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonItem>
+                <IonLabel position='stacked'> City: </IonLabel>
+                <IonInput
+                  type='text'
+                  autocomplete='new-password'
+                  name='city'
+                  placeholder='City'
+                  value={formikProps.values.city}
+                  onIonChange={formikProps.handleChange}
+                />
+                <div className='error'>{formikProps.touched.city && formikProps.errors.city}</div>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonItem>
+                <IonLabel position='stacked'> State </IonLabel>
+                <IonInput
+                  type='text'
+                  autocomplete='new-password'
+                  name='state'
+                  placeholder='State'
+                  value={formikProps.values.state}
+                  onIonChange={formikProps.handleChange}
+                />
+                <div className='error'>{formikProps.touched.state && formikProps.errors.state}</div>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonItem>
+                <IonLabel position='stacked'> Zip Code </IonLabel>
+                <IonInput
+                  autocomplete='new-password'
+                  name='zipCode'
+                  placeholder='99999'
+                  value={formikProps.values.zipCode}
+                  onIonChange={formikProps.handleChange}
+                />
+                <div className='error'>
+                  {formikProps.touched.zipCode && formikProps.errors.zipCode}
+                </div>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonItem>
+                <IonLabel position='stacked'> Phone Number </IonLabel>
+                <IonInput
+                  type='tel'
+                  autocomplete='new-password'
+                  name='phoneNumber'
+                  inputmode='tel'
+                  placeholder='999-999-9999'
+                  value={formikProps.values.phoneNumber}
+                  onIonChange={formikProps.handleChange}
+                />
+                <div className='error'>
+                  {formikProps.touched.phoneNumber && formikProps.errors.phoneNumber}
+                </div>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonItem>
+                <IonLabel position='stacked'> Bio: </IonLabel>
+                <IonTextarea
+                  placeholder='Previous sports, hobbies experience'
+                  autoGrow
+                  name='bio'
+                  value={formikProps.values.bio}
+                  onIonChange={formikProps.handleChange}
+                />
+                <div className='error'>{formikProps.touched.bio && formikProps.errors.bio}</div>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonItem>
+                <IonLabel position='stacked'> Inreach / Spot Tracking URL: </IonLabel>
+                <IonInput
+                  placeholder='Optional'
+                  name='trackingUrl'
+                  value={formikProps.values.trackingUrl}
+                  onIonChange={formikProps.handleChange}
+                />
+                <div className='error'>
+                  {formikProps.touched.trackingUrl && formikProps.errors.trackingUrl}
+                </div>
+              </IonItem>
+            </IonCard>
+            {/* TODO: add genric error for form issues */}
+            {propId === null ? (
+              <IonButton type='submit' disabled={loading}>
+                {isNew ? 'Create Profile' : 'Update Profile'}
+              </IonButton>
+            ) : (
+              ''
+            )}
+          </form>
+        )}
+      </Formik>
+      {cognitoGroups.includes('Instructors') ? <CommentList propId={propId} /> : ''}
+    </div>
   );
 };
 export default ProfileForm;
