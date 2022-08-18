@@ -1,7 +1,8 @@
-import { IonList, IonItem, IonListHeader } from '@ionic/react';
+import { IonList, IonItem, IonListHeader, IonActionSheet } from '@ionic/react';
 import { API } from 'aws-amplify';
 import { useEffect, useState } from 'react';
 import { Comment, ListCommentsQuery } from '../API';
+import { deleteComment } from '../graphql/mutations';
 import { listComments } from '../graphql/queries';
 
 interface CommentListProps {
@@ -10,7 +11,10 @@ interface CommentListProps {
 
 const CommentList = ({ propId }: CommentListProps) => {
   const [commentList, setCommentList] = useState<Array<Comment | null>>([]);
+  const [showActionSheet, setShowActionSheet] = useState(false);
+  const [commentId, setCommentId] = useState<String>('');
   useEffect(() => {
+    if (showActionSheet) return;
     const getCommentList = async () => {
       try {
         const commentData = (await API.graphql({
@@ -26,7 +30,17 @@ const CommentList = ({ propId }: CommentListProps) => {
       }
     };
     getCommentList();
-  }, []);
+  }, [propId, showActionSheet]);
+
+  const commentDelete = async () => {
+    await API.graphql({
+      query: deleteComment,
+      authMode: 'AMAZON_COGNITO_USER_POOLS',
+      variables: {
+        input: { id: commentId },
+      },
+    });
+  };
 
   return (
     <div>
@@ -37,13 +51,41 @@ const CommentList = ({ propId }: CommentListProps) => {
           <IonListHeader>Instructor Comments:</IonListHeader>
           {commentList?.map((comment: Comment | null) => {
             return (
-              <IonItem button key={comment!.id}>
+              <IonItem
+                button
+                key={comment!.id}
+                onClick={() => {
+                  setShowActionSheet(true);
+                  setCommentId(comment!.id);
+                }}
+              >
                 {comment!.message}
               </IonItem>
             );
           })}
         </IonList>
       )}
+      <IonActionSheet
+        isOpen={showActionSheet}
+        onDidDismiss={() => setShowActionSheet(false)}
+        buttons={[
+          {
+            text: 'Delete Comment',
+            role: 'destructive',
+            handler: () => {
+              console.log('Delete Comment');
+              commentDelete();
+            },
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel Clicked');
+            },
+          },
+        ]}
+      />
     </div>
   );
 };

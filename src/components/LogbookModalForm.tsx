@@ -27,6 +27,7 @@ export interface ShowModalProps {
   setShowModal: Function;
   flightlogEdit: FlightLog;
   setFlightlogEdit: Function;
+  id: string | null;
 }
 
 const LogbookModalForm = ({
@@ -34,6 +35,7 @@ const LogbookModalForm = ({
   setShowModal,
   flightlogEdit,
   setFlightlogEdit,
+  id: propId,
 }: ShowModalProps) => {
   const [gliderList, setGliderList] = useState<Array<any> | null>(null);
 
@@ -59,7 +61,7 @@ const LogbookModalForm = ({
   const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
 
   useEffect(() => {
-    const ownerId = cognitoIdentity.cognito.sub;
+    const ownerId = propId || cognitoIdentity.cognito.sub;
     console.log('flightlog: ', flightlogEdit);
     const getGliders = async () => {
       try {
@@ -224,7 +226,12 @@ const LogbookModalForm = ({
                   </div>
                 </IonItem>
               </IonCard>
-              <IonButton type='submit'>{formikProps?.values?.id ? 'Update' : 'Submit'}</IonButton>
+              {propId === null ? (
+                <IonButton type='submit'>{formikProps?.values?.id ? 'Update' : 'Submit'}</IonButton>
+              ) : (
+                ''
+              )}
+
               <IonButton onClick={() => closeModal()}>Cancel</IonButton>
             </form>
           )}

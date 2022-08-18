@@ -37,7 +37,7 @@ const Logbook: React.FC<LogbookProps> = (props: LogbookProps) => {
       </IonHeader>
       <IonContent fullscreen>
         <LogbookStats logbookList={logbookList} />
-        <IonButton onClick={() => setShowModal(true)}>New Entry</IonButton>
+        {id === null ? <IonButton onClick={() => setShowModal(true)}>New Entry</IonButton> : ''}
         <LogbookList
           id={id}
           showModal={showModal}
@@ -52,6 +52,7 @@ const Logbook: React.FC<LogbookProps> = (props: LogbookProps) => {
           setShowModal={setShowModal}
           flightlogEdit={flightlogEdit}
           setFlightlogEdit={setFlightlogEdit}
+          id={id}
         />
       </IonContent>
     </IonPage>
