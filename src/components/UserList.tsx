@@ -2,7 +2,7 @@ import { IonActionSheet, IonItem, IonList, IonListHeader } from '@ionic/react';
 import { API } from 'aws-amplify';
 import { useEffect, useState } from 'react';
 import { CognitoGroupResponse, ListUserProfilesQuery, UserProfile } from '../API';
-import { addUserToGroup } from '../graphql/mutations';
+import { addUserToGroup, removeUserFromGroup } from '../graphql/mutations';
 import { listUserProfiles } from '../graphql/queries';
 import './StudentRoster.css';
 
@@ -49,7 +49,7 @@ const UserList: React.FC = () => {
     try {
       for (const group of groups) {
         const response = API.graphql({
-          query: addUserToGroup,
+          query: removeUserFromGroup,
           authMode: 'AMAZON_COGNITO_USER_POOLS',
           variables: {
             input: {
@@ -119,7 +119,7 @@ const UserList: React.FC = () => {
             },
           },
           {
-            text: 'Delete User',
+            text: 'Deactivate User',
             role: 'destructive',
             handler: () => {
               console.log('Delete User');

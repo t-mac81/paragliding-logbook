@@ -84,3 +84,4 @@ type Mutation {
   addUserToGroup(input: CognitoGroupInput): CognitoGroupResponse @function(name: "cognitoGroupMod-${env}") @auth(rules: [{ allow: groups, groups: ["Administrators"] }])
   removeUserFromGroup(input: CognitoGroupInput): CognitoGroupResponse @function(name: "cognitoGroupMod-${env}") @auth(rules: [{ allow: groups, groups: ["Administrators"] }])
 }
+ 
