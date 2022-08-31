@@ -72,7 +72,7 @@ type FlightLog
 type CognitoGroupResponse {
   success: Boolean
   error: String
-  errorMsg: String 
+  errorMsg: String
 }
 
 input CognitoGroupInput {
@@ -81,7 +81,10 @@ input CognitoGroupInput {
 }
 
 type Mutation {
-  addUserToGroup(input: CognitoGroupInput): CognitoGroupResponse @function(name: "cognitoGroupMod-${env}") @auth(rules: [{ allow: groups, groups: ["Administrators"] }])
-  removeUserFromGroup(input: CognitoGroupInput): CognitoGroupResponse @function(name: "cognitoGroupMod-${env}") @auth(rules: [{ allow: groups, groups: ["Administrators"] }])
+  addUserToGroup(input: CognitoGroupInput): CognitoGroupResponse
+    @function(name: "cognitoGroupMod-${env}")
+    @auth(rules: [{ allow: groups, groups: ["Administrators"] }])
+  removeUserFromGroup(input: CognitoGroupInput): CognitoGroupResponse
+    @function(name: "cognitoGroupMod-${env}")
+    @auth(rules: [{ allow: groups, groups: ["Administrators"] }])
 }
- 

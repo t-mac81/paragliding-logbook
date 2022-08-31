@@ -12,7 +12,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { API, Auth } from 'aws-amplify';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CreateUserProfileMutation, GetUserProfileQuery, UserProfile } from '../API';
 import { createUserProfile, updateUserProfile } from '../graphql/mutations';
 import { getUserProfile } from '../graphql/queries';
@@ -20,6 +20,7 @@ import scrubData from '../utils/ModelUtil';
 import './ProfileForm.css';
 import CommentList from './CommentList';
 import { RootState } from '../app/store';
+import { isProfile } from '../features/hasProfileSlice';
 
 const validationSchema = yup.object({
   name: yup.string().nullable().required('Name is required'),
@@ -63,6 +64,7 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
   const [showToastUpdate, setShowToastUpdate] = useState<boolean>(false);
   const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
   const cognitoGroups = cognitoIdentity.cognito.groups || [];
+  const dispatch = useDispatch();
 
   const emptyProfile = {
     email: cognitoData?.email as string,
@@ -150,8 +152,12 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
     const { createUserProfile: newProfile } = response.data;
     setProfile(scrubData(newProfile));
     setIsNew(false);
+    dispatch(isProfile());
     setShowToastCreate(true);
     setTimeout(() => setShowToastCreate(false), 2000);
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 2500);
   };
 
   const updateProfile = async (data: UserProfile) => {

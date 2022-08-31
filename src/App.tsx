@@ -1,4 +1,4 @@
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify, { API, Auth } from 'aws-amplify';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import { useSelector } from 'react-redux';
 import '@aws-amplify/ui-react/styles.css';
@@ -11,6 +11,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonLoading,
   IonMenu,
   IonRouterOutlet,
   IonTitle,
@@ -18,7 +19,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { airplane, book, clipboard, lockClosed, logOut, person, trailSign } from 'ionicons/icons';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import awsconfig from './aws-exports';
 import Logbook from './pages/Logbook';
@@ -52,6 +53,9 @@ import { setCognitoIdentity, clearCognitoIdentity } from './features/cognitoSlic
 import { ICognitoData } from './app/CognitoIdentityTypes';
 import LandingPage from './pages/LandingPage';
 import Instructors from './pages/Instructors';
+import { GetUserProfileQuery } from './API';
+import { getUserProfile } from './graphql/queries';
+import { isProfile } from './features/hasProfileSlice';
 
 Amplify.configure(awsconfig);
 
@@ -59,10 +63,24 @@ interface MatchParams {
   id?: string | undefined;
 }
 
+interface ProfileState {
+  hasProfileState: any;
+  hasProfile: boolean;
+}
+
 interface MatchProps extends RouteComponentProps<MatchParams> {}
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
+  const { hasProfile }: ProfileState = useSelector((store: ProfileState) => store.hasProfileState);
+  const [profileLoading, setProfileLoading] = useState<Boolean>(true);
+  const [cognitoLoading, setCognitoLoading] = useState<Boolean>(true);
+  const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
+  const cognitoGroups = cognitoIdentity.cognito.groups || [];
+  const logout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
 
   useEffect(() => {
     const getCognitoData = async () => {
@@ -72,28 +90,51 @@ const App: React.FC = () => {
         const authPayload = awsAuth.getIdToken().payload;
         const groups: Array<string> = authPayload['cognito:groups'];
         const { sub, email } = authPayload;
-        const cognitoIdentity: ICognitoData = {
+        const cognitoIdent: ICognitoData = {
           sub,
           email,
           groups,
         };
 
-        console.log('Got cognito identity: ', cognitoIdentity);
-        dispatch(setCognitoIdentity(cognitoIdentity));
+        console.log('Got cognito identity: ', cognitoIdent);
+        dispatch(setCognitoIdentity(cognitoIdent));
       } catch (e) {
         clearCognitoIdentity();
+      } finally {
+        setCognitoLoading(false);
       }
     };
-
     getCognitoData();
   }, [dispatch]);
 
-  const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
-  const cognitoGroups = cognitoIdentity.cognito.groups || [];
-  const logout = () => {
-    localStorage.clear();
-    window.location.reload();
-  };
+  useEffect(() => {
+    if (cognitoLoading) return;
+
+    const getProfile = async () => {
+      try {
+        const profileData = (await API.graphql({
+          query: getUserProfile,
+          variables: { id: cognitoIdentity?.cognito?.sub },
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        })) as { data: GetUserProfileQuery };
+
+        if (profileData.data.getUserProfile) {
+          dispatch(isProfile());
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+    getProfile();
+  }, [cognitoIdentity?.cognito?.sub, cognitoLoading, hasProfile]);
+
+  if (profileLoading || cognitoLoading) {
+    return <IonLoading isOpen />;
+  }
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -119,7 +160,7 @@ const App: React.FC = () => {
             <Gliders />
           </Route>
           <Route exact path='/'>
-            <Redirect to='/landingpage' />
+            {hasProfile ? <Redirect to='/landingpage' /> : <Redirect to='/user-profile' />}
           </Route>
           <Route exact path='/instructors'>
             <Instructors />
@@ -128,53 +169,57 @@ const App: React.FC = () => {
             <Admins />
           </Route>
         </IonRouterOutlet>
-        <IonMenu side='start' contentId='menuContent'>
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Menu</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent>
-            <IonList>
-              <IonItem item-id='landingpage' href='/landingpage'>
-                <IonIcon icon={trailSign} />
-                <IonLabel>Landing Page</IonLabel>
-              </IonItem>
-              <IonItem item-id='logbook' href='/logbook'>
-                <IonIcon icon={book} />
-                <IonLabel>Logbook</IonLabel>
-              </IonItem>
-              <IonItem item-id='user-profile' href='/user-profile'>
-                <IonIcon icon={person} />
-                <IonLabel>Profile</IonLabel>
-              </IonItem>
-              <IonItem item-id='gliders' href='/gliders'>
-                <IonIcon icon={airplane} />
-                <IonLabel>Gliders</IonLabel>
-              </IonItem>
-              {cognitoGroups.includes('Instructors') ? (
-                <IonItem item-id='instructors' href='/instructors'>
-                  <IonIcon icon={clipboard} />
-                  <IonLabel>Instructors Area</IonLabel>
+        {hasProfile ? (
+          <IonMenu side='start' contentId='menuContent'>
+            <IonHeader>
+              <IonToolbar>
+                <IonTitle>Menu</IonTitle>
+              </IonToolbar>
+            </IonHeader>
+            <IonContent>
+              <IonList>
+                <IonItem item-id='landingpage' href='/landingpage'>
+                  <IonIcon icon={trailSign} />
+                  <IonLabel>Landing Page</IonLabel>
                 </IonItem>
-              ) : (
-                ''
-              )}
-              {cognitoGroups.includes('Administrators') ? (
-                <IonItem item-id='admins' href='/admins'>
-                  <IonIcon icon={lockClosed} />
-                  <IonLabel>Admins Area</IonLabel>
+                <IonItem item-id='logbook' href='/logbook'>
+                  <IonIcon icon={book} />
+                  <IonLabel>Logbook</IonLabel>
                 </IonItem>
-              ) : (
-                ''
-              )}
-              <IonItem item-id='logout' href='/' onClick={() => logout()}>
-                <IonIcon icon={logOut} />
-                <IonLabel>Logout</IonLabel>
-              </IonItem>
-            </IonList>
-          </IonContent>
-        </IonMenu>
+                <IonItem item-id='user-profile' href='/user-profile'>
+                  <IonIcon icon={person} />
+                  <IonLabel>Profile</IonLabel>
+                </IonItem>
+                <IonItem item-id='gliders' href='/gliders'>
+                  <IonIcon icon={airplane} />
+                  <IonLabel>Gliders</IonLabel>
+                </IonItem>
+                {cognitoGroups.includes('Instructors') ? (
+                  <IonItem item-id='instructors' href='/instructors'>
+                    <IonIcon icon={clipboard} />
+                    <IonLabel>Instructors Area</IonLabel>
+                  </IonItem>
+                ) : (
+                  ''
+                )}
+                {cognitoGroups.includes('Administrators') ? (
+                  <IonItem item-id='admins' href='/admins'>
+                    <IonIcon icon={lockClosed} />
+                    <IonLabel>Admins Area</IonLabel>
+                  </IonItem>
+                ) : (
+                  ''
+                )}
+                <IonItem item-id='logout' href='/' onClick={() => logout()}>
+                  <IonIcon icon={logOut} />
+                  <IonLabel>Logout</IonLabel>
+                </IonItem>
+              </IonList>
+            </IonContent>
+          </IonMenu>
+        ) : (
+          ''
+        )}
       </IonReactRouter>
     </IonApp>
   );
