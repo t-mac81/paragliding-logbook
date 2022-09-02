@@ -32,6 +32,9 @@ const UserList: React.FC = () => {
     try {
       const studentData = (await API.graphql({
         query: listUserProfiles,
+        variables: {
+          filter: { active: { eq: false } },
+        },
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })) as { data: ListUserProfilesQuery };
       const userProfiles = studentData?.data?.listUserProfiles?.items as UserProfile[];
