@@ -11,7 +11,6 @@ import { RootState } from '../app/store';
 export interface LogbookListProps {
   showModal: boolean;
   setShowModal: Function;
-  flightlogEdit: FlightLog;
   setFlightlogEdit: Function;
   logbookList: Array<FlightLog>;
   setLogbookList: Function;

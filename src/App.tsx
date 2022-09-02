@@ -70,7 +70,7 @@ interface ProfileState {
 
 interface MatchProps extends RouteComponentProps<MatchParams> {}
 
-const App: React.FC = () => {
+const App = () => {
   const dispatch = useAppDispatch();
   const { hasProfile }: ProfileState = useSelector((store: ProfileState) => store.hasProfileState);
   const [profileLoading, setProfileLoading] = useState<Boolean>(true);
@@ -129,7 +129,7 @@ const App: React.FC = () => {
       }
     };
     getProfile();
-  }, [cognitoIdentity?.cognito?.sub, cognitoLoading, hasProfile]);
+  }, [cognitoIdentity?.cognito?.sub, cognitoLoading, dispatch, hasProfile]);
 
   if (profileLoading || cognitoLoading) {
     return <IonLoading isOpen />;

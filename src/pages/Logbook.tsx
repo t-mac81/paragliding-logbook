@@ -42,7 +42,6 @@ const Logbook: React.FC<LogbookProps> = (props: LogbookProps) => {
           id={id}
           showModal={showModal}
           setShowModal={setShowModal}
-          flightlogEdit={flightlogEdit}
           setFlightlogEdit={setFlightlogEdit}
           logbookList={logbookList}
           setLogbookList={setLogbookList}

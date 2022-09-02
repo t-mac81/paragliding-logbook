@@ -22,10 +22,10 @@
     "@types/react-dom": "^16.9.10",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
-    "aws-amplify": "^4.3.10",
+    "aws-amplify": "^4.3.34",
     "aws-sdk": "^2.1170.0",
     "formik": "^2.2.9",
-    "ionicons": "^5.4.0",
+    "ionicons": "^6.0.3",
     "moment": "^2.29.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -34,8 +34,9 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.0",
+    "react-twitter-widgets": "^1.11.0",
     "web-vitals": "^0.2.4",
-    "webpack": "^5.73.0",
+    "webpack": "^5.74.0",
     "workbox-background-sync": "^5.1.4",
     "workbox-broadcast-update": "^5.1.4",
     "workbox-cacheable-response": "^5.1.4",
@@ -80,7 +81,6 @@
     "@capacitor/cli": "3.3.3",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.15.0",
-    "cache-loader": "^4.1.0",
     "eslint": "^8.2.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^16.1.0",
@@ -91,9 +91,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "^2.6.0",
-    "typescript": "^4.6.2",
-    "webpack": "^5.64.1",
-    "webpack-cli": "^4.9.1"
+    "typescript": "^4.8.2"
   },
   "description": "An Ionic project"
 }
