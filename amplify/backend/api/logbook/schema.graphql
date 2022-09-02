@@ -20,6 +20,7 @@ type UserProfile
   bio: String!
   trackingUrl: String
   comments: [Comment] @hasMany
+  active: Boolean!
 }
 
 type Comment

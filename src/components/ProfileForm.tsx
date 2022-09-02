@@ -77,6 +77,7 @@ const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
     phoneNumber: '',
     bio: '',
     trackingUrl: '',
+    active: true,
   };
 
   const onSubmit = (event: any) => {

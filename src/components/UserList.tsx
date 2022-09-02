@@ -1,8 +1,8 @@
-import { IonActionSheet, IonItem, IonList, IonListHeader } from '@ionic/react';
+import { IonActionSheet, IonItem, IonLabel, IonList, IonListHeader, IonToggle } from '@ionic/react';
 import { API } from 'aws-amplify';
 import { useEffect, useState } from 'react';
 import { CognitoGroupResponse, ListUserProfilesQuery, UserProfile } from '../API';
-import { addUserToGroup, removeUserFromGroup } from '../graphql/mutations';
+import { addUserToGroup, removeUserFromGroup, updateUserProfile } from '../graphql/mutations';
 import { listUserProfiles } from '../graphql/queries';
 import './StudentRoster.css';
 
@@ -10,8 +10,25 @@ const UserList: React.FC = () => {
   const [userList, setUserList] = useState<Array<UserProfile>>([] as UserProfile[]);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [userProfileId, setUserProfileId] = useState<String>('');
+  const [showDeactivated, setShowDeactivated] = useState(false);
 
-  const getStudentList = async () => {
+  const getStudentListActive = async () => {
+    try {
+      const studentData = (await API.graphql({
+        query: listUserProfiles,
+        variables: {
+          filter: { active: { eq: true } },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })) as { data: ListUserProfilesQuery };
+      const userProfiles = studentData?.data?.listUserProfiles?.items as UserProfile[];
+      setUserList(userProfiles);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getStudentListDeactive = async () => {
     try {
       const studentData = (await API.graphql({
         query: listUserProfiles,
@@ -23,7 +40,6 @@ const UserList: React.FC = () => {
       console.log(e);
     }
   };
-
   const addToGroup = async (sub: String, group: String) => {
     try {
       const response = (await API.graphql({
@@ -67,14 +83,46 @@ const UserList: React.FC = () => {
     await Promise.all(results);
   };
 
+  const activateUser = async (sub: String) => {
+    await API.graphql({
+      query: updateUserProfile,
+      variables: {
+        input: { active: true, id: sub },
+      },
+    });
+  };
+
+  const deactivateUser = async (sub: String) => {
+    await API.graphql({
+      query: updateUserProfile,
+      variables: {
+        input: { active: false, id: sub },
+      },
+    });
+  };
+
   useEffect(() => {
-    getStudentList();
-  }, []);
+    if (showActionSheet) return;
+    if (showDeactivated) {
+      getStudentListDeactive();
+    } else {
+      getStudentListActive();
+    }
+  }, [showActionSheet, showDeactivated]);
 
   return (
     <div>
       <IonList>
         <IonListHeader lines='full'>User List:</IonListHeader>
+        <IonItem>
+          <IonLabel>Show Deactiviated Users</IonLabel>
+          <IonToggle
+            slot='start'
+            name='showDeactivated'
+            checked={showDeactivated}
+            onIonChange={e => setShowDeactivated(e.detail.checked)}
+          />
+        </IonItem>
         {userList?.map((userProfile: UserProfile) => {
           return (
             <IonItem
@@ -83,7 +131,7 @@ const UserList: React.FC = () => {
               onClick={() => {
                 setShowActionSheet(true);
                 setUserProfileId(userProfile.id);
-                console.log(userProfileId);
+                console.log('userProfileId: ', userProfileId);
               }}
             >
               {' '}
@@ -111,6 +159,13 @@ const UserList: React.FC = () => {
             },
           },
           {
+            text: 'Activate User',
+            handler: () => {
+              console.log('Activate User');
+              activateUser(userProfileId);
+            },
+          },
+          {
             text: 'Remove from all Groups',
             role: 'destructive',
             handler: () => {
@@ -122,7 +177,8 @@ const UserList: React.FC = () => {
             text: 'Deactivate User',
             role: 'destructive',
             handler: () => {
-              console.log('Delete User');
+              console.log('Deactivate User');
+              deactivateUser(userProfileId);
             },
           },
           {

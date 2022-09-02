@@ -21,6 +21,9 @@ const StudentRoster = ({ userProfileId, setUserProfileId }: UserIdProps) => {
     try {
       const studentData = (await API.graphql({
         query: listUserProfiles,
+        variables: {
+          filter: { active: { eq: true } },
+        },
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })) as { data: ListUserProfilesQuery };
       const userProfiles = studentData?.data?.listUserProfiles?.items as UserProfile[];
