@@ -55,7 +55,7 @@ interface ProfileFormProps {
 
 const ProfileForm: React.FC<ProfileFormProps> = (props: ProfileFormProps) => {
   const { id: propId } = props;
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [isNew, setIsNew] = useState<Boolean>(false);
   const [cognitoData, setCognitoData] = useState<CognitoData | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);

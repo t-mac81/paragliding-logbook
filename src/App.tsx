@@ -16,6 +16,7 @@ import {
   IonRouterOutlet,
   IonTitle,
   IonToolbar,
+  setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { airplane, book, clipboard, lockClosed, logOut, person, trailSign } from 'ionicons/icons';
@@ -69,6 +70,8 @@ interface ProfileState {
 }
 
 interface MatchProps extends RouteComponentProps<MatchParams> {}
+
+setupIonicReact({});
 
 const App = () => {
   const dispatch = useAppDispatch();

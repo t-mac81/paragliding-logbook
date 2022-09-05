@@ -1,7 +1,7 @@
 import { Timeline } from 'react-twitter-widgets';
 
-const ProfileBasic = () => (
+const TwitterFeed = () => (
   <Timeline dataSource={{ sourceType: 'profile', screenName: 'macmurraytrevor' }} />
 );
 
-export default ProfileBasic;
+export default TwitterFeed;

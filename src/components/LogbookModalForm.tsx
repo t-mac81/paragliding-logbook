@@ -3,6 +3,7 @@ import {
   IonCard,
   IonContent,
   IonDatetime,
+  IonDatetimeButton,
   IonInput,
   IonItem,
   IonLabel,
@@ -136,13 +137,15 @@ const LogbookModalForm = ({
               <IonCard>
                 <IonItem>
                   <IonLabel position='stacked'>Date and Time:</IonLabel>
-                  <IonDatetime
-                    displayFormat='MMM DD, YYYY HH:mm'
-                    name='startDateTime'
-                    placeholder='Date and time you launched'
-                    value={formikProps.values.startDateTime}
-                    onIonChange={formikProps.handleChange}
-                  />
+                  <IonDatetimeButton datetime='startDateTime' />
+                  <IonModal keepContentsMounted>
+                    <IonDatetime
+                      id='startDateTime'
+                      name='startDateTime'
+                      value={formikProps.values.startDateTime}
+                      onIonChange={formikProps.handleChange}
+                    />
+                  </IonModal>
                   <div className='error'>
                     {formikProps.touched.startDateTime && formikProps.errors.startDateTime}
                   </div>
