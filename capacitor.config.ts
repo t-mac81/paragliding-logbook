@@ -1,10 +1,17 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'logbook',
+  appId: 'school.nwparagliding.logbook',
+  appName: 'Logbook',
   webDir: 'build',
-  bundledWebRuntime: false
+  bundledWebRuntime: false,
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 200,
+      launchAutoHide: true,
+      showSpinner: true,
+    },
+  },
 };
 
 export default config;
