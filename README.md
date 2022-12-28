@@ -23,13 +23,13 @@ Administrators can grant/revoke admin and/or instructor privileges to users. The
 
 ## How to bootstrap the project
 
-Since the project resides on AWS you must have user privileges in the AWS account tied to the amplify project.
+Since the project backend resides on AWS you must have user privileges in the AWS account tied to the amplify project.
 
-- Setup your security credentials in AWS IAM<br/>
-- Clone the repository<br/>
-- run `npm install`<br/>
-- run `amplify pull`<br/>
-- run `amplify codegen`<br/>
+- Setup your security credentials in AWS IAM
+- Clone the repository
+- run `npm install`
+- run `amplify pull` and use the credential obtained above
+- run `amplify codegen`
 
 ## Screenshots
 
@@ -75,7 +75,11 @@ Since the project resides on AWS you must have user privileges in the AWS accoun
 
 ## Android Build
 
-An APK file to sideload on your android device is available [here](/android/app/build/outputs/apk/debug/)
+All of the dev dependencies are in place to and an android version of the app. Android Studio installation is required. To build the android app:
+
+- run `npm run build` to create the production build
+- run `npx cap copy android` to copy the production build into the android folders
+- run `npx cap open android` to open the project in android studio
 
 ## Links
 
