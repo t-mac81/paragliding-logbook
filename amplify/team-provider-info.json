@@ -26,6 +26,9 @@
           "deploymentBucketName": "amplify-logbook-logbook-160846-deployment",
           "s3Key": "amplify-builds/cognitoGroupMod-67522b32505742686452-build.zip"
         }
+      },
+      "api": {
+        "logbook": {}
       }
     }
   }
