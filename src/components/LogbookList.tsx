@@ -26,7 +26,7 @@ const LogbookList = ({
   id: propId,
 }: LogbookListProps) => {
   const cognitoIdentity = useSelector((state: RootState) => state.cognitoIdentity);
-
+  // const [logbookSorted, setLogbookSorted] = useState<Array<FlightLog>>([]);
   useEffect(() => {
     if (showModal) return;
     const ownerId = !propId ? cognitoIdentity.cognito.sub || null : propId;
@@ -37,11 +37,18 @@ const LogbookList = ({
           authMode: 'AMAZON_COGNITO_USER_POOLS',
           variables: { filter: { owner: { eq: ownerId } } },
         })) as { data: ListFlightLogsQuery };
-        console.log(logbookData);
-
-        setLogbookList(logbookData?.data?.listFlightLogs?.items || []);
+        const flightLogsUnsorted = logbookData?.data?.listFlightLogs?.items || [];
+        setLogbookList(
+          flightLogsUnsorted.sort((a, b) => {
+            const aStart = a?.startDateTime || 0;
+            const bStart = b?.startDateTime || 0;
+            const aEpochTime = Math.floor(Number(new Date(aStart)));
+            const bEpochTime = Math.floor(Number(new Date(bStart)));
+            return bEpochTime - aEpochTime;
+          })
+        );
       } catch (e) {
-        console.error('Error getting logbook list: ', e);
+        console.error('Error getting logbook list: ', e); // eslint-disable-line no-console
       }
     };
     getLogbookList();
@@ -51,15 +58,17 @@ const LogbookList = ({
     setFlightlogEdit(flightlog);
     setShowModal(true);
   };
-
+  let flightNumber = logbookList.length + 1;
   return (
     <div>
       <IonList>
         {logbookList?.map((flightLog: FlightLog) => {
+          flightNumber -= 1;
           return (
             <IonItem button key={flightLog.id} onClick={() => editFlightLog(flightLog)}>
               {' '}
-              {moment(flightLog.startDateTime).format('MMM Do YYYY HH:mm')} {flightLog.launchSite}{' '}
+              {flightNumber}. {moment(flightLog.startDateTime).format('MMM Do YYYY HH:mm')}{' '}
+              {flightLog.launchSite}{' '}
             </IonItem>
           );
         })}

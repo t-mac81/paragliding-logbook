@@ -78,7 +78,7 @@ const LogbookModalForm = ({
       }
     };
     getGliders();
-  }, [cognitoIdentity.cognito.sub, flightlogEdit]);
+  }, [cognitoIdentity.cognito.sub, flightlogEdit, propId]);
 
   const createNewFlightLog = async (data: FlightLog) => {
     await API.graphql({

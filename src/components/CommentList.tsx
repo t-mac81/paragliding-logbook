@@ -50,16 +50,18 @@ const CommentList = ({ propId }: CommentListProps) => {
         <IonList>
           <IonListHeader>Instructor Comments:</IonListHeader>
           {commentList?.map((comment: Comment | null) => {
+            const commentID = comment?.id || '';
+            const commentMessage = comment?.message || '';
             return (
               <IonItem
                 button
-                key={comment!.id}
+                key={commentID}
                 onClick={() => {
                   setShowActionSheet(true);
-                  setCommentId(comment!.id);
+                  setCommentId(commentID);
                 }}
               >
-                {comment!.message}
+                {commentMessage}
               </IonItem>
             );
           })}
